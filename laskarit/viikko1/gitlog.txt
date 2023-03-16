@@ -123,3 +123,5 @@ Date:   Thu Mar 16 17:43:41 2023 +0200
 
  tiedosto.txt | 0
  1 file changed, 0 insertions(+), 0 deletions(-)
+
+Tehtävä 17 pieni muutos

@@ -15,3 +15,6 @@ Ohjelmistotekniikka, harjoitustyö
   * Normaalia tekstiä
   * **Lihavoitua tekstiä**
   * _Kursivoitua tekstiä_
+
+* Tehtävä 16: Lisää GitHubia
+  * Kaivattu muutos :)

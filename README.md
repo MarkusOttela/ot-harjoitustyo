@@ -18,3 +18,6 @@ Ohjelmistotekniikka, harjoitustyö
 
 * Tehtävä 16: Lisää GitHubia
   * Kaivattu muutos :)
+
+* Tehtävä 17: Paikallisen ja etärepositorion epäsynkrooni
+  * Paikallinen muutos

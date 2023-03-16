@@ -1,0 +1,125 @@
+commit 9cc4aadd864268992652b76faa1c3909967557f7
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 18:08:18 2023 +0200
+
+    Poista file1, uudelleennimeä file2 -> file22
+
+ tiedostoja/file1             | 0
+ tiedostoja/{file2 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f819ecc566f27f5f9f0036d65bf38c6ceecab549
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 18:06:15 2023 +0200
+
+    Lisää 'file2':een teksti jotta se erottuu file1:stä.
+    
+    Tällä pitäisi ratketa erikoinen ongelma jossa git luulee
+    tiedoston 'file1' uudelleennimetyn tiedostoksi 'file22'.
+
+ tiedostoja/file2 | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 38307f7f655e1a564ac9d13ecd75dd94b67684a2
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:56:35 2023 +0200
+
+    luo tiedostoja/file{1,2,3}
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 79bc50b497eba29ebc1380e8abaf36c596c1d8bd
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:53:53 2023 +0200
+
+    Promptilla tsekatut muutokset
+
+ eka.txt    | 2 ++
+ kolmas.txt | 2 ++
+ 2 files changed, 4 insertions(+)
+
+commit 809382625506f09b33506b09db0b15b627d5b057
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:52:37 2023 +0200
+
+    uudelleennimeä tiedosto.txt -> eka.txt
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 3ba9b379eb131db785acdd582648508a36aaf067
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:51:31 2023 +0200
+
+    poista "toinen.txt"
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 22c5627ec15e7dc181cc22d79b7ba6f130f567f9
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:50:23 2023 +0200
+
+    poista tekstiä
+
+ tiedosto.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0f4876b84938a3c0ec9d79c67bcc5b13be389f28
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:49:40 2023 +0200
+
+    Vähä lorem ipsumia vähä
+
+ tiedosto.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit 7a40ae2aca7db204bdac41f284a0d441b6ebd79f
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:48:29 2023 +0200
+
+    lisää hakemisto "stuff" ja sinne tiedosto "filu.txt"
+
+ stuff/filu.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 7c26ddc6d28eb33a9924b09439ca15b35af10bc6
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:47:23 2023 +0200
+
+    Lisää sisältöä toinen.txt ja kolmas.txt
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 45cce1ba30c81d1ca4df505fd89982f803f09db7
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:46:00 2023 +0200
+
+    lisää kolmas.txt
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 9fefa11c8f6b1a81f633ba3c874356afd576c543
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:44:39 2023 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 0614bac62deb139168ef2155b1261f124d648084
+Author: Markus Ottela <markus.ottela@helsinki.fi>
+Date:   Thu Mar 16 17:43:41 2023 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)

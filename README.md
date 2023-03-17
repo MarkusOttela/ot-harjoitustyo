@@ -21,3 +21,9 @@ Ohjelmistotekniikka, harjoitustyö
 
 * Tehtävä 17: Paikallisen ja etärepositorion epäsynkrooni
   * Paikallinen muutos
+
+
+#### Viikko 2
+
+* Tehtävät 1..3
+  * [Yksikkötestit](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/laskarit/viikko2/maksukortti/src/tests/maksukortti_test.py#L40)

@@ -3,4 +3,7 @@ __pycache__/
 *.py[cod]
 
 # PyCharm stuff
-.idea
+.idea/
+
+# Pytest stuff
+pytest_cache/

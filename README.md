@@ -27,3 +27,6 @@ Ohjelmistotekniikka, harjoitustyö
 
 * Tehtävät 1..3
   * [Yksikkötestit](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/laskarit/viikko2/maksukortti/src/tests/maksukortti_test.py#L40)
+
+* Tehtävä 9
+  * [Rivikattavuus-screenshot](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/laskarit/viikko2/unicafe_rivikattavuus.png)

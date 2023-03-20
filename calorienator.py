@@ -17,6 +17,8 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 from src.common.statics import Literals
+from src.gui.gui import GUI
+from src.gui.screens.main_menu import main_menu
 
 
 def main() -> None:
@@ -27,7 +29,12 @@ def main() -> None:
         2. Informing them about the daily consumption in relation to their goal values
         3. Creating statistics about food and nutrient consumption, and progress of the diet
     """
-    print(f'{Literals.PROGRAM_NAME.value} {Literals.VERSION.value}')
+    print(f'{Literals.PROGRAM_NAME.value} {Literals.VERSION.value}\n')
+
+    gui = GUI()
+
+    main_menu(gui)
+
 
 
 if __name__ == '__main__':

@@ -16,27 +16,14 @@ details. You should have received a copy of the GNU General Public License
 along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from enum import Enum
+import typing
+
+if typing.TYPE_CHECKING:
+    from src.gui.gui import GUI
 
 
-class Literals(Enum):
-    PROGRAM_NAME = 'Calorienator'
-    VERSION      = '0.23.01'
-    ICON_FILE    = 'icon.png'
-    RESOLUTION   = (1600, 900)
-    FPS          = 60
+def main_menu(gui: 'GUI') -> None:
+    """Render the main menu."""
 
-class Color(Enum):
-    """Pygame colors."""
-    WHITE    = (255, 255, 255)
-    RED      = (255,   0,   0)
-    BLACK    = (  0,   0,   0)
-    GREY     = ( 30,  30,  30)
-    MGREY    = (59,   59,  59)
-    LGREY    = (180, 180, 180)
-
-
-class ColorSchemeDark(Enum):
-    """Dark mode ColorScheme."""
-    BACKGROUND = Color.GREY.value
-    FONT_COLOR = Color.LGREY.value
+    while True:
+        gui.tick()

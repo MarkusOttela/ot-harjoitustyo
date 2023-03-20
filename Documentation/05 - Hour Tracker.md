@@ -4,7 +4,7 @@ Hour Tracker
 ## Calendar Week 12
 * Monday
   * 15..18 Documentation (Initial Functional specification)
-  * 18..20 Program logic
+  * 18..21 Program logic (Initial GUI window, Ingredient SQL-db)
 * Tuesday
 * Wednesday
 * Thursday

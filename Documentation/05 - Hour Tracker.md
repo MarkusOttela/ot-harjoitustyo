@@ -23,7 +23,3 @@ Hour Tracker
 
 ## Calendar Week 14
 ## Calendar Week 15
-
-
-## WakaTime graphs
-* TODO

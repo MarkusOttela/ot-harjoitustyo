@@ -1,7 +1,51 @@
 Ohjelmistotekniikka, harjoitustyö
 ---
 
-### Tehtävät
+## Calorinator
+
+The program supports the user in maintaining their diet by
+  1. Tracking their meals, and by counting the nutritional values of each meal
+  2. Informing them about the daily consumption in relation to their goal values
+  3. Creating statistics about food and nutrient consumption, and progress of the diet
+
+**Privacy preserving design**
+
+* Locally hosted, all persistent data encrypted
+* State-of-the-art cryptography (Argon2id, XChaCha20-Poly1305, BLAKE2b)
+* Web UI that can be used via Tailscale (WireGuard) 
+
+
+## Platform Support
+
+* Linux / Python 3.10+
+
+
+### Documentation
+
+* [User Manual]()
+* [Functional Specification]()
+* [Program Architecture]()
+* [Testing]()
+* [Hour Tracker]()
+* [Changelog]()
+
+
+### Installation
+
+
+### Launching
+
+
+### Development
+
+
+
+
+
+
+---
+
+### Viikkotehtävät
 
 #### Viikko 1
 

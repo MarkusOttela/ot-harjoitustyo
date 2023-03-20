@@ -3,7 +3,8 @@ Hour Tracker
 
 ## Calendar Week 12
 * Monday
-  * 15--
+  * 15..18 Documentation (Initial Functional specification)
+  * 18..20 Program logic
 * Tuesday
 * Wednesday
 * Thursday

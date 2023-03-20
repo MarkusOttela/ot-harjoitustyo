@@ -26,4 +26,5 @@ def main_menu(gui: 'GUI') -> None:
     """Render the main menu."""
 
     while True:
+        gui.check_events()
         gui.tick()

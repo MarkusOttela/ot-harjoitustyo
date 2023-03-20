@@ -47,3 +47,10 @@ class GUI:
     def tick(self) -> None:
         """Advance the clock by one tick."""
         self.clock.tick(Literals.FPS.value)
+
+    @staticmethod
+    def check_events() -> None:
+        """Check if events have occurred."""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit()

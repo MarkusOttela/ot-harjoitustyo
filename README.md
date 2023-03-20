@@ -1,4 +1,7 @@
-## Calorinator (Ohjelmistotekniikka, harjoitustyö)
+Ohjelmistotekniikka, harjoitustyö
+---
+
+## Calorinator
 
 The program supports the user in maintaining their diet by
   1. Tracking their meals, and by counting the nutritional values of each meal

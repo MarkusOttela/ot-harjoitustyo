@@ -29,6 +29,6 @@ class IngredientNotFound(DatabaseException):
     """Exception raised when the Ingredient is not found in the Ingredient database."""
     pass
 
-class ValidationError(Exception):
+class ValidationError(CalorienatorException):
     """Exception raised when a value fails validation"""
     pass

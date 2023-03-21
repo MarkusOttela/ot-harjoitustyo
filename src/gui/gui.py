@@ -18,7 +18,7 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 import pygame
 
-from src.common.statics import Literals, ColorSchemeDark, AsssetFiles
+from src.common.statics import Literals, ColorScheme, AsssetFiles
 
 
 class GUI:
@@ -32,7 +32,7 @@ class GUI:
     def __init__(self) -> None:
         """Create new GUI object."""
         self.init_pygame()
-        self.color   = ColorSchemeDark
+        self.color   = ColorScheme
         self.clock   = pygame.time.Clock()
         self.display = pygame.display.set_mode(Literals.RESOLUTION.value)
 

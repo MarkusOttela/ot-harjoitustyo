@@ -16,9 +16,10 @@ details. You should have received a copy of the GNU General Public License
 along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from src.common.statics        import Literals
-from src.gui.gui               import GUI
-from src.gui.screens.main_menu import main_menu
+from src.common.statics               import Literals
+from src.database.ingredient_database import IngredientDatabase
+from src.gui.gui                      import GUI
+from src.gui.screens.main_menu        import main_menu
 
 
 def main() -> None:
@@ -31,9 +32,10 @@ def main() -> None:
     """
     print(f'{Literals.PROGRAM_NAME.value} {Literals.VERSION.value}\n')
 
-    gui = GUI()
+    gui           = GUI()
+    ingredient_db = IngredientDatabase()
 
-    main_menu(gui)
+    main_menu(gui, ingredient_db)
 
 
 if __name__ == '__main__':

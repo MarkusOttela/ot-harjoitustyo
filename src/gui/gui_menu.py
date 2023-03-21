@@ -20,7 +20,7 @@ import typing
 
 from pygame_menu import BaseImage, Menu, Theme
 
-from src.common.statics import AsssetFiles, ColorSchemeDark, Literals
+from src.common.statics import AsssetFiles, ColorScheme, Literals
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
@@ -30,7 +30,9 @@ class GUIMenu:
 
     def __init__(self,
                  gui        : 'GUI',
-                 menu_title : str
+                 menu_title : str,
+                 columns    : int = 1,
+                 rows       : int = None,
                  ) -> None:
         """Create new GUIMenu with pygame-menu."""
         self.gui = gui
@@ -43,22 +45,22 @@ class GUIMenu:
         resolution_x = Literals.RESOLUTION.value[0]
         resolution_y = Literals.RESOLUTION.value[1]
         self.menu = Menu(width=resolution_x, height=resolution_y,
-                         title=menu_title, theme=self.theme)
+                         title=menu_title, theme=self.theme, columns=columns, rows=rows)
 
     @staticmethod
     def get_theme() -> Theme:
         """Get the theme for the menu."""
-        return Theme(background_color=ColorSchemeDark.BACKGROUND.value,
+        return Theme(background_color=ColorScheme.BACKGROUND.value,
                      cursor_color=(255, 255, 255),
                      cursor_selection_color=(80, 80, 80, 120),
                      scrollbar_color=(39, 41, 42),
                      scrollbar_slider_color=(65, 66, 67),
                      scrollbar_slider_hover_color=(90, 89, 88),
-                     selection_color=ColorSchemeDark.FONT_COLOR.value,
+                     selection_color=ColorScheme.FONT_COLOR.value,
                      title_background_color=(47, 48, 51),
                      title_font_color=(215, 215, 215),
-                     widget_font_color=ColorSchemeDark.FONT_COLOR.value,
-                     widget_box_background_color=ColorSchemeDark.BACKGROUND.value)
+                     widget_font_color=ColorScheme.FONT_COLOR.value,
+                     widget_box_background_color=ColorScheme.BACKGROUND.value)
 
 
     def get_background(self) -> BaseImage:

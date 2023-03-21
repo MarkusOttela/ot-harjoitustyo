@@ -47,7 +47,7 @@ class Color(Enum):
     CELESTE  = (14,  128, 113)
 
 
-class ColorSchemeDark(Enum):
-    """Dark mode ColorScheme."""
+class ColorScheme(Enum):
+    """Program's color scheme."""
     BACKGROUND = Color.GREY.value
     FONT_COLOR = Color.LGREY.value

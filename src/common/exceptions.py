@@ -32,3 +32,11 @@ class IngredientNotFound(DatabaseException):
 class ValidationError(CalorienatorException):
     """Exception raised when a value fails validation"""
     pass
+
+class ConversionError(CalorienatorException):
+    """Exception raised when a value fails to convert."""
+    pass
+
+class IncompleteConversion(CalorienatorException):
+    """Exception raised when conversion of all values fails."""
+    pass

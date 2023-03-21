@@ -24,9 +24,10 @@ from src.gui.screens.callback_classes import Button
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
+    from src.database.ingredient_database import IngredientDatabase
 
 
-def main_menu(gui: 'GUI') -> None:
+def main_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
     """Render the main menu."""
 
     while True:
@@ -41,7 +42,7 @@ def main_menu(gui: 'GUI') -> None:
         menu.start()
 
         if add_ingredient_button.pressed:
-            add_ingredient_menu(gui)
+            add_ingredient_menu(gui, ingredient_db)
             continue
 
         if exit_button.pressed:

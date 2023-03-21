@@ -37,7 +37,18 @@ class Button:
         if self.closes_menu:
             self.menu.menu.disable()
 
+class StringInput:
+    """String input callback-object."""
+
+    def __init__(self) -> None:
+        self.value = ''
+
+    def set_value(self, g: str) -> None:
+        self.value = g
+
+
 class UserInput:
+    """User input callback-object."""
 
     def __init__(self) -> None:
         self.value:   Optional[str] = None

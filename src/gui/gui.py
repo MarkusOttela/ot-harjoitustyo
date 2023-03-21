@@ -18,7 +18,7 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 import pygame
 
-from src.common.statics import Literals, ColorSchemeDark
+from src.common.statics import Literals, ColorSchemeDark, AsssetFiles
 
 
 class GUI:
@@ -36,14 +36,13 @@ class GUI:
         self.clock   = pygame.time.Clock()
         self.display = pygame.display.set_mode(Literals.RESOLUTION.value)
 
-
     @staticmethod
     def init_pygame()-> None:
         """Initialize pygame."""
         pygame.init()
         pygame.mixer.init()
         pygame.display.set_caption(Literals.PROGRAM_NAME.value)
-        pygame.display.set_icon(pygame.image.load(Literals.ICON_FILE.value))
+        pygame.display.set_icon(pygame.image.load(AsssetFiles.ICON_FILE.value))
 
     def tick(self) -> None:
         """Advance the clock by one tick."""

@@ -27,14 +27,7 @@ if typing.TYPE_CHECKING:
 def main_menu(gui: 'GUI') -> None:
     """Render the main menu."""
 
-    gui.clear_screen()
-    gui.draw_screen()
-
     menu = GUIMenu(gui, 'Calorinator')
 
-    menu.menu.add.button('Done')
+    menu.menu.add.button('Exit', action=exit)
     menu.start()
-
-    while True:
-        gui.check_events()
-        gui.tick()

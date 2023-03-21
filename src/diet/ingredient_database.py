@@ -23,15 +23,9 @@ from enum import Enum
 
 from src.common.Exceptions import IngredientNotFound
 from src.common.statics    import DatabaseFileNames
-from src.common.types      import NonEmptyStr, NonNegativeFloat
+from src.common.types      import NonEmptyStr, NonNegativeFloat, DatabaseTypes
 from src.common.validation import validate_params
 from src.diet.ingredient   import Ingredient
-
-
-class DatabaseTypes(Enum):
-    """SQL Database types"""
-    TEXT = 'TEXT'
-    REAL = 'REAL'
 
 
 column_type_dict = {
@@ -257,5 +251,5 @@ if __name__ == '__main__':
               caffeine=0.0,
               creatine=0.0)
 
-    ingredient = db.get_ingredient('Nacho', manufacturer='Atriaa')
+    ingredient = db.get_ingredient('Nacho', manufacturer='Atria')
     print(repr(ingredient))

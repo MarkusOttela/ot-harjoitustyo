@@ -34,7 +34,7 @@ class DatabaseTypes(Enum):
     REAL = 'REAL'
 
 
-database_type_dict = {
+column_type_dict = {
     str              : DatabaseTypes.TEXT.value,
     NonEmptyStr      : DatabaseTypes.TEXT.value,
     NonNegativeFloat : DatabaseTypes.REAL.value,
@@ -111,11 +111,10 @@ class IngredientDatabase:
         sql_command = f'CREATE TABLE IF NOT EXISTS {IngredientDB.table_name.value} ('
 
         for enum in IngredientDBCol:
-            tup = enum.value
-            column_name = tup[0]
-            data_type   = tup[1]
-            column_type = database_type_dict[data_type]
-            sql_command += f"{column_name} {column_type}, "
+            tup          = enum.value
+            column_name  = tup[0]
+            sql_command += f"{column_name} {column_type_dict[tup[1]]}, "
+
         sql_command  = sql_command [:-2]  # Remove trailing comma and space
         sql_command += ')'
 
@@ -187,23 +186,29 @@ class IngredientDatabase:
 
         self.cursor.connection.commit()
 
-    def get_ingredient_by_name(self,
-                               name: NonEmptyStr
-                               ) -> Ingredient:
+    def get_ingredient(self,
+                       name         : NonEmptyStr,
+                       manufacturer : str = ''
+                       ) -> Ingredient:
         """Get ingredient from database by name."""
-        validate_params(self.get_ingredient_by_name, locals())
+        validate_params(self.get_ingredient, locals())
 
         sql_command  = f'SELECT '
         sql_command += f', '.join([enum.value[0] for enum in IngredientDBCol][1:])
         sql_command += f' FROM {IngredientDB.table_name.value}'
         sql_command += f" WHERE {IngredientDBCol.name.value[0]} == '{name}'"
 
+        if manufacturer:
+            manuf_col    = IngredientDBCol.manufacturer.value[0]
+            sql_command += f" AND {manuf_col} == '{manufacturer}'"
+
         results = self.cursor.execute(sql_command).fetchall()
 
         if results:
             return Ingredient(name, *results[0])
         else:
-            raise IngredientNotFound(f"Could not find ingredient '{name}'.")
+            manuf_info = f" by '{manufacturer}'" if manufacturer else ''
+            raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
 
 
 if __name__ == '__main__':
@@ -252,5 +257,5 @@ if __name__ == '__main__':
               caffeine=0.0,
               creatine=0.0)
 
-    ingredient = db.get_ingredient_by_name('Nacho')
+    ingredient = db.get_ingredient('Nacho', manufacturer='Atriaa')
     print(repr(ingredient))

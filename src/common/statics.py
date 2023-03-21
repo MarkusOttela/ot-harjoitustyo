@@ -21,7 +21,7 @@ from enum import Enum
 
 class Literals(Enum):
     PROGRAM_NAME = 'Calorienator'
-    VERSION      = '0.23.01'
+    VERSION      = '0.23.03'
     ICON_FILE    = 'icon.png'
     RESOLUTION   = (1600, 900)
     FPS          = 60

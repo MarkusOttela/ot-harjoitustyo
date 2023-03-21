@@ -21,13 +21,19 @@ import time
 
 from enum import Enum
 
-from src.common.statics import DatabaseFileNames
+from src.common.Exceptions import IngredientNotFound
+from src.common.statics    import DatabaseFileNames
+from src.common.types      import NonEmptyStr, NonNegativeFloat
+from src.common.validation import validate_params
 
 
 class IngredientDB(Enum):
     """Ingredient database literals."""
     table_name      = 'Ingredients'
+
+    # Columns
     name            = 'name'
+    manufacturer    = 'manufacturer'
     kcal            = 'kcal'
     carbohydrates   = 'carbohydrates'
     protein         = 'protein'
@@ -43,24 +49,29 @@ class Ingredient:
     and mealpreps are cooked from.
     """
     def __init__(self,
-                 name : str,
+                 name         : NonEmptyStr,
+                 manufacturer : str = '',
 
                  # Energy
-                 kcal          : float = 0,
+                 kcal          : NonNegativeFloat = 0.0,
 
                  # Macronutrients
-                 carbohydrates : float = 0,
-                 protein       : float = 0,
-                 fat           : float = 0,
-                 satisfied_fat : float = 0,
-                 fiber         : float = 0,
-                 salt          : float = 0
+                 carbohydrates : NonNegativeFloat = 0.0,
+                 protein       : NonNegativeFloat = 0.0,
+                 fat           : NonNegativeFloat = 0.0,
+                 satisfied_fat : NonNegativeFloat = 0.0,
+                 fiber         : NonNegativeFloat = 0.0,
+                 salt          : NonNegativeFloat = 0.0
                  ) -> None:
         """Create new Ingredient.
 
         Macronutrients are given in grams / 100g.
         """
+        validate_params(self.__init__, locals())
+
         self.name          = name
+        self.manufacturer  = manufacturer
+
         self.kcal          = kcal
         self.carbohydrates = carbohydrates
         self.protein       = protein
@@ -72,14 +83,15 @@ class Ingredient:
     def __repr__(self) -> str:
         """Format Ingredient attributes."""
         return (f"<Ingredient-object {id(self)}>\n"
-                f"  * {self.name          = }\n"
-                f"  * {self.kcal          = }\n"
-                f"  * {self.carbohydrates = }\n"
-                f"  * {self.protein       = }\n"
-                f"  * {self.fat           = }\n"
-                f"  * {self.satisfied_fat = }\n"
-                f"  * {self.fiber         = }\n"
-                f"  * {self.salt          = }\n")
+                f"  <{self.name          = }>\n"
+                f"  <{self.manufacturer  = }>\n"
+                f"  <{self.kcal          = }>\n"
+                f"  <{self.carbohydrates = }>\n"
+                f"  <{self.protein       = }>\n"
+                f"  <{self.fat           = }>\n"
+                f"  <{self.satisfied_fat = }>\n"
+                f"  <{self.fiber         = }>\n"
+                f"  <{self.salt          = }>\n")
 
 
 class IngredientDatabase:
@@ -94,7 +106,8 @@ class IngredientDatabase:
     def create_table(self) -> None:
         """Create the database table."""
         self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {IngredientDB.table_name.value} ("
-                            f"{IngredientDB.name.value} TEXT, "
+                            f"{IngredientDB.name.value           } TEXT, "
+                            f"{IngredientDB.manufacturer.value   } TEXT, "
                             f"{IngredientDB.kcal.value           } REAL, "
                             f"{IngredientDB.carbohydrates.value  } REAL, "
                             f"{IngredientDB.protein.value        } REAL, "
@@ -106,18 +119,22 @@ class IngredientDatabase:
 
     def insert(self,
                *,  # Require keyword args
-               ingredient_name : str,
-               kcal            : float,
-               carbohydrates   : float,
-               protein         : float,
-               fat             : float,
-               satisfied_fat   : float,
-               fiber           : float,
-               salt            : float,
+               name          : NonEmptyStr,
+               manufacturer  : str = '',
+               kcal          : NonNegativeFloat,
+               carbohydrates : NonNegativeFloat,
+               protein       : NonNegativeFloat,
+               fat           : NonNegativeFloat,
+               satisfied_fat : NonNegativeFloat,
+               fiber         : NonNegativeFloat,
+               salt          : NonNegativeFloat,
                ) -> None:
         """Insert into database."""
+        validate_params(self.insert, locals())
+
         self.cursor.execute(f"INSERT INTO {IngredientDB.table_name.value} ("
                             f"{IngredientDB.name.value}, "
+                            f"{IngredientDB.manufacturer.value}, "
                             f"{IngredientDB.kcal.value           }, "
                             f"{IngredientDB.carbohydrates.value  }, "
                             f"{IngredientDB.protein.value        }, "
@@ -125,16 +142,19 @@ class IngredientDatabase:
                             f"{IngredientDB.satisfied_fat.value  }, "
                             f"{IngredientDB.fiber.value          }, "
                             f"{IngredientDB.salt.value           }"
-                            f") VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                            (ingredient_name, kcal, carbohydrates, protein, fat, satisfied_fat, fiber, salt)
+                            f") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            (name, manufacturer, kcal, carbohydrates, protein, fat, satisfied_fat, fiber, salt)
                             )
         self.cursor.connection.commit()
 
-    def get_ingredient_by_name(self, name: str) -> Ingredient:
+    def get_ingredient_by_name(self,
+                               name: NonEmptyStr
+                               ) -> Ingredient:
         """Get ingredient from database by name."""
+        validate_params(self.get_ingredient_by_name, locals())
 
-        kcal, carbohydrates, protein, fat, satisfied_fat, fiber, salt \
-            = self.cursor.execute(f"SELECT "
+        results = self.cursor.execute(f"SELECT "
+                                  f"{IngredientDB.manufacturer.value }, "
                                   f"{IngredientDB.kcal.value         }, "
                                   f"{IngredientDB.carbohydrates.value}, "
                                   f"{IngredientDB.protein.value      }, "
@@ -144,8 +164,11 @@ class IngredientDatabase:
                                   f"{IngredientDB.salt.value         } "
                                   f"FROM {IngredientDB.table_name.value} "
                                   f"WHERE {IngredientDB.name.value} == '{name}'"
-                                  ).fetchone()
-        return Ingredient(name, kcal, carbohydrates, protein, fat, satisfied_fat, fiber, salt)
+                                  ).fetchall()
+        if results:
+            return Ingredient(name, *results[0])
+        else:
+            raise IngredientNotFound(f"Could not find ingredient '{name}'.")
 
 
 if __name__ == '__main__':
@@ -160,14 +183,15 @@ if __name__ == '__main__':
         pass
 
     db = IngredientDatabase()
-    db.insert(ingredient_name='Nacho',
+    db.insert(name='Nacho',
+              manufacturer='Atria',
               kcal=100.1,
-              carbohydrates=1,
-              protein=1,
-              fat=1,
-              satisfied_fat=1,
-              fiber=1,
-              salt=1)
+              carbohydrates=1.0,
+              protein=1.0,
+              fat=1.0,
+              satisfied_fat=1.0,
+              fiber=1.0,
+              salt=1.0)
 
     ingredient = db.get_ingredient_by_name('Nacho')
     print(repr(ingredient))

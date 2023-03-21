@@ -22,8 +22,8 @@ from src.common.validation import validate_params
 
 class Ingredient:
     """\
-    Food ingredient is an object that represents something drinks, servings,
-    and mealpreps are cooked from.
+    Food ingredient is an object that represents something
+    drinks, servings, and mealpreps are cooked from.
     """
     def __init__(self,
                  name         : NonEmptyStr,

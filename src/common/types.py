@@ -21,6 +21,7 @@ from typing import Annotated
 
 from annotated_types import Gt, MinLen
 
+
 class DatabaseTypes(Enum):
     """SQL Database types."""
     TEXT = 'TEXT'

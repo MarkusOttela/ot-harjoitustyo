@@ -16,8 +16,8 @@ details. You should have received a copy of the GNU General Public License
 along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from src.common.statics import Literals
-from src.gui.gui import GUI
+from src.common.statics        import Literals
+from src.gui.gui               import GUI
 from src.gui.screens.main_menu import main_menu
 
 
@@ -34,7 +34,6 @@ def main() -> None:
     gui = GUI()
 
     main_menu(gui)
-
 
 
 if __name__ == '__main__':

@@ -16,6 +16,7 @@ details. You should have received a copy of the GNU General Public License
 along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
 
+
 class CalorienatorException(Exception):
     """Base-class for internal program exceptions."""
     pass

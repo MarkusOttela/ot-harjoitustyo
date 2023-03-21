@@ -38,23 +38,23 @@ column_type_dict = {
 
 class IngredientDB(Enum):
     """Ingredient database literals."""
-    table_name      = 'Ingredients'
+    table_name = 'Ingredients'
 
 
 class IngredientDBCol(Enum):
     """Ingredient database Columns and their types."""
     # Columns
-    name            = ('name',         NonEmptyStr)
-    manufacturer    = ('manufacturer', str)
+    name         = ('name',         NonEmptyStr)
+    manufacturer = ('manufacturer', str)
 
     # Macronutrients
-    kcal            = ('kcal',          NonNegativeFloat)
-    carbohydrates   = ('carbohydrates', NonNegativeFloat)
-    protein         = ('protein',       NonNegativeFloat)
-    fat             = ('fat',           NonNegativeFloat)
-    satisfied_fat   = ('satisfied_fat', NonNegativeFloat)
-    fiber           = ('fiber',         NonNegativeFloat)
-    salt            = ('salt',          NonNegativeFloat)
+    kcal          = ('kcal',          NonNegativeFloat)
+    carbohydrates = ('carbohydrates', NonNegativeFloat)
+    protein       = ('protein',       NonNegativeFloat)
+    fat           = ('fat',           NonNegativeFloat)
+    satisfied_fat = ('satisfied_fat', NonNegativeFloat)
+    fiber         = ('fiber',         NonNegativeFloat)
+    salt          = ('salt',          NonNegativeFloat)
 
     # Micronutrients
 

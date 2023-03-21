@@ -26,6 +26,7 @@ class Literals(Enum):
     RESOLUTION   = (1600, 900)
     FPS          = 60
 
+
 class DatabaseFileNames(Enum):
     """Names of database files."""
     INGREDIENT_DATABASE = 'ingredient_database.sqlite3'

@@ -32,8 +32,10 @@ class GUI:
     def __init__(self) -> None:
         """Create new GUI object."""
         self.init_pygame()
-        self.color = ColorSchemeDark
-        self.clock = pygame.time.Clock()
+        self.color   = ColorSchemeDark
+        self.clock   = pygame.time.Clock()
+        self.display = pygame.display.set_mode(Literals.RESOLUTION.value)
+
 
     @staticmethod
     def init_pygame()-> None:
@@ -42,11 +44,19 @@ class GUI:
         pygame.mixer.init()
         pygame.display.set_caption(Literals.PROGRAM_NAME.value)
         pygame.display.set_icon(pygame.image.load(Literals.ICON_FILE.value))
-        pygame.display.set_mode(Literals.RESOLUTION.value)
 
     def tick(self) -> None:
         """Advance the clock by one tick."""
         self.clock.tick(Literals.FPS.value)
+
+    def clear_screen(self) -> None:
+        """Clear the screen."""
+        self.display.fill(self.color.BACKGROUND.value)
+
+    @staticmethod
+    def draw_screen() -> None:
+        """Display contents of the screen."""
+        pygame.display.flip()
 
     @staticmethod
     def check_events() -> None:

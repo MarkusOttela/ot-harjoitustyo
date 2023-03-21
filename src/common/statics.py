@@ -40,6 +40,7 @@ class Color(Enum):
     GREY     = ( 30,  30,  30)
     MGREY    = (59,   59,  59)
     LGREY    = (180, 180, 180)
+    CELESTE  = (14,  128, 113)
 
 
 class ColorSchemeDark(Enum):

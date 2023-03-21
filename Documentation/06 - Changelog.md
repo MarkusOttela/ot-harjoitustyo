@@ -4,7 +4,19 @@ Changelog
 ## Calendar Week 12
 * Monday
   * Initial functional specification
+  * Initial Ingredient Database
+  * Initial functional specification
+  * Logo and icon design
+
 * Tuesday
+  * GUI drafts for `Main Menu` and `Add Ingredient` menu
+  * Initial `Main Menu`, `Add Ingredient` menu with `pygame-menu`
+    * Working initial interface for
+        1) Creating an `Ingredient` object from input fields
+           * Validation and conversion for fields
+             * Unit tests for validators
+        2) Adding the `Ingredient` object to its SQL-DB 
+* 
 * Wednesday
 * Thursday
 * Friday

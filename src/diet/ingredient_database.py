@@ -25,73 +25,76 @@ from src.common.Exceptions import IngredientNotFound
 from src.common.statics    import DatabaseFileNames
 from src.common.types      import NonEmptyStr, NonNegativeFloat
 from src.common.validation import validate_params
+from src.diet.ingredient   import Ingredient
+
+
+class DatabaseTypes(Enum):
+    """SQL Database types"""
+    TEXT = 'TEXT'
+    REAL = 'REAL'
+
+
+database_type_dict = {
+    str              : DatabaseTypes.TEXT.value,
+    NonEmptyStr      : DatabaseTypes.TEXT.value,
+    NonNegativeFloat : DatabaseTypes.REAL.value,
+    float            : DatabaseTypes.REAL.value
+}
 
 
 class IngredientDB(Enum):
     """Ingredient database literals."""
     table_name      = 'Ingredients'
 
+
+class IngredientDBCol(Enum):
+    """Ingredient database Columns and their types."""
     # Columns
-    name            = 'name'
-    manufacturer    = 'manufacturer'
-    kcal            = 'kcal'
-    carbohydrates   = 'carbohydrates'
-    protein         = 'protein'
-    fat             = 'fat'
-    satisfied_fat   = 'satisfied_fat'
-    fiber           = 'fiber'
-    salt            = 'salt'
+    name            = ('name',         NonEmptyStr)
+    manufacturer    = ('manufacturer', str)
 
+    # Macronutrients
+    kcal            = ('kcal',          NonNegativeFloat)
+    carbohydrates   = ('carbohydrates', NonNegativeFloat)
+    protein         = ('protein',       NonNegativeFloat)
+    fat             = ('fat',           NonNegativeFloat)
+    satisfied_fat   = ('satisfied_fat', NonNegativeFloat)
+    fiber           = ('fiber',         NonNegativeFloat)
+    salt            = ('salt',          NonNegativeFloat)
 
-class Ingredient:
-    """\
-    Food ingredient is an object that represents something drinks, servings,
-    and mealpreps are cooked from.
-    """
-    def __init__(self,
-                 name         : NonEmptyStr,
-                 manufacturer : str = '',
+    # Micronutrients
 
-                 # Energy
-                 kcal          : NonNegativeFloat = 0.0,
+    # Omega-3 fatty acids
+    omega3_dha = ('omega3_dha', NonNegativeFloat)
+    omega3_epa = ('omega3_epa', NonNegativeFloat)
 
-                 # Macronutrients
-                 carbohydrates : NonNegativeFloat = 0.0,
-                 protein       : NonNegativeFloat = 0.0,
-                 fat           : NonNegativeFloat = 0.0,
-                 satisfied_fat : NonNegativeFloat = 0.0,
-                 fiber         : NonNegativeFloat = 0.0,
-                 salt          : NonNegativeFloat = 0.0
-                 ) -> None:
-        """Create new Ingredient.
+    # Fat soluble vitamins
+    vitamin_a = ('vitamin_a', NonNegativeFloat)
+    vitamin_d = ('vitamin_d', NonNegativeFloat)
+    vitamin_e = ('vitamin_e', NonNegativeFloat)
+    vitamin_k = ('vitamin_k', NonNegativeFloat)
 
-        Macronutrients are given in grams / 100g.
-        """
-        validate_params(self.__init__, locals())
+    # Water soluble vitamins
+    vitamin_b1  = ('vitamin_b1',  NonNegativeFloat)
+    vitamin_b2  = ('vitamin_b2',  NonNegativeFloat)
+    vitamin_b3  = ('vitamin_b3',  NonNegativeFloat)
+    vitamin_b5  = ('vitamin_b5',  NonNegativeFloat)
+    vitamin_b6  = ('vitamin_b6',  NonNegativeFloat)
+    vitamin_b7  = ('vitamin_b7',  NonNegativeFloat)
+    vitamin_b9  = ('vitamin_b9',  NonNegativeFloat)
+    vitamin_b12 = ('vitamin_b12', NonNegativeFloat)
+    vitamin_c   = ('vitamin_c',   NonNegativeFloat)
 
-        self.name          = name
-        self.manufacturer  = manufacturer
-
-        self.kcal          = kcal
-        self.carbohydrates = carbohydrates
-        self.protein       = protein
-        self.fat           = fat
-        self.satisfied_fat = satisfied_fat
-        self.fiber         = fiber
-        self.salt          = salt
-
-    def __repr__(self) -> str:
-        """Format Ingredient attributes."""
-        return (f"<Ingredient-object {id(self)}>\n"
-                f"  <{self.name          = }>\n"
-                f"  <{self.manufacturer  = }>\n"
-                f"  <{self.kcal          = }>\n"
-                f"  <{self.carbohydrates = }>\n"
-                f"  <{self.protein       = }>\n"
-                f"  <{self.fat           = }>\n"
-                f"  <{self.satisfied_fat = }>\n"
-                f"  <{self.fiber         = }>\n"
-                f"  <{self.salt          = }>\n")
+    # Minerals etc.
+    calcium   = ('calcium',   NonNegativeFloat)
+    chromium  = ('chromium',  NonNegativeFloat)
+    iodine    = ('iodine',    NonNegativeFloat)
+    potassium = ('potassium', NonNegativeFloat)
+    iron      = ('iron',      NonNegativeFloat)
+    magnesium = ('magnesium', NonNegativeFloat)
+    zinc      = ('zinc',      NonNegativeFloat)
+    caffeine  = ('caffeine',  NonNegativeFloat)
+    creatine  = ('creatine',  NonNegativeFloat)
 
 
 class IngredientDatabase:
@@ -104,47 +107,84 @@ class IngredientDatabase:
         self.create_table()
 
     def create_table(self) -> None:
-        """Create the database table."""
-        self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {IngredientDB.table_name.value} ("
-                            f"{IngredientDB.name.value           } TEXT, "
-                            f"{IngredientDB.manufacturer.value   } TEXT, "
-                            f"{IngredientDB.kcal.value           } REAL, "
-                            f"{IngredientDB.carbohydrates.value  } REAL, "
-                            f"{IngredientDB.protein.value        } REAL, "
-                            f"{IngredientDB.fat.value            } REAL, "
-                            f"{IngredientDB.satisfied_fat.value  } REAL, "
-                            f"{IngredientDB.fiber.value          } REAL, "
-                            f"{IngredientDB.salt.value           } REAL"
-                            ")")
+        """Create the database table procedurally from Enum fields."""
+        sql_command = f'CREATE TABLE IF NOT EXISTS {IngredientDB.table_name.value} ('
+
+        for enum in IngredientDBCol:
+            tup = enum.value
+            column_name = tup[0]
+            data_type   = tup[1]
+            column_type = database_type_dict[data_type]
+            sql_command += f"{column_name} {column_type}, "
+        sql_command  = sql_command [:-2]  # Remove trailing comma and space
+        sql_command += ')'
+
+        self.cursor.execute(sql_command)
 
     def insert(self,
-               *,  # Require keyword args
-               name          : NonEmptyStr,
-               manufacturer  : str = '',
-               kcal          : NonNegativeFloat,
-               carbohydrates : NonNegativeFloat,
-               protein       : NonNegativeFloat,
-               fat           : NonNegativeFloat,
-               satisfied_fat : NonNegativeFloat,
-               fiber         : NonNegativeFloat,
-               salt          : NonNegativeFloat,
+               *                                     ,  # Require keyword args
+               name          : NonEmptyStr           ,
+               manufacturer  : str              = '' ,
+               kcal          : NonNegativeFloat = 0.0,
+               carbohydrates : NonNegativeFloat = 0.0,
+               protein       : NonNegativeFloat = 0.0,
+               fat           : NonNegativeFloat = 0.0,
+               satisfied_fat : NonNegativeFloat = 0.0,
+               fiber         : NonNegativeFloat = 0.0,
+               salt          : NonNegativeFloat = 0.0,
+
+               # Micronutrients
+
+               # Omega-3 fatty acids
+               omega3_dha: NonNegativeFloat = 0.0,
+               omega3_epa: NonNegativeFloat = 0.0,
+
+               # Fat soluble vitamins
+               vitamin_a: NonNegativeFloat = 0.0,
+               vitamin_d: NonNegativeFloat = 0.0,
+               vitamin_e: NonNegativeFloat = 0.0,
+               vitamin_k: NonNegativeFloat = 0.0,
+
+               # Water soluble vitamins
+               vitamin_b1:  NonNegativeFloat = 0.0,
+               vitamin_b2:  NonNegativeFloat = 0.0,
+               vitamin_b3:  NonNegativeFloat = 0.0,
+               vitamin_b5:  NonNegativeFloat = 0.0,
+               vitamin_b6:  NonNegativeFloat = 0.0,
+               vitamin_b7:  NonNegativeFloat = 0.0,
+               vitamin_b9:  NonNegativeFloat = 0.0,
+               vitamin_b12: NonNegativeFloat = 0.0,
+               vitamin_c:   NonNegativeFloat = 0.0,
+
+               # Minerals etc.
+               calcium   : NonNegativeFloat = 0.0,
+               chromium  : NonNegativeFloat = 0.0,
+               iodine    : NonNegativeFloat = 0.0,
+               potassium : NonNegativeFloat = 0.0,
+               iron      : NonNegativeFloat = 0.0,
+               magnesium : NonNegativeFloat = 0.0,
+               zinc      : NonNegativeFloat = 0.0,
+               caffeine  : NonNegativeFloat = 0.0,
+               creatine  : NonNegativeFloat = 0.0,
                ) -> None:
         """Insert into database."""
         validate_params(self.insert, locals())
 
-        self.cursor.execute(f"INSERT INTO {IngredientDB.table_name.value} ("
-                            f"{IngredientDB.name.value}, "
-                            f"{IngredientDB.manufacturer.value}, "
-                            f"{IngredientDB.kcal.value           }, "
-                            f"{IngredientDB.carbohydrates.value  }, "
-                            f"{IngredientDB.protein.value        }, "
-                            f"{IngredientDB.fat.value            }, "
-                            f"{IngredientDB.satisfied_fat.value  }, "
-                            f"{IngredientDB.fiber.value          }, "
-                            f"{IngredientDB.salt.value           }"
-                            f") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                            (name, manufacturer, kcal, carbohydrates, protein, fat, satisfied_fat, fiber, salt)
-                            )
+        sql_command = f'INSERT INTO {IngredientDB.table_name.value} ('
+        sql_command += ', '.join([enum.value[0] for enum in IngredientDBCol])
+        sql_command += ') VALUES ('
+        sql_command += ', '.join(['?' for _ in range(len(IngredientDBCol))])
+        sql_command += ')'
+
+        self.cursor.execute(sql_command,
+                            (name, manufacturer, kcal,
+                             carbohydrates, protein, fat, satisfied_fat, fiber, salt,
+                             omega3_dha, omega3_epa,
+                             vitamin_a, vitamin_d, vitamin_e, vitamin_k,
+                             vitamin_b1, vitamin_b2, vitamin_b3, vitamin_b5,
+                             vitamin_b6, vitamin_b7, vitamin_b9, vitamin_b12, vitamin_c,
+                             calcium, chromium, iodine, potassium, iron, magnesium, zinc, caffeine, creatine))
+
         self.cursor.connection.commit()
 
     def get_ingredient_by_name(self,
@@ -153,18 +193,13 @@ class IngredientDatabase:
         """Get ingredient from database by name."""
         validate_params(self.get_ingredient_by_name, locals())
 
-        results = self.cursor.execute(f"SELECT "
-                                  f"{IngredientDB.manufacturer.value }, "
-                                  f"{IngredientDB.kcal.value         }, "
-                                  f"{IngredientDB.carbohydrates.value}, "
-                                  f"{IngredientDB.protein.value      }, "
-                                  f"{IngredientDB.fat.value          }, "
-                                  f"{IngredientDB.satisfied_fat.value}, "
-                                  f"{IngredientDB.fiber.value        }, "
-                                  f"{IngredientDB.salt.value         } "
-                                  f"FROM {IngredientDB.table_name.value} "
-                                  f"WHERE {IngredientDB.name.value} == '{name}'"
-                                  ).fetchall()
+        sql_command  = f'SELECT '
+        sql_command += f', '.join([enum.value[0] for enum in IngredientDBCol][1:])
+        sql_command += f' FROM {IngredientDB.table_name.value}'
+        sql_command += f" WHERE {IngredientDBCol.name.value[0]} == '{name}'"
+
+        results = self.cursor.execute(sql_command).fetchall()
+
         if results:
             return Ingredient(name, *results[0])
         else:
@@ -191,7 +226,31 @@ if __name__ == '__main__':
               fat=1.0,
               satisfied_fat=1.0,
               fiber=1.0,
-              salt=1.0)
+              salt=1.0,
+              omega3_dha=0.0,
+              omega3_epa=1.0,
+              vitamin_a=0.0,
+              vitamin_d=0.0,
+              vitamin_e=0.0,
+              vitamin_k=0.0,
+              vitamin_b1=0.0,
+              vitamin_b2=0.0,
+              vitamin_b3=0.0,
+              vitamin_b5=0.0,
+              vitamin_b6=0.0,
+              vitamin_b7=0.0,
+              vitamin_b9=0.0,
+              vitamin_b12=0.0,
+              vitamin_c=0.0,
+              calcium=0.0,
+              chromium=0.0,
+              iodine=0.0,
+              potassium=0.0,
+              iron=0.0,
+              magnesium=0.0,
+              zinc=0.0,
+              caffeine=0.0,
+              creatine=0.0)
 
     ingredient = db.get_ingredient_by_name('Nacho')
     print(repr(ingredient))

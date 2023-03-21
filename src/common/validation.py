@@ -18,8 +18,19 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 import inspect
 
+from typing import Any
+
 from src.common.Exceptions import ValidationError
 from src.common.types      import NonEmptyStr, NonNegativeFloat, NonNegativeInt
+
+
+def validate_type(key            : str,
+                  purported_type : Any,
+                  expected_type  : type
+                  ) -> None:
+    """Validate the type of value."""
+    if not isinstance(purported_type, expected_type):
+        raise ValidationError(f"Expected {expected_type}, but type of '{key}' was {type(purported_type)}")
 
 
 def validate_str(key           : str,
@@ -27,11 +38,8 @@ def validate_str(key           : str,
                  empty_allowed : bool
                  ) -> None:
     """Validate a value is a string."""
-    if not isinstance(key, str):
-        raise ValidationError(f"Expected key of type {str}, was of type {type(value)}")
-
-    if not isinstance(value, str):
-        raise ValidationError(f"Expected value of type {str}, was of type {type(value)}")
+    validate_type('key', key, str)
+    validate_type(key,   value, str)
 
     if not empty_allowed and value == '':
         raise ValidationError(f"Expected string '{key}' to contain chars but it was empty.")
@@ -43,12 +51,10 @@ def validate_int(key              : str,
                  ) -> None:
     """Validate a value is an integer."""
     validate_str('key', key, empty_allowed=False)
-
-    if not isinstance(value, int):
-        raise ValidationError(f"Expected {int}, was {type(value)}")
+    validate_type(key, value, int)
 
     if not negative_allowed and value < 0:
-        raise ValidationError(f"Expected a positive value but value was {value}")
+        raise ValidationError(f"Expected a positive value for '{key}', but value was {value}")
 
 
 def validate_float(key              : str,
@@ -57,12 +63,10 @@ def validate_float(key              : str,
                    ) -> None:
     """Validate a value is a float."""
     validate_str('key', key, empty_allowed=False)
-
-    if not isinstance(value, float):
-        raise ValidationError(f"Expected {float}, type of '{key}' was {type(value)}")
+    validate_type(key, value, float)
 
     if not negative_allowed and value < 0.0:
-        raise ValidationError(f"Expected a positive value but value was {value}")
+        raise ValidationError(f"Expected a positive value for '{key}', but value was {value}")
 
 
 def validate_params(func   : callable,

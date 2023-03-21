@@ -20,7 +20,7 @@ import inspect
 
 from typing import Any
 
-from src.common.Exceptions import ValidationError
+from src.common.exceptions import ValidationError
 from src.common.types      import NonEmptyStr, NonNegativeFloat, NonNegativeInt
 
 

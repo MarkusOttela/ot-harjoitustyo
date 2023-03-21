@@ -18,7 +18,7 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 import unittest
 
-from src.common.Exceptions import ValidationError
+from src.common.exceptions import ValidationError
 from src.common.types      import NonEmptyStr, NonNegativeInt, NonNegativeFloat
 from src.common.validation import (validate_bool, validate_float, validate_int,
                                    validate_params, validate_str, validate_type)

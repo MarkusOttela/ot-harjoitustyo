@@ -21,7 +21,7 @@ import time
 
 from enum import Enum
 
-from src.common.Exceptions import IngredientNotFound
+from src.common.exceptions import IngredientNotFound
 from src.common.statics    import DatabaseFileNames
 from src.common.types      import NonEmptyStr, NonNegativeFloat, DatabaseTypes
 from src.common.validation import validate_params

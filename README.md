@@ -45,7 +45,7 @@ poetry install --without dev
 
 ```
 cd $HOME/calorinator/
-poetry run python3 calorienator.py
+poetry run python3 calorinator.py
 ```
 
 

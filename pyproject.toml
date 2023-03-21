@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "Calorienator"
+name = "Calorinator"
 version = "0.23.1"
 description = "Diet Tracker"
 authors = ["Markus Ottela <markus.ottela@helsinki.fi>"]

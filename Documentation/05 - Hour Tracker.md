@@ -6,7 +6,7 @@ Hour Tracker
   * 15..18 Documentation (Initial Functional specification)
   * 18..21 Program logic (Initial GUI window, Ingredient SQL-db)
 * Tuesday
-  * 9..18 GUI design, Program logic
+  * 9..19 GUI design, Program logic, Documentation
 * Wednesday
 * Thursday
 * Friday

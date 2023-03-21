@@ -19,7 +19,7 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.gui.gui_menu                 import GUIMenu
-from src.gui.screens.callback_classes import Button
+from src.gui.screens.callback_classes import Button, UserInput
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
@@ -28,12 +28,24 @@ if typing.TYPE_CHECKING:
 def add_ingredient_menu(gui: 'GUI') -> None:
     """Render the `add ingredient` menu."""
 
-    menu = GUIMenu(gui, 'Calorinator')
+    while True:
+        menu = GUIMenu(gui, 'Calorinator')
 
-    return_button = Button(menu, closes_menu=True)
+        # Input blocks
+        name_field = UserInput()
 
-    menu.menu.add.button('Return', action=return_button.set_pressed)
-    menu.start()
+        return_button = Button(menu, closes_menu=True)
+        done_button   = Button(menu, closes_menu=True)
 
-    if return_button.pressed:
-        return
+        menu.menu.add.text_input(f'Name: ', onchange=name_field.set_value)
+
+        menu.menu.add.button('Done',   action=done_button.set_pressed)
+        menu.menu.add.button('Return', action=return_button.set_pressed)
+        menu.start()
+
+        if return_button.pressed:
+            return
+
+        if done_button.pressed:
+            print(name_field.value)
+            return

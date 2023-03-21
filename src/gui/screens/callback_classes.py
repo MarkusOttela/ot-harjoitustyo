@@ -18,6 +18,8 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from typing import Optional
+
 if typing.TYPE_CHECKING:
     from src.gui.gui_menu import GUIMenu
 
@@ -34,3 +36,12 @@ class Button:
         self.pressed = True
         if self.closes_menu:
             self.menu.menu.disable()
+
+class UserInput:
+
+    def __init__(self) -> None:
+        self.value:   Optional[str] = None
+        self.default: Optional[str] = None
+
+    def set_value(self, value: str) -> None:
+        self.value = value

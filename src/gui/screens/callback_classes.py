@@ -18,31 +18,19 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.gui.gui_menu                 import GUIMenu
-from src.gui.screens.add_ingredient   import add_ingredient_menu
-from src.gui.screens.callback_classes import Button
-
 if typing.TYPE_CHECKING:
-    from src.gui.gui import GUI
+    from src.gui.gui_menu import GUIMenu
 
 
-def main_menu(gui: 'GUI') -> None:
-    """Render the main menu."""
+class Button:
+    """Button callback-object."""
 
-    while True:
-        menu = GUIMenu(gui, 'Calorinator')
+    def __init__(self, menu: 'GUIMenu', closes_menu: bool = False) -> None:
+        self.menu        = menu
+        self.closes_menu = closes_menu
+        self.pressed     = False
 
-        add_ingredient_button = Button(menu, closes_menu=True)
-        exit_button           = Button(menu, closes_menu=True)
-
-        menu.menu.add.button('Add Ingredient', action=add_ingredient_button.set_pressed)
-        menu.menu.add.button('Exit',           action=exit_button.set_pressed)
-
-        menu.start()
-
-        if add_ingredient_button.pressed:
-            add_ingredient_menu(gui)
-            continue
-
-        if exit_button.pressed:
-            exit()
+    def set_pressed(self) -> None:
+        self.pressed = True
+        if self.closes_menu:
+            self.menu.menu.disable()

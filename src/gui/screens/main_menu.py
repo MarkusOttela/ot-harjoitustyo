@@ -24,10 +24,27 @@ if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
 
 
+class Button:
+    """Button callback-object."""
+
+    def __init__(self, menu: GUIMenu) -> None:
+        self.menu    = menu
+        self.pressed = False
+
+    def set_pressed(self) -> None:
+        self.pressed = True
+        self.menu.menu.disable()
+
+
 def main_menu(gui: 'GUI') -> None:
     """Render the main menu."""
 
     menu = GUIMenu(gui, 'Calorinator')
 
-    menu.menu.add.button('Exit', action=exit)
+    exit_button = Button(menu)
+
+    menu.menu.add.button('Exit', action=exit_button.set_pressed)
     menu.start()
+
+    if exit_button.pressed:
+        exit()

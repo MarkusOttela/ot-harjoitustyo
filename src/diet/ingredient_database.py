@@ -160,7 +160,7 @@ class IngredientDatabase:
                caffeine  : NonNegativeFloat = 0.0,
                creatine  : NonNegativeFloat = 0.0,
                ) -> None:
-        """Insert into database."""
+        """Insert Ingredient into the database."""
         validate_params(self.insert, locals())
 
         sql_command = f'INSERT INTO {IngredientDB.table_name.value} ('
@@ -184,7 +184,7 @@ class IngredientDatabase:
                        name         : NonEmptyStr,
                        manufacturer : str = ''
                        ) -> Ingredient:
-        """Get ingredient from database by name."""
+        """Get Ingredient from database by name (and manufacturer)."""
         validate_params(self.get_ingredient, locals())
 
         sql_command  = f'SELECT '
@@ -225,31 +225,7 @@ if __name__ == '__main__':
               fat=1.0,
               satisfied_fat=1.0,
               fiber=1.0,
-              salt=1.0,
-              omega3_dha=0.0,
-              omega3_epa=1.0,
-              vitamin_a=0.0,
-              vitamin_d=0.0,
-              vitamin_e=0.0,
-              vitamin_k=0.0,
-              vitamin_b1=0.0,
-              vitamin_b2=0.0,
-              vitamin_b3=0.0,
-              vitamin_b5=0.0,
-              vitamin_b6=0.0,
-              vitamin_b7=0.0,
-              vitamin_b9=0.0,
-              vitamin_b12=0.0,
-              vitamin_c=0.0,
-              calcium=0.0,
-              chromium=0.0,
-              iodine=0.0,
-              potassium=0.0,
-              iron=0.0,
-              magnesium=0.0,
-              zinc=0.0,
-              caffeine=0.0,
-              creatine=0.0)
+              salt=1.0)
 
     ingredient = db.get_ingredient('Nacho', manufacturer='Atria')
     print(repr(ingredient))

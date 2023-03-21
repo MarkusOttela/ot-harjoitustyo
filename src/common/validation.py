@@ -69,6 +69,14 @@ def validate_float(key              : str,
         raise ValidationError(f"Expected a positive value for '{key}', but value was {value}")
 
 
+def validate_bool(key   : str,
+                  value : bool,
+                  ) -> None:
+    """Validate a value is a boolean."""
+    validate_str('key', key, empty_allowed=False)
+    validate_type(key, value, bool)
+
+
 def validate_params(func   : callable,
                     locals_: dict
                     ) -> None:
@@ -93,3 +101,6 @@ def validate_params(func   : callable,
 
         if expected_type in [float, NonNegativeFloat]:
             validate_float(arg_name, arg_value, negative_allowed=expected_type != NonNegativeFloat)
+
+        if expected_type == bool:
+            validate_bool(arg_name, arg_value)

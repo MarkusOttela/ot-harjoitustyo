@@ -16,62 +16,61 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from enum   import Enum
 from typing import Any
 
 from src.common.types      import NonEmptyStr, NonNegativeFloat
 from src.common.validation import validate_params
 
 
-class IngredientMetadata(Enum):
-    """Ingredient metadata."""
+ingredient_metadata = {
+
     # General information
-    name         = ('name',         'Name',            NonEmptyStr)
-    manufacturer = ('manufacturer', 'Manufacturer',    str)
+    'name'         : ('Name',            NonEmptyStr),
+    'manufacturer' : ('Manufacturer',    str),
 
     # Macronutrients
-    kcal          = ('kcal',          'KCal',          NonNegativeFloat)
-    carbohydrates = ('carbohydrates', 'Carbohydrates', NonNegativeFloat)
-    protein       = ('protein',       'Protein',       NonNegativeFloat)
-    fat           = ('fat',           'Fat',           NonNegativeFloat)
-    satisfied_fat = ('satisfied_fat', 'Satisfied Fat', NonNegativeFloat)
-    fiber         = ('fiber',         'Fiber',         NonNegativeFloat)
-    salt          = ('salt',          'Salt',          NonNegativeFloat)
+    'kcal'          : ('KCal',          NonNegativeFloat),
+    'carbohydrates' : ('Carbohydrates', NonNegativeFloat),
+    'protein'       : ('Protein',       NonNegativeFloat),
+    'fat'           : ('Fat',           NonNegativeFloat),
+    'satisfied_fat' : ('Satisfied Fat', NonNegativeFloat),
+    'fiber'         : ('Fiber',         NonNegativeFloat),
+    'salt'          : ('Salt',          NonNegativeFloat),
 
     # Micronutrients
 
     # Omega-3 fatty acids
-    omega3_dha = ('omega3_dha', 'Omega3 DHA', NonNegativeFloat)
-    omega3_epa = ('omega3_epa', 'Omega3 EPA', NonNegativeFloat)
+    'omega3_dha' : ('omega3_dha', 'Omega3 DHA', NonNegativeFloat),
+    'omega3_epa' : ('omega3_epa', 'Omega3 EPA', NonNegativeFloat),
 
     # Fat soluble vitamins
-    vitamin_a = ('vitamin_a', 'Vitamin A', NonNegativeFloat)
-    vitamin_d = ('vitamin_d', 'Vitamin D', NonNegativeFloat)
-    vitamin_e = ('vitamin_e', 'Vitamin E', NonNegativeFloat)
-    vitamin_k = ('vitamin_k', 'Vitamin K', NonNegativeFloat)
+    'vitamin_a' : ('Vitamin A', NonNegativeFloat),
+    'vitamin_d' : ('Vitamin D', NonNegativeFloat),
+    'vitamin_e' : ('Vitamin E', NonNegativeFloat),
+    'vitamin_k' : ('Vitamin K', NonNegativeFloat),
 
     # Water soluble vitamins
-    vitamin_b1  = ('vitamin_b1',  'Bitamin B1',  NonNegativeFloat)
-    vitamin_b2  = ('vitamin_b2',  'Bitamin B2',  NonNegativeFloat)
-    vitamin_b3  = ('vitamin_b3',  'Bitamin B3',  NonNegativeFloat)
-    vitamin_b5  = ('vitamin_b5',  'Bitamin B5',  NonNegativeFloat)
-    vitamin_b6  = ('vitamin_b6',  'Bitamin B6',  NonNegativeFloat)
-    vitamin_b7  = ('vitamin_b7',  'Bitamin B7',  NonNegativeFloat)
-    vitamin_b9  = ('vitamin_b9',  'Bitamin B9',  NonNegativeFloat)
-    vitamin_b12 = ('vitamin_b12', 'Bitamin B12', NonNegativeFloat)
-    vitamin_c   = ('vitamin_c',   'Bitamin C',  NonNegativeFloat)
+    'vitamin_b1'  : ('Bitamin B1',  NonNegativeFloat),
+    'vitamin_b2'  : ('Bitamin B2',  NonNegativeFloat),
+    'vitamin_b3'  : ('Bitamin B3',  NonNegativeFloat),
+    'vitamin_b5'  : ('Bitamin B5',  NonNegativeFloat),
+    'vitamin_b6'  : ('Bitamin B6',  NonNegativeFloat),
+    'vitamin_b7'  : ('Bitamin B7',  NonNegativeFloat),
+    'vitamin_b9'  : ('Bitamin B9',  NonNegativeFloat),
+    'vitamin_b12' : ('Bitamin B12', NonNegativeFloat),
+    'vitamin_c'   : ('Bitamin C',   NonNegativeFloat),
 
     # Minerals etc.
-    calcium   = ('calcium',   'Calcium',   NonNegativeFloat)
-    chromium  = ('chromium',  'Chromium',  NonNegativeFloat)
-    iodine    = ('iodine',    'Iodine',    NonNegativeFloat)
-    potassium = ('potassium', 'Potassium', NonNegativeFloat)
-    iron      = ('iron',      'Iron',      NonNegativeFloat)
-    magnesium = ('magnesium', 'Magnesium', NonNegativeFloat)
-    zinc      = ('zinc',      'Zinc',      NonNegativeFloat)
-    caffeine  = ('caffeine',  'Caffeine',  NonNegativeFloat)
-    creatine  = ('creatine',  'Creatine',  NonNegativeFloat)
-
+    'calcium'   : ('Calcium',   NonNegativeFloat),
+    'chromium'  : ('Chromium',  NonNegativeFloat),
+    'iodine'    : ('Iodine',    NonNegativeFloat),
+    'potassium' : ('Potassium', NonNegativeFloat),
+    'iron'      : ('Iron',      NonNegativeFloat),
+    'magnesium' : ('Magnesium', NonNegativeFloat),
+    'zinc'      : ('Zinc',      NonNegativeFloat),
+    'caffeine'  : ('Caffeine',  NonNegativeFloat),
+    'creatine'  : ('Creatine',  NonNegativeFloat),
+}
 
 class Ingredient:
     """\

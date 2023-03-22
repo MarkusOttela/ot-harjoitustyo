@@ -17,7 +17,6 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 import sqlite3
-import time
 
 from enum import Enum
 
@@ -26,7 +25,7 @@ from src.common.statics    import DatabaseFileNames, Directories
 from src.common.types      import NonEmptyStr, NonNegativeFloat, DatabaseTypes
 from src.common.utils      import ensure_dir
 from src.common.validation import validate_params
-from src.diet.ingredient   import Ingredient, IngredientMetadata
+from src.diet.ingredient   import Ingredient, ingredient_metadata
 
 
 column_type_dict = {
@@ -58,10 +57,10 @@ class IngredientDatabase:
         """Create the database table procedurally from Enum fields."""
         sql_command = f'CREATE TABLE IF NOT EXISTS {IngredientDB.table_name.value} ('
 
-        for enum in IngredientMetadata:
-            tup          = enum.value
-            column_name  = tup[0]
-            sql_command += f"{column_name} {column_type_dict[tup[2]]}, "
+        for key in ingredient_metadata.keys():
+            tup          = ingredient_metadata[key]
+            column_name  = key
+            sql_command += f"{column_name} {column_type_dict[tup[1]]}, "
 
         sql_command  = sql_command[:-2]  # Remove trailing comma and space
         sql_command += ')'
@@ -71,13 +70,13 @@ class IngredientDatabase:
     def insert(self, ingredient: Ingredient) -> None:
         """Insert Ingredient into the database."""
 
-        ingredient_keys   = [enum.value[0]            for enum in IngredientMetadata]
-        ingredient_values = [getattr(ingredient, key) for key  in ingredient_keys]
+        ingredient_keys   = list(ingredient_metadata.keys())
+        ingredient_values = [getattr(ingredient, key) for key in ingredient_keys]
 
         sql_command = f'INSERT INTO {IngredientDB.table_name.value} ('
         sql_command += ', '.join(ingredient_keys)
         sql_command += ') VALUES ('
-        sql_command += ', '.join(['?' for _ in range(len(IngredientMetadata))])
+        sql_command += ', '.join(['?' for _ in range(len(ingredient_keys))])
         sql_command += ')'
 
         self.cursor.execute(sql_command, ingredient_values)
@@ -91,12 +90,12 @@ class IngredientDatabase:
         validate_params(self.get_ingredient, locals())
 
         sql_command  = f'SELECT '
-        sql_command += f', '.join([enum.value[0] for enum in IngredientMetadata][1:])
+        sql_command += f', '.join(list(ingredient_metadata.keys())[1:])
         sql_command += f' FROM {IngredientDB.table_name.value}'
-        sql_command += f" WHERE {IngredientMetadata.name.value[0]} == '{name}'"
+        sql_command += f" WHERE {ingredient_metadata['name'][0]} == '{name}'"
 
         if manufacturer:
-            manuf_col    = IngredientMetadata.manufacturer.value[0]
+            manuf_col    = ingredient_metadata['manufacturer'].value[0]
             sql_command += f" AND {manuf_col} == '{manufacturer}'"
 
         results = self.cursor.execute(sql_command).fetchall()
@@ -106,29 +105,3 @@ class IngredientDatabase:
         else:
             manuf_info = f" by '{manufacturer}'" if manufacturer else ''
             raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
-
-
-if __name__ == '__main__':
-
-    # Testing code
-
-    try:
-        import os
-        os.remove('ingredient_database.sqlite3')
-        time.sleep(0.1)
-    except FileNotFoundError:
-        pass
-
-    db = IngredientDatabase()
-    db.insert(name='Nacho',
-              manufacturer='Atria',
-              kcal=100.1,
-              carbohydrates=1.0,
-              protein=1.0,
-              fat=1.0,
-              satisfied_fat=1.0,
-              fiber=1.0,
-              salt=1.0)
-
-    ingredient_ = db.get_ingredient('Nacho', manufacturer='Atria')
-    print(repr(ingredient_))

@@ -131,7 +131,7 @@ class Ingredient:
 
         Macronutrients are given in grams / 100g.
         """
-        validate_params(self.__init__, locals())
+        validate_params(self.__init__, locals())  # type: ignore
 
         self.name          = name
         self.manufacturer  = manufacturer

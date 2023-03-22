@@ -18,6 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from typing import Optional
+
 from pygame_menu import BaseImage, Menu, Theme
 
 from src.common.statics import AsssetFiles, ColorScheme, Literals
@@ -31,8 +33,8 @@ class GUIMenu:
     def __init__(self,
                  gui        : 'GUI',
                  menu_title : str,
-                 columns    : int = 1,
-                 rows       : int = None,
+                 columns    : int           = 1,
+                 rows       : Optional[int] = None,
                  ) -> None:
         """Create new GUIMenu with pygame-menu."""
         self.gui = gui

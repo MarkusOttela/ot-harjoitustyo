@@ -18,7 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import sqlite3
 
-from enum import Enum
+from enum   import Enum
+from typing import Any
 
 from src.common.exceptions import IngredientNotFound
 from src.common.statics    import DatabaseFileNames, Directories
@@ -28,7 +29,7 @@ from src.common.validation import validate_params
 from src.diet.ingredient   import Ingredient, ingredient_metadata
 
 
-column_type_dict = {
+column_type_dict : dict[Any, str] = {
     str              : DatabaseTypes.TEXT.value,
     NonEmptyStr      : DatabaseTypes.TEXT.value,
     NonNegativeFloat : DatabaseTypes.REAL.value,
@@ -95,7 +96,7 @@ class IngredientDatabase:
         sql_command += f" WHERE {ingredient_metadata['name'][0]} == '{name}'"
 
         if manufacturer:
-            manuf_col    = ingredient_metadata['manufacturer'].value[0]
+            manuf_col    = 'manufacturer'
             sql_command += f" AND {manuf_col} == '{manufacturer}'"
 
         results = self.cursor.execute(sql_command).fetchall()

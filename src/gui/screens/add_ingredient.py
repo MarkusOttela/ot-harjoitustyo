@@ -18,9 +18,9 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from typing import Any
+from typing import Any, Type
 
-from src.common.conversion import str_to_float
+from src.common.conversion import str_to_float, str_to_int
 from src.common.exceptions import ConversionError, ValidationError
 from src.common.statics    import Color, ColorScheme
 from src.common.types      import NonNegativeFloat, NonEmptyStr, NonNegativeInt
@@ -40,24 +40,24 @@ def add_ingredient_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None
     """Render the `add ingredient` menu."""
 
     keys        = list(ingredient_metadata.keys())
-    fields      = [ingredient_metadata[k][0] for k in keys]
-    field_types = [ingredient_metadata[k][1] for k in keys]
+    fields      = [ingredient_metadata[k][0] for k in keys]  # type: list[Any]
+    field_types = [ingredient_metadata[k][1] for k in keys]  # type: list[Any]
 
     failed_conversions : dict[str, None] = {}
 
     string_inputs = {k: StringInput() for k in keys}
 
-    # Testing code TODO: Remove
-    debug = False
-    if debug:
-        string_inputs['name'].value = 'Mansikkahillo'
-        string_inputs['manufacturer'].value = 'Atria'
-        attr_list = ['kcal', 'carbohydrates', 'protein', 'fat', 'satisfied_fat', 'fiber', 'salt', 'omega3_dha',
-                     'omega3_epa', 'vitamin_a', 'vitamin_d', 'vitamin_e', 'vitamin_k', 'vitamin_b1', 'vitamin_b2',
-                     'vitamin_b3', 'vitamin_b5', 'vitamin_b6', 'vitamin_b7', 'vitamin_b9', 'vitamin_b12', 'vitamin_c',
-                     'calcium', 'chromium', 'iodine', 'potassium', 'iron', 'magnesium', 'zinc', 'caffeine', 'creatine']
-        for attr in attr_list:
-            string_inputs[attr].value = 1.0
+    # # Testing code TODO: Remove
+    # debug = False
+    # if debug:
+    #     string_inputs['name'].value = 'Mansikkahillo'
+    #     string_inputs['manufacturer'].value = 'Atria'
+    #     attr_list = ['kcal', 'carbohydrates', 'protein', 'fat', 'satisfied_fat', 'fiber', 'salt', 'omega3_dha',
+    #                  'omega3_epa', 'vitamin_a', 'vitamin_d', 'vitamin_e', 'vitamin_k', 'vitamin_b1', 'vitamin_b2',
+    #                  'vitamin_b3', 'vitamin_b5', 'vitamin_b6', 'vitamin_b7', 'vitamin_b9', 'vitamin_b12', 'vitamin_c',
+    #                  'calcium', 'chromium', 'iodine', 'potassium', 'iron', 'magnesium', 'zinc', 'caffeine', 'creatine']
+    #     for attr in attr_list:
+    #         string_inputs[attr].value = 1.0
 
     while True:
         menu = GUIMenu(gui, 'Add ingredient', columns=3, rows=18)
@@ -110,8 +110,10 @@ def convert_input_fields(string_inputs : dict[str, StringInput],
         try:
             string_value = string_inputs[key].value
 
+            converted_value : Any = None
+
             if field_type in [int, NonNegativeInt]:
-                converted_value = str_to_float(name, string_value)
+                converted_value = str_to_int(name, string_value)
 
             elif field_type in [float, NonNegativeFloat]:
                 converted_value = str_to_float(name, string_value)

@@ -24,6 +24,10 @@ from src.common.exceptions import ValidationError
 from src.common.types      import NonEmptyStr, NonNegativeFloat, NonNegativeInt
 
 
+integers = list(map(str, range(0, 10)))
+floats   = integers + ['.']
+
+
 def validate_type(key            : str,
                   purported_type : Any,
                   expected_type  : type

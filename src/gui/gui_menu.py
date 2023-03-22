@@ -31,10 +31,11 @@ if typing.TYPE_CHECKING:
 class GUIMenu:
 
     def __init__(self,
-                 gui        : 'GUI',
-                 menu_title : str,
-                 columns    : int           = 1,
-                 rows       : Optional[int] = None,
+                 gui              : 'GUI',
+                 menu_title       : str,
+                 columns          : int           = 1,
+                 rows             : Optional[int] = None,
+                 column_max_width : Optional[int] = None
                  ) -> None:
         """Create new GUIMenu with pygame-menu."""
         self.gui = gui
@@ -47,7 +48,7 @@ class GUIMenu:
         resolution_x = Literals.RESOLUTION.value[0]
         resolution_y = Literals.RESOLUTION.value[1]
         self.menu = Menu(width=resolution_x, height=resolution_y,
-                         title=menu_title, theme=self.theme, columns=columns, rows=rows)
+                         title=menu_title, theme=self.theme, columns=columns, rows=rows, column_max_width=column_max_width)
 
     @staticmethod
     def get_theme() -> Theme:

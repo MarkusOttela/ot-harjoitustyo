@@ -25,40 +25,40 @@ from src.common.validation import validate_params
 ingredient_metadata = {
 
     # General information
-    'name'         : ('Name',            NonEmptyStr),
-    'manufacturer' : ('Manufacturer',    str),
+    'name'         : ('Name',   NonEmptyStr),
+    'manufacturer' : ('Manuf.', str),
 
     # Macronutrients
-    'kcal'          : ('KCal',          NonNegativeFloat),
-    'carbohydrates' : ('Carbohydrates', NonNegativeFloat),
-    'protein'       : ('Protein',       NonNegativeFloat),
-    'fat'           : ('Fat',           NonNegativeFloat),
-    'satisfied_fat' : ('Satisfied Fat', NonNegativeFloat),
-    'fiber'         : ('Fiber',         NonNegativeFloat),
-    'salt'          : ('Salt',          NonNegativeFloat),
+    'kcal'          : ('KCal',     NonNegativeFloat),
+    'carbohydrates' : ('Carbs',    NonNegativeFloat),
+    'protein'       : ('Protein',  NonNegativeFloat),
+    'fat'           : ('Fat',      NonNegativeFloat),
+    'satisfied_fat' : ('Sat. Fat', NonNegativeFloat),
+    'fiber'         : ('Fiber',    NonNegativeFloat),
+    'salt'          : ('Salt',     NonNegativeFloat),
 
     # Micronutrients
 
     # Omega-3 fatty acids
-    'omega3_dha' : ('Omega3 DHA', NonNegativeFloat),
-    'omega3_epa' : ('Omega3 EPA', NonNegativeFloat),
+    'omega3_dha' : ('Ω3 DHA', NonNegativeFloat),
+    'omega3_epa' : ('Ω3 EPA', NonNegativeFloat),
 
     # Fat soluble vitamins
-    'vitamin_a' : ('Vitamin A', NonNegativeFloat),
-    'vitamin_d' : ('Vitamin D', NonNegativeFloat),
-    'vitamin_e' : ('Vitamin E', NonNegativeFloat),
-    'vitamin_k' : ('Vitamin K', NonNegativeFloat),
+    'vitamin_a' : ('Vit. A', NonNegativeFloat),
+    'vitamin_d' : ('Vit. D', NonNegativeFloat),
+    'vitamin_e' : ('Vit. E', NonNegativeFloat),
+    'vitamin_k' : ('Vit. K', NonNegativeFloat),
 
     # Water soluble vitamins
-    'vitamin_b1'  : ('Bitamin B1',  NonNegativeFloat),
-    'vitamin_b2'  : ('Bitamin B2',  NonNegativeFloat),
-    'vitamin_b3'  : ('Bitamin B3',  NonNegativeFloat),
-    'vitamin_b5'  : ('Bitamin B5',  NonNegativeFloat),
-    'vitamin_b6'  : ('Bitamin B6',  NonNegativeFloat),
-    'vitamin_b7'  : ('Bitamin B7',  NonNegativeFloat),
-    'vitamin_b9'  : ('Bitamin B9',  NonNegativeFloat),
-    'vitamin_b12' : ('Bitamin B12', NonNegativeFloat),
-    'vitamin_c'   : ('Bitamin C',   NonNegativeFloat),
+    'vitamin_b1'  : ('Vit. B1',  NonNegativeFloat),
+    'vitamin_b2'  : ('Vit. B2',  NonNegativeFloat),
+    'vitamin_b3'  : ('Vit. B3',  NonNegativeFloat),
+    'vitamin_b5'  : ('Vit. B5',  NonNegativeFloat),
+    'vitamin_b6'  : ('Vit. B6',  NonNegativeFloat),
+    'vitamin_b7'  : ('Vit. B7',  NonNegativeFloat),
+    'vitamin_b9'  : ('Vit. B9',  NonNegativeFloat),
+    'vitamin_b12' : ('Vit. B12', NonNegativeFloat),
+    'vitamin_c'   : ('Vit. C',   NonNegativeFloat),
 
     # Minerals etc.
     'calcium'   : ('Calcium',   NonNegativeFloat),

@@ -18,13 +18,13 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from typing import Any, Type
+from typing import Any
 
 from src.common.conversion import str_to_float, str_to_int
 from src.common.exceptions import ConversionError, ValidationError
 from src.common.statics    import Color, ColorScheme
 from src.common.types      import NonNegativeFloat, NonEmptyStr, NonNegativeInt
-from src.common.validation import validate_str
+from src.common.validation import floats, validate_str
 
 from src.diet.ingredient import Ingredient, ingredient_metadata
 
@@ -60,17 +60,20 @@ def add_ingredient_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None
             string_inputs[attr].value = '1.0'
 
     while True:
-        menu = GUIMenu(gui, 'Add ingredient', columns=3, rows=18)
+        menu = GUIMenu(gui, 'Add ingredient', columns=3, rows=18, column_max_width=532)
 
         for i, k in enumerate(keys):
 
             if i in [2, 3, 9, 11, 15, 23, 24]:
                 menu.menu.add.label('\n', font_size=5)  # Spacing
 
-            font_color = Color.RED.value if k in failed_conversions else ColorScheme.FONT_COLOR.value
+            valid_chars = None if ingredient_metadata[k][1] in [str, NonEmptyStr] else floats
+            font_color  = Color.RED.value if k in failed_conversions else ColorScheme.FONT_COLOR.value
             menu.menu.add.text_input(f'{fields[i]}: ',
                                      onchange=string_inputs[k].set_value,
                                      default=string_inputs[k].value,
+                                     valid_chars=valid_chars,
+                                     maxchar=19,
                                      font_color=font_color)
 
         failed_conversions.clear()
@@ -105,12 +108,11 @@ def convert_input_fields(string_inputs : dict[str, StringInput],
     """Convert input fields of `Add Ingredient` menu to correct data types."""
     converted_values   : dict[str, Any ] = {}
     failed_conversions : dict[str, None] = {}
+    converted_value    : Any
 
     for key, name, field_type in zip(keys, fields, field_types):
         try:
             string_value = string_inputs[key].value
-
-            converted_value : Any = None
 
             if field_type in [int, NonNegativeInt]:
                 converted_value = str_to_int(name, string_value)

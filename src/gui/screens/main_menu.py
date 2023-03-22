@@ -28,9 +28,10 @@ if typing.TYPE_CHECKING:
     from src.database.ingredient_database import IngredientDatabase
 
 
-def main_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
+def main_menu(gui           : 'GUI',
+              ingredient_db : 'IngredientDatabase'
+              ) -> None:
     """Render the Main Menu."""
-
     while True:
         menu = GUIMenu(gui, Literals.PROGRAM_NAME.value)
 

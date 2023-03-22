@@ -24,9 +24,9 @@ if TYPE_CHECKING:
     from src.gui.gui import GUI
 
 
-def show_message(gui:     'GUI',
-                 title:   str,
-                 message: str,
+def show_message(gui     : 'GUI',
+                 title   : str,
+                 message : str,
                  ) -> None:
     """Display a message to the user and wait for them to dismiss it."""
     menu = GUIMenu(gui, title)

@@ -28,7 +28,9 @@ if typing.TYPE_CHECKING:
     from src.database.ingredient_database import IngredientDatabase
 
 
-def manage_ingredients_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
+def manage_ingredients_menu(gui           : 'GUI',
+                            ingredient_db : 'IngredientDatabase'
+                            ) -> None:
     """Render the Manage Ingredient sub menu."""
     while True:
         menu = GUIMenu(gui, 'Manage Ingredients')

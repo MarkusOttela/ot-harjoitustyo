@@ -37,7 +37,9 @@ if typing.TYPE_CHECKING:
     from src.database.ingredient_database import IngredientDatabase
 
 
-def add_ingredient_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
+def add_ingredient_menu(gui           : 'GUI',
+                        ingredient_db : 'IngredientDatabase'
+                        ) -> None:
     """Render the `Add Ingredient` menu."""
     title       = 'Add Ingredient'
     keys        = list(ingredient_metadata.keys())

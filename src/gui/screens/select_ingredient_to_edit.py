@@ -28,7 +28,9 @@ if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
 
 
-def select_ingredient_to_edit(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
+def select_ingredient_to_edit(gui           : 'GUI',
+                              ingredient_db : 'IngredientDatabase'
+                              ) -> None:
     """Render the `Select Ingredient to Edit` menu."""
     title = 'Select Ingredient to Edit'
     while True:

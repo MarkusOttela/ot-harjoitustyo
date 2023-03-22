@@ -79,15 +79,15 @@ The program supports the user in maintaining their diet by
 
 3. The user can create a mealprep recipe that use one or more ingredients
    * The user can create a dish (an instance of the mealprep recipe by defining ingredients and their grams)
-       * The program will calculate averate nutritional values for each ingredient
-   * The user can create meals where the mealprep dish (usually sause) is paired with 
+       * The program will calculate average nutritional values for each ingredient
+   * The user can create meals where the mealprep dish (usually sauce) is paired with 
        * Common accompaniments (define grams)
        * Optionally, custom one-time accompaniments (define ingredient and grams)
 
 
 **Automatic services**
   * The system prompts the user to enter their daily morning weight
-  * The system prompts the user to enter skinfold and circumference information periodically (weekly or monthly)
+  * The system prompts the user to enter skin fold and circumference information periodically (weekly or monthly)
 
 
 **Statistics**

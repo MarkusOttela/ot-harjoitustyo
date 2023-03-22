@@ -55,3 +55,7 @@ def select_ingredient_to_edit(gui: 'GUI', ingredient_db: 'IngredientDatabase') -
         for name, button in buttons.items():
             if button.pressed:
                 edit_ingredient(gui, ingredient_db, ingredient_db.get_ingredient(name))
+
+                # edit_ingredient might delete the last Ingredient before it returns
+                if not ingredient_db.get_list_of_ingredients():
+                    return

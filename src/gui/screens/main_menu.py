@@ -38,9 +38,9 @@ def main_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
         edit_ingredient_button = Button(menu, closes_menu=True)
         exit_button            = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Add Ingredient', action=add_ingredient_button.set_pressed)
+        menu.menu.add.button('Add Ingredient',  action=add_ingredient_button.set_pressed)
         menu.menu.add.button('Edit Ingredient', action=edit_ingredient_button.set_pressed)
-        menu.menu.add.button('Exit',           action=exit_button.set_pressed)
+        menu.menu.add.button('Exit',            action=exit_button.set_pressed)
 
         menu.start()
 

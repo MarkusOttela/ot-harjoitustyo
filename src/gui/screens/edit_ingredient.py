@@ -75,13 +75,22 @@ def edit_ingredient(gui             : 'GUI',
 
         return_button = Button(menu, closes_menu=True)
         done_button   = Button(menu, closes_menu=True)
+        delete_button = Button(menu, closes_menu=True)
+
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
+        menu.menu.add.button('Delete', action=delete_button.set_pressed, font_color=Color.RED.value)
         menu.menu.add.button('Return', action=return_button.set_pressed)
         menu.start()
 
         if return_button.pressed:
             return
+
+        if delete_button.pressed:
+            if get_yes(gui, title, f"Delete {str(orig_ingredient)}?", 'No'):
+                ingredient_db.remove(orig_ingredient)
+                show_message(gui, title, 'Ingredient has been removed.')
+                return
 
         if done_button.pressed:
             success, value_dict   = convert_input_fields(string_inputs, keys, fields, field_types)

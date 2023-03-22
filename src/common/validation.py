@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import inspect
 
-from typing import Any
+from typing import Any, Callable
 
 from src.common.exceptions import ValidationError
 from src.common.types      import NonEmptyStr, NonNegativeFloat, NonNegativeInt
@@ -77,8 +77,8 @@ def validate_bool(key   : str,
     validate_type(key, value, bool)
 
 
-def validate_params(func   : callable,
-                    locals_: dict
+def validate_params(func   : Callable[[Any], Any],
+                    locals_: dict[Any, Any]
                     ) -> None:
     """Validate parameters given to a function."""
     arg_names   = inspect.getfullargspec(func).args

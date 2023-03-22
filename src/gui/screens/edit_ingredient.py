@@ -29,6 +29,7 @@ from src.diet.ingredient import ingredient_metadata, Ingredient
 
 from src.gui.gui_menu                 import GUIMenu
 from src.gui.screens.callback_classes import Button, StringInput
+from src.gui.screens.get_yes          import get_yes
 from src.gui.screens.show_message     import show_message
 
 if typing.TYPE_CHECKING:
@@ -36,24 +37,24 @@ if typing.TYPE_CHECKING:
     from src.database.ingredient_database import IngredientDatabase
 
 
-def edit_ingredient(gui           : 'GUI',
-                    ingredient_db : 'IngredientDatabase',
-                    ingredient    : Ingredient,
+def edit_ingredient(gui             : 'GUI',
+                    ingredient_db   : 'IngredientDatabase',
+                    orig_ingredient : Ingredient,
                     ) -> None:
     """Render the `Edit Ingredient` menu."""
-    title       = 'Edit Ingredient'
-    keys        = list(ingredient_metadata.keys())
-    fields      = [ingredient_metadata[k][0] for k in keys]  # type: list[Any]
-    field_types = [ingredient_metadata[k][1] for k in keys]  # type: list[Any]
-
-    failed_conversions : dict[str, None] = {}
-
-    string_inputs = {k: StringInput() for k in keys}  # type: dict[str, StringInput]
-
-    for k, v in string_inputs.items():
-        string_inputs[k].set_value(getattr(ingredient, k))
+    title = 'Edit Ingredient'
+    failed_conversions: dict[str, None] = {}
 
     while True:
+        keys        = list(ingredient_metadata.keys())
+        fields      = [ingredient_metadata[k][0] for k in keys]  # type: list[Any]
+        field_types = [ingredient_metadata[k][1] for k in keys]  # type: list[Any]
+
+        string_inputs = {k: StringInput() for k in keys}  # type: dict[str, StringInput]
+
+        for k, v in string_inputs.items():
+            string_inputs[k].set_value(getattr(orig_ingredient, k))
+
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
 
         for i, k in enumerate(keys):
@@ -79,17 +80,31 @@ def edit_ingredient(gui           : 'GUI',
         menu.menu.add.button('Return', action=return_button.set_pressed)
         menu.start()
 
-        if done_button.pressed:
-            success, value_dict = convert_input_fields(string_inputs, keys, fields, field_types)
+        if return_button.pressed:
+            return
 
-            if success:
-                new_ingredient = Ingredient.from_dict(value_dict)
-                ingredient_db.replace_ingredient(ingredient, new_ingredient)
-                show_message(gui, title, 'Ingredient has been updated.')
-                return
-            else:
+        if done_button.pressed:
+            success, value_dict   = convert_input_fields(string_inputs, keys, fields, field_types)
+            new_ingredient        = Ingredient.from_dict(value_dict)
+            ingredient_id_changed = new_ingredient != orig_ingredient
+
+            if not success:
                 failed_conversions = value_dict
                 continue
 
-        if return_button.pressed:
-            return
+            if not ingredient_id_changed:
+                ingredient_db.replace(new_ingredient)
+                show_message(gui, title, 'Ingredient has been updated.')
+                return
+
+            if not ingredient_db.has_ingredient(new_ingredient):
+                ingredient_db.remove(orig_ingredient)
+                ingredient_db.insert(new_ingredient)
+                show_message(gui, title, 'Ingredient has been renamed and updated.')
+                return
+
+            if get_yes(gui, title, f'Another ingredient {str(new_ingredient)} already exists. Overwrite(?)', default_str='No'):
+                ingredient_db.remove(orig_ingredient)
+                ingredient_db.replace(new_ingredient)
+                show_message(gui, title, 'Ingredient has been replaced.')
+                return

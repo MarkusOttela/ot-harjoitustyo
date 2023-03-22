@@ -97,7 +97,7 @@ class IngredientDatabase:
 
         results     = self.cursor.execute(sql_command).fetchall()
         ingredients = [Ingredient(*data) for data in results]
-        return  ingredients
+        return ingredients
 
     def get_ingredient(self,
                        name         : NonEmptyStr,
@@ -132,9 +132,7 @@ class IngredientDatabase:
         sql_command += f" WHERE {ingredient_metadata['name'][0]} == '{ingredient.name}'"
         self.cursor.execute(sql_command)
 
-        assert not self.has_ingredient(ingredient.name)  # TODO REMOVE
-
-    def replace_ingredient(self, original: Ingredient, new: Ingredient) -> None:
+    def replace(self, ingredient: Ingredient) -> None:
         """Replace ingredient in database."""
-        self.remove(original)
-        self.insert(new)
+        self.remove(ingredient)
+        self.insert(ingredient)

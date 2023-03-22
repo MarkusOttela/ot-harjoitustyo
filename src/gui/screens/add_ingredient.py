@@ -29,6 +29,7 @@ from src.diet.ingredient import Ingredient, ingredient_metadata
 
 from src.gui.gui_menu                 import GUIMenu
 from src.gui.screens.callback_classes import Button, StringInput
+from src.gui.screens.get_yes          import get_yes
 from src.gui.screens.show_message     import show_message
 
 if typing.TYPE_CHECKING:
@@ -86,16 +87,23 @@ def add_ingredient_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None
 
         menu.start()
 
+        if return_button.pressed:
+            return
+
         if done_button.pressed:
             success, value_dict = convert_input_fields(string_inputs, keys, fields, field_types)
+            new_ingredient      = Ingredient.from_dict(value_dict)
 
-            if success:
-                ingredient_db.insert(Ingredient.from_dict(value_dict))
-                show_message(gui, title, 'Ingredient has been added.')
-                return
-            else:
+            if not success:
                 failed_conversions = value_dict
                 continue
 
-        if return_button.pressed:
-            return
+            if not ingredient_db.has_ingredient(new_ingredient):
+                ingredient_db.insert(new_ingredient)
+                show_message(gui, title, 'Ingredient has been added.')
+                return
+
+            if get_yes(gui, title, f'Ingredient {str(new_ingredient)} already exists. Overwrite(?)', default_str='No'):
+                ingredient_db.replace(new_ingredient)
+                show_message(gui, title, 'Ingredient has been replaced.')
+                return

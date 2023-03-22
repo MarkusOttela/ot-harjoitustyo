@@ -44,7 +44,7 @@ def select_ingredient_to_edit(gui: 'GUI', ingredient_db: 'IngredientDatabase') -
         cancel_button = Button(menu, closes_menu=True)
 
         for ingredient in list_of_ingredients:
-            menu.menu.add.button(ingredient.name, action=buttons[ingredient.name].set_pressed)
+            menu.menu.add.button(f'{ingredient.name} ({ingredient.manufacturer})', action=buttons[ingredient.name].set_pressed)
         menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
 
         menu.start()
@@ -52,7 +52,6 @@ def select_ingredient_to_edit(gui: 'GUI', ingredient_db: 'IngredientDatabase') -
         if cancel_button.pressed:
             return
 
-        else:
-            for name, button in buttons.items():
-                if button.pressed:
-                    edit_ingredient(gui, ingredient_db, ingredient_db.get_ingredient(name))
+        for name, button in buttons.items():
+            if button.pressed:
+                edit_ingredient(gui, ingredient_db, ingredient_db.get_ingredient(name))

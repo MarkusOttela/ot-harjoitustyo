@@ -50,13 +50,15 @@ class IngredientDatabase:
         path_to_db = f'{Directories.USERDATA.value}/{DatabaseFileNames.INGREDIENT_DATABASE.value}'
         self.connection = sqlite3.connect(path_to_db)
 
+        self.table = IngredientDB.table_name.value
+
         self.cursor = self.connection.cursor()
         self.connection.isolation_level = None
         self.create_table()
 
     def create_table(self) -> None:
         """Create the database table procedurally from Enum fields."""
-        sql_command = f'CREATE TABLE IF NOT EXISTS {IngredientDB.table_name.value} ('
+        sql_command = f'CREATE TABLE IF NOT EXISTS {self.table} ('
 
         for key in ingredient_metadata.keys():
             column_name  = key
@@ -74,7 +76,7 @@ class IngredientDatabase:
         ingredient_keys   = list(ingredient_metadata.keys())
         ingredient_values = [getattr(ingredient, key) for key in ingredient_keys]
 
-        sql_command = f'INSERT INTO {IngredientDB.table_name.value} ('
+        sql_command = f'INSERT INTO {self.table} ('
         sql_command += ', '.join(ingredient_keys)
         sql_command += ') VALUES ('
         sql_command += ', '.join(['?' for _ in range(len(ingredient_keys))])
@@ -82,6 +84,20 @@ class IngredientDatabase:
 
         self.cursor.execute(sql_command, ingredient_values)
         self.cursor.connection.commit()
+
+    def has_ingredient(self, ingredient: Ingredient) -> bool:
+        """Returns True if ingredient exists in the database."""
+        return any(i == ingredient for i in self.get_list_of_ingredients())
+
+    def get_list_of_ingredients(self) -> list[Ingredient]:
+        """Get list of Ingredients in the database."""
+        sql_command  = f'SELECT '
+        sql_command += f', '.join(list(ingredient_metadata.keys()))
+        sql_command += f' FROM {self.table}'
+
+        results     = self.cursor.execute(sql_command).fetchall()
+        ingredients = [Ingredient(*data) for data in results]
+        return  ingredients
 
     def get_ingredient(self,
                        name         : NonEmptyStr,
@@ -92,7 +108,7 @@ class IngredientDatabase:
 
         sql_command  = f'SELECT '
         sql_command += f', '.join(list(ingredient_metadata.keys())[1:])
-        sql_command += f' FROM {IngredientDB.table_name.value}'
+        sql_command += f' FROM {self.table}'
         sql_command += f" WHERE {ingredient_metadata['name'][0]} == '{name}'"
 
         if manufacturer:
@@ -106,3 +122,19 @@ class IngredientDatabase:
         else:
             manuf_info = f" by '{manufacturer}'" if manufacturer else ''
             raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
+
+    def remove(self, ingredient: Ingredient) -> None:
+        """Remove ingredient from database."""
+        if not self.has_ingredient(ingredient):
+            raise IngredientNotFound(f"No ingredient {ingredient.name} in database.")
+
+        sql_command  = f'DELETE FROM {self.table}'
+        sql_command += f" WHERE {ingredient_metadata['name'][0]} == '{ingredient.name}'"
+        self.cursor.execute(sql_command)
+
+        assert not self.has_ingredient(ingredient.name)  # TODO REMOVE
+
+    def replace_ingredient(self, original: Ingredient, new: Ingredient) -> None:
+        """Replace ingredient in database."""
+        self.remove(original)
+        self.insert(new)

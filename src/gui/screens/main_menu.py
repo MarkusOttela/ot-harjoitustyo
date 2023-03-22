@@ -18,9 +18,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.gui.gui_menu                 import GUIMenu
-from src.gui.screens.add_ingredient   import add_ingredient_menu
-from src.gui.screens.callback_classes import Button
+from src.gui.gui_menu                          import GUIMenu
+from src.gui.screens.add_ingredient            import add_ingredient_menu
+from src.gui.screens.callback_classes          import Button
+from src.gui.screens.select_ingredient_to_edit import select_ingredient_to_edit
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
@@ -28,21 +29,27 @@ if typing.TYPE_CHECKING:
 
 
 def main_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
-    """Render the main menu."""
+    """Render the Main Menu."""
 
     while True:
         menu = GUIMenu(gui, 'Calorinator')
 
-        add_ingredient_button = Button(menu, closes_menu=True)
-        exit_button           = Button(menu, closes_menu=True)
+        add_ingredient_button  = Button(menu, closes_menu=True)
+        edit_ingredient_button = Button(menu, closes_menu=True)
+        exit_button            = Button(menu, closes_menu=True)
 
         menu.menu.add.button('Add Ingredient', action=add_ingredient_button.set_pressed)
+        menu.menu.add.button('Edit Ingredient', action=edit_ingredient_button.set_pressed)
         menu.menu.add.button('Exit',           action=exit_button.set_pressed)
 
         menu.start()
 
         if add_ingredient_button.pressed:
             add_ingredient_menu(gui, ingredient_db)
+            continue
+
+        if edit_ingredient_button.pressed:
+            select_ingredient_to_edit(gui, ingredient_db)
             continue
 
         if exit_button.pressed:

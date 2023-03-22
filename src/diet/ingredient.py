@@ -181,6 +181,10 @@ class Ingredient:
         self.caffeine  = caffeine
         self.creatine  = creatine
 
+    def __eq__(self, other: 'Ingredient') -> bool:
+        """Return True if two Ingredients are equal."""
+        return self.name == other.name and self.manufacturer == other.manufacturer
+
     def __repr__(self) -> str:
         """Format Ingredient attributes."""
         return (f"<Ingredient-object {id(self)}>\n"

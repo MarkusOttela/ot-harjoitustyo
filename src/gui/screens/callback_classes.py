@@ -60,8 +60,8 @@ class UserInput:
 
 class BooleanSelector:
 
-    def __init__(self, default_value) -> None:
-        self.value: Optional[bool] = default_value
+    def __init__(self, default_value: bool) -> None:
+        self.value = default_value
 
     def set_value(self, value: bool) -> None:
         self.value = value

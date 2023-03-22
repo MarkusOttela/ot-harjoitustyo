@@ -50,4 +50,5 @@ def get_yes(gui:         'GUI',
     menu.menu.add.button('Done', action=menu.menu.disable)
 
     menu.start()
+
     return bool_selection.value

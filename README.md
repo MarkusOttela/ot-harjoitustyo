@@ -4,8 +4,12 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.10](https://img.shields.io/badge/Python-3.10-informational)](https://python.org)
+
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Unit Tests](https://github.com/MarkusOttela/ot-harjoitustyo/actions/workflows/unit_tests.yml/badge.svg?branch=master)](https://github.com/MarkusOttela/ot-harjoitustyo/actions/workflows/unit_tests.yml)
 [![codecov](https://codecov.io/gh/MarkusOttela/ot-harjoitustyo/branch/master/graph/badge.svg?token=W1LR4KBFNX)](https://codecov.io/gh/MarkusOttela/ot-harjoitustyo)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/markusottela/ot-harjoitustyo/badge)](https://www.codefactor.io/repository/github/markusottela/ot-harjoitustyo)
 
 The program supports the user in maintaining their diet by
   1. Tracking their meals, and by counting the nutritional values of each meal

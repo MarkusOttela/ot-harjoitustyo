@@ -60,6 +60,7 @@ class UserInput:
 
 
 class BooleanSelector:
+    """Boolean selection callback-object."""
 
     def __init__(self, default_value: bool) -> None:
         self.value = default_value

@@ -20,6 +20,7 @@ Changelog
         2) Adding the `Ingredient` object to its SQL-DB
 
 * Wednesday
+  * Add unittests and code coverage to GitHub workflow
 * Thursday
 * Friday
 * Saturday

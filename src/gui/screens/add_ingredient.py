@@ -26,7 +26,7 @@ from src.common.statics    import Color, ColorScheme
 from src.common.types      import NonNegativeFloat, NonEmptyStr, NonNegativeInt
 from src.common.validation import validate_str
 
-from src.diet.ingredient import IngredientMetadata, Ingredient
+from src.diet.ingredient import Ingredient, ingredient_metadata
 
 from src.gui.gui_menu                 import GUIMenu
 from src.gui.screens.callback_classes import Button, StringInput
@@ -38,9 +38,10 @@ if typing.TYPE_CHECKING:
 
 def add_ingredient_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
     """Render the `add ingredient` menu."""
-    keys        = [enum.value[0] for enum in IngredientMetadata]
-    fields      = [enum.value[1] for enum in IngredientMetadata]
-    field_types = [enum.value[2] for enum in IngredientMetadata]
+
+    keys        = list(ingredient_metadata.keys())
+    fields      = [ingredient_metadata[k][0] for k in keys]
+    field_types = [ingredient_metadata[k][1] for k in keys]
 
     failed_conversions : dict[str, None] = {}
 

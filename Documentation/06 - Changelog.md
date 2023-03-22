@@ -21,6 +21,9 @@ Changelog
 
 * Wednesday
   * Add unittests and code coverage to GitHub workflow
+  * Add `Manage Ingredients` sub-menu
+  * Add `Select Ingredient to Edit` view to select the ingredient from
+  * Add `Edit Ingredient` view to edit ingredient attributes or delete the ingredient
 * Thursday
 * Friday
 * Saturday

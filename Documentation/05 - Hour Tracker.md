@@ -9,6 +9,7 @@ Hour Tracker
   * 9..19 GUI design, Program logic, Documentation
 * Wednesday
   * 8:30..11 CI (GitHub workflow for unit tests and code coverage)
+  * 11..16 Program logic
 * Thursday
 * Friday
 * Saturday

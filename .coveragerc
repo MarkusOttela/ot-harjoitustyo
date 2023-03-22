@@ -1,0 +1,14 @@
+# .coveragerc to control coverage.py
+[report]
+
+# Only evaluate source files (i.e. exclude unit tests from coverage)
+include = */src/*
+
+# Regexes for lines to exclude from consideration
+exclude_lines =
+
+    # Ignore unreachable lines such as debugging code for third-party modules
+    pragma: no cover
+
+    # TYPE_CHECKING is True only during type checking
+    if typing.TYPE_CHECKING:

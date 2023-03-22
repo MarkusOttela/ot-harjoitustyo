@@ -22,7 +22,7 @@ from src.common.conversion import str_to_float, str_to_int
 from src.common.exceptions import ConversionError
 
 
-class TestClass(unittest.TestCase):
+class TestConversion(unittest.TestCase):
 
     def test_str_to_float(self) -> None:
 
@@ -64,7 +64,3 @@ class TestClass(unittest.TestCase):
             for v in ['string', '1.0', '']:
                 with self.assertRaises(ConversionError):
                     str_to_int('test', v, negative_allowed=b)
-
-
-if __name__ == '__main__':
-    unittest.main(exit=False)

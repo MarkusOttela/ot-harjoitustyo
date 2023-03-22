@@ -1,0 +1,49 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.local python3 -
+          echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> $HOME/.bashrc
+          /bin/bash
+          git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
+          cd $HOME/calorinator/
+          poetry install
+
+      - name: Unit Tests
+        run: |
+          cd $HOME/calorinator/
+          poetry shell
+          coverage run --branch -m pytest --cov-report=xml tests/
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./coverage/reports/
+          env_vars: OS,PYTHON
+          fail_ci_if_error: true
+          files: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          path_to_write_report: ./coverage/codecov_report.txt
+          verbose: true

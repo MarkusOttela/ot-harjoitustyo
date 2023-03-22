@@ -11,6 +11,7 @@ pytest_cache/
 
 # Coverage.py
 .coverage
+coverage.xml
 
 # Poetry
 poetry.lock

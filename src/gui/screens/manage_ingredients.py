@@ -3,7 +3,7 @@
 
 """
 Calorienator - Diet tracker
-Copyright (C) Markus Ottela
+Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorienator.
 Calorienator is free software: you can redistribute it and/or modify it under the 
@@ -30,7 +30,6 @@ if typing.TYPE_CHECKING:
 
 def manage_ingredients_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
     """Render the Manage Ingredient sub menu."""
-
     while True:
         menu = GUIMenu(gui, 'Manage Ingredients')
 

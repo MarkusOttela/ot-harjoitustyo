@@ -3,7 +3,7 @@
 
 """
 Calorinator - Diet tracker
-Copyright (C) Markus Ottela
+Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorinator.
 Calorinator is free software: you can redistribute it and/or modify it under the 
@@ -36,6 +36,7 @@ class Button:
         self.pressed = True
         if self.closes_menu:
             self.menu.menu.disable()
+
 
 class StringInput:
     """String input callback-object."""

@@ -3,7 +3,7 @@
 
 """
 Calorienator - Diet tracker
-Copyright (C) Markus Ottela
+Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorienator.
 Calorienator is free software: you can redistribute it and/or modify it under the 

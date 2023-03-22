@@ -59,9 +59,9 @@ class IngredientDatabase:
         sql_command = f'CREATE TABLE IF NOT EXISTS {IngredientDB.table_name.value} ('
 
         for key in ingredient_metadata.keys():
-            tup          = ingredient_metadata[key]
             column_name  = key
-            sql_command += f"{column_name} {column_type_dict[tup[1]]}, "
+            data_type    = ingredient_metadata[key][1]
+            sql_command += f"{column_name} {column_type_dict[data_type]}, "
 
         sql_command  = sql_command[:-2]  # Remove trailing comma and space
         sql_command += ')'

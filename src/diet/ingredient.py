@@ -40,8 +40,8 @@ ingredient_metadata = {
     # Micronutrients
 
     # Omega-3 fatty acids
-    'omega3_dha' : ('omega3_dha', 'Omega3 DHA', NonNegativeFloat),
-    'omega3_epa' : ('omega3_epa', 'Omega3 EPA', NonNegativeFloat),
+    'omega3_dha' : ('Omega3 DHA', NonNegativeFloat),
+    'omega3_epa' : ('Omega3 EPA', NonNegativeFloat),
 
     # Fat soluble vitamins
     'vitamin_a' : ('Vitamin A', NonNegativeFloat),

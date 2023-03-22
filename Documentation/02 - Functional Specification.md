@@ -139,7 +139,7 @@ The program supports the user in maintaining their diet by
 ## 1.5 GUI wireframe designs
 
 ### Main Menu
-![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Attatchments/00%20-%20Main%20Menu.png)
+![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Attachments/00%20-%20Main%20Menu.png)
 
 ### Add Ingredient Menu
-![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Attatchments/01%20-%20Add%20Ingredient%20Menu.png)
+![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Attachments/01%20-%20Add%20Ingredient%20Menu.png)

@@ -47,17 +47,17 @@ def add_ingredient_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None
 
     string_inputs = {k: StringInput() for k in keys}
 
-    # # Testing code TODO: Remove
-    # debug = False
-    # if debug:
-    #     string_inputs['name'].value = 'Mansikkahillo'
-    #     string_inputs['manufacturer'].value = 'Atria'
-    #     attr_list = ['kcal', 'carbohydrates', 'protein', 'fat', 'satisfied_fat', 'fiber', 'salt', 'omega3_dha',
-    #                  'omega3_epa', 'vitamin_a', 'vitamin_d', 'vitamin_e', 'vitamin_k', 'vitamin_b1', 'vitamin_b2',
-    #                  'vitamin_b3', 'vitamin_b5', 'vitamin_b6', 'vitamin_b7', 'vitamin_b9', 'vitamin_b12', 'vitamin_c',
-    #                  'calcium', 'chromium', 'iodine', 'potassium', 'iron', 'magnesium', 'zinc', 'caffeine', 'creatine']
-    #     for attr in attr_list:
-    #         string_inputs[attr].value = 1.0
+    # Testing code TODO: Remove
+    debug = False
+    if debug:
+        string_inputs['name'].value = 'Mansikkahillo'
+        string_inputs['manufacturer'].value = 'Atria'
+        attr_list = ['kcal', 'carbohydrates', 'protein', 'fat', 'satisfied_fat', 'fiber', 'salt', 'omega3_dha',
+                     'omega3_epa', 'vitamin_a', 'vitamin_d', 'vitamin_e', 'vitamin_k', 'vitamin_b1', 'vitamin_b2',
+                     'vitamin_b3', 'vitamin_b5', 'vitamin_b6', 'vitamin_b7', 'vitamin_b9', 'vitamin_b12', 'vitamin_c',
+                     'calcium', 'chromium', 'iodine', 'potassium', 'iron', 'magnesium', 'zinc', 'caffeine', 'creatine']
+        for attr in attr_list:
+            string_inputs[attr].value = '1.0'
 
     while True:
         menu = GUIMenu(gui, 'Add ingredient', columns=3, rows=18)

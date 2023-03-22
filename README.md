@@ -2,6 +2,8 @@
 
 # Calorinator 
 
+[![Unit Tests](https://github.com/MarkusOttela/ot-harjoitustyo/actions/workflows/unit_tests.yml/badge.svg?branch=master)](https://github.com/MarkusOttela/ot-harjoitustyo/actions/workflows/unit_tests.yml)
+
 The program supports the user in maintaining their diet by
   1. Tracking their meals, and by counting the nutritional values of each meal
   2. Informing them about the daily consumption in relation to their goal values

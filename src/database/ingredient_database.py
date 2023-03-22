@@ -22,8 +22,9 @@ import time
 from enum import Enum
 
 from src.common.exceptions import IngredientNotFound
-from src.common.statics    import DatabaseFileNames
+from src.common.statics    import DatabaseFileNames, Directories
 from src.common.types      import NonEmptyStr, NonNegativeFloat, DatabaseTypes
+from src.common.utils      import ensure_dir
 from src.common.validation import validate_params
 from src.diet.ingredient   import Ingredient, IngredientMetadata
 
@@ -45,8 +46,11 @@ class IngredientDatabase:
 
     def __init__(self) -> None:
         """Create new IngredientDatabase object."""
-        self.connection = sqlite3.connect(DatabaseFileNames.INGREDIENT_DATABASE.value)
-        self.cursor     = self.connection.cursor()
+        ensure_dir(f'{Directories.USERDATA.value}/')
+        path_to_db = f'{Directories.USERDATA.value}/{DatabaseFileNames.INGREDIENT_DATABASE.value}'
+        self.connection = sqlite3.connect(path_to_db)
+
+        self.cursor = self.connection.cursor()
         self.connection.isolation_level = None
         self.create_table()
 

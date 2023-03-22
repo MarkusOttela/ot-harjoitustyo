@@ -14,3 +14,6 @@ pytest_cache/
 
 # Poetry
 poetry.lock
+
+# User data
+user_data/

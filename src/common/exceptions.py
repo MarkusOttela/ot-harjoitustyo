@@ -16,6 +16,9 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
+from contextlib import contextmanager
+from typing     import Any, Iterator, Type
+
 
 class CalorinatorException(Exception):
     """Base-class for internal program exceptions."""
@@ -40,3 +43,12 @@ class ConversionError(CalorinatorException):
 class IncompleteConversion(CalorinatorException):
     """Exception raised when conversion of all values fails."""
     pass
+
+
+@contextmanager
+def ignored(*exceptions: Type[BaseException]) -> Iterator[Any]:
+    """Ignore an exception."""
+    try:
+        yield
+    except exceptions:
+        pass

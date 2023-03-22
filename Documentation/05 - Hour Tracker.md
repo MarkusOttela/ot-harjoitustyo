@@ -8,6 +8,7 @@ Hour Tracker
 * Tuesday
   * 9..19 GUI design, Program logic, Documentation
 * Wednesday
+  * 8:30..
 * Thursday
 * Friday
 * Saturday

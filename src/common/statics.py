@@ -31,6 +31,11 @@ class AsssetFiles(Enum):
     BACKGROUND = 'Assets/background.jpg'
 
 
+class Directories(Enum):
+    """Program directories"""
+    USERDATA = 'user_data'
+
+
 class DatabaseFileNames(Enum):
     """Names of database files."""
     INGREDIENT_DATABASE = 'ingredient_database.sqlite3'

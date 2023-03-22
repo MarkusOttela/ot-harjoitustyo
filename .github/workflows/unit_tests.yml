@@ -33,9 +33,7 @@ jobs:
       - name: Unit Tests
         run: |
           cd $HOME/calorinator/
-          poetry shell
-          coverage run --branch -m pytest --cov-report=xml tests/
-
+          poetry run coverage run --branch -m pytest --cov=src --cov-report=xml tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:

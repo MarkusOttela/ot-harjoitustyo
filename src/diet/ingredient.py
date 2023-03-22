@@ -181,11 +181,13 @@ class Ingredient:
         self.caffeine  = caffeine
         self.creatine  = creatine
 
-    def __eq__(self, other: 'Ingredient') -> bool:
+    def __eq__(self, other: Any) -> bool:
         """Return True if two Ingredients are equal."""
+        if not isinstance(other, Ingredient):
+            return False
         return self.name == other.name and self.manufacturer == other.manufacturer
 
-    def __neq__(self, other: 'Ingredient') -> bool:
+    def __neq__(self, other: Any) -> bool:
         """Return True if two Ingredients are not equal."""
         return not self.__eq__(other)
 

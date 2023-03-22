@@ -18,10 +18,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.gui.gui_menu                          import GUIMenu
-from src.gui.screens.add_ingredient            import add_ingredient_menu
-from src.gui.screens.callback_classes          import Button
-from src.gui.screens.select_ingredient_to_edit import select_ingredient_to_edit
+from src.common.statics                 import Literals
+from src.gui.gui_menu                   import GUIMenu
+from src.gui.screens.callback_classes   import Button
+from src.gui.screens.manage_ingredients import manage_ingredients_menu
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
@@ -32,24 +32,18 @@ def main_menu(gui: 'GUI', ingredient_db: 'IngredientDatabase') -> None:
     """Render the Main Menu."""
 
     while True:
-        menu = GUIMenu(gui, 'Calorinator')
+        menu = GUIMenu(gui, Literals.PROGRAM_NAME.value)
 
-        add_ingredient_button  = Button(menu, closes_menu=True)
-        edit_ingredient_button = Button(menu, closes_menu=True)
-        exit_button            = Button(menu, closes_menu=True)
+        ingredient_menu = Button(menu, closes_menu=True)
+        exit_button     = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Add Ingredient',  action=add_ingredient_button.set_pressed)
-        menu.menu.add.button('Edit Ingredient', action=edit_ingredient_button.set_pressed)
-        menu.menu.add.button('Exit',            action=exit_button.set_pressed)
+        menu.menu.add.button('Manage Ingredients',  action=ingredient_menu.set_pressed)
+        menu.menu.add.button('Exit',                action=exit_button.set_pressed)
 
         menu.start()
 
-        if add_ingredient_button.pressed:
-            add_ingredient_menu(gui, ingredient_db)
-            continue
-
-        if edit_ingredient_button.pressed:
-            select_ingredient_to_edit(gui, ingredient_db)
+        if ingredient_menu.pressed:
+            manage_ingredients_menu(gui, ingredient_db)
             continue
 
         if exit_button.pressed:

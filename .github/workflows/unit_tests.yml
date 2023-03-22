@@ -34,6 +34,8 @@ jobs:
         run: |
           cd $HOME/calorinator/
           poetry run coverage run --branch -m pytest --cov=src --cov-report=xml tests/
+          echo $PWD
+          ls
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:

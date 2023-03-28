@@ -40,24 +40,29 @@ The program supports the user in maintaining their diet by
 
 ### Installation
 
+##### 1. Install dependencies
+
 ```
 sudo apt update
 sudo apt install -y curl git
-git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
 curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/poetry python3 -
-echo "export PATH=\"\$HOME/poetry/bin:\$PATH\"" >> $HOME/.bashrc
-echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.bashrc
-bash
+echo "export PATH=\"\$HOME/poetry/bin:\$PATH\"" >> $HOME/.bashrc && bash
+echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.bashrc && bash
+```
+
+##### 2. Install Calorinator
+```
+git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
 cd $HOME/calorinator/
 poetry install --without dev
+echo 'alias calorinator="poetry run python3 $HOME/calorinator/calorinator.py"' >> $HOME/.bashrc && bash
 ```
 
 
 ### Launching
 
 ```
-cd $HOME/calorinator/
-poetry run python3 calorinator.py
+$ calorinator 
 ```
 
 

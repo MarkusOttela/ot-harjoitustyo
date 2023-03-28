@@ -24,6 +24,7 @@ The program supports the user in maintaining their diet by
 
 
 ## Platform Support
+
 * Linux / Python 3.10+
 
 
@@ -41,13 +42,15 @@ The program supports the user in maintaining their diet by
 
 ```
 sudo apt update
-curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.local python3 -
-echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> $HOME/.bashrc
-/bin/bash
-git clone --depth 1 https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
+sudo apt install -y curl git
+git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
+curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/poetry python3 -
+echo "export PATH=\"\$HOME/poetry/bin:\$PATH\"" >> $HOME/.bashrc
+echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.bashrc
+bash
 cd $HOME/calorinator/
 poetry install --without dev
- ```
+```
 
 
 ### Launching

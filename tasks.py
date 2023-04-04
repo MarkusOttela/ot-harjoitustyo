@@ -28,5 +28,9 @@ def test(ctx):
     ctx.run("python3 -m pytest tests", pty=True)
 
 @task
+def mypy(ctx):
+    ctx.run("python3 -m mypy --strict src", pty=True)
+
+@task
 def coverage_report(ctx):
     ctx.run("python3 -m pytest tests --cov=src/ --cov-report=html", pty=True)

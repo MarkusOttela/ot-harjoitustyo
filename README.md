@@ -105,6 +105,11 @@ $ poetry invoke start
 $ poetry invoke test
 ```
 
+**mypy type checker**
+```
+$ poetry invoke mypy
+```
+
 **Coverage Report**
 ```
 $ poetry invoke coverage-report

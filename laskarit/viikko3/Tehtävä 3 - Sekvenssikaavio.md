@@ -21,7 +21,6 @@ sequenceDiagram
             engine->>tank: consume(5)
             tank-->>engine: 
         engine-->>machine: 
-    machine-->>main: 
 
     machine->>engine: is_running()
     engine-->>machine: bool

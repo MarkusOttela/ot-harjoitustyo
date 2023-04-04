@@ -22,12 +22,14 @@ class TestKassapaate(unittest.TestCase):
         self.assertEqual(vaihto, 140)
         self.assertEqual(self.kassapaate.edulliset, 0)
         self.assertEqual(self.kassapaate.maukkaat,  0)
+        self.assertEqual(self.kassapaate.kassassa_rahaa,  self.KASSA_LAHTOSUMMA)
 
         # Syntyy vaihtorahaa
         vaihto = self.kassapaate.syo_edullisesti_kateisella(340)
         self.assertEqual(vaihto, 100)
         self.assertEqual(self.kassapaate.edulliset, 1)
         self.assertEqual(self.kassapaate.maukkaat,  0)
+        self.assertEqual(self.kassapaate.kassassa_rahaa, self.KASSA_LAHTOSUMMA+240)
 
     def test_maukas_kateisella(self):
         # Rahat eivät riitä
@@ -35,12 +37,14 @@ class TestKassapaate(unittest.TestCase):
         self.assertEqual(vaihto, 300)
         self.assertEqual(self.kassapaate.edulliset, 0)
         self.assertEqual(self.kassapaate.maukkaat,  0)
+        self.assertEqual(self.kassapaate.kassassa_rahaa,  self.KASSA_LAHTOSUMMA)
 
         # Syntyy vaihtorahaa
         vaihto = self.kassapaate.syo_maukkaasti_kateisella(500)
         self.assertEqual(vaihto, 100)
         self.assertEqual(self.kassapaate.edulliset, 0)
         self.assertEqual(self.kassapaate.maukkaat,  1)
+        self.assertEqual(self.kassapaate.kassassa_rahaa, self.KASSA_LAHTOSUMMA+400)
 
     def test_edullinen_kortilla_kun_rahat_eivat_riita(self):
         maksukortti = Maksukortti(saldo=100)
@@ -86,6 +90,7 @@ class TestKassapaate(unittest.TestCase):
         maksukortti = Maksukortti(saldo=500)
         self.kassapaate.lataa_rahaa_kortille(maksukortti, -100)
         self.assertEqual(maksukortti.saldo, 500)
+        self.assertEqual(self.kassapaate.kassassa_rahaa, self.KASSA_LAHTOSUMMA)
 
     def test_rahan_lataaminen_kortille(self):
         maksukortti = Maksukortti(saldo=500)

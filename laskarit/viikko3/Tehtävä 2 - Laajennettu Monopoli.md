@@ -11,6 +11,7 @@ classDiagram
 
     Ruutu       "1" --  "1"    Ruutu : Seuraava ruutu
     Ruutu       "*" --  "1"    Toiminto
+    Kortti      "*" --  "1"    Toiminto
 
     Ruutu <|-- AloitusRuutu
     Ruutu <|-- VankilaRuutu

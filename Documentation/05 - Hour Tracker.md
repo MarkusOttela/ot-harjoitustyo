@@ -1,13 +1,15 @@
 Hour Tracker
 ---
 
-## Calendar Week 12
-* Monday
+## Total: 36.5h 
+
+## Calendar Week 12 (23.5h in total)
+* Monday (6h)
   * 15..18 Documentation (Initial Functional specification)
   * 18..21 Program logic (Initial GUI window, Ingredient SQL-db)
-* Tuesday
+* Tuesday (10h)
   * 9..19 GUI design, Program logic, Documentation
-* Wednesday
+* Wednesday (7.5h)
   * 8:30..11 CI (GitHub workflow for unit tests and code coverage)
   * 11..16 Program logic
 * Thursday
@@ -15,7 +17,7 @@ Hour Tracker
 * Saturday
 * Sunday
 
-## Calendar Week 13
+## Calendar Week 13 (0h in total)
 * Monday
 * Tuesday
 * Wednesday
@@ -25,4 +27,12 @@ Hour Tracker
 * Sunday
 
 ## Calendar Week 14
+* Monday 0h
+* Tuesday
+* Wednesday
+* Thursday
+* Friday
+* Saturday
+* Sunday
+
 ## Calendar Week 15

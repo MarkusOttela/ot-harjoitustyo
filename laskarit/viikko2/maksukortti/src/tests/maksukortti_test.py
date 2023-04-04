@@ -40,9 +40,9 @@ class TestMaksukortti(unittest.TestCase):
     # Tehtävä 3: Lisää testejä
 
     def test_maukkaan_lounaan_syominen_ei_vie_saldoa_negatiiviseksi(self):
-        kortti = Maksukortti(600)
+        kortti = Maksukortti(MAUKAS-1)
         kortti.syo_maukkaasti()
-        self.assertEqual(kortti.saldo, 200)
+        self.assertEqual(kortti.saldo, MAUKAS-1)
 
     def test_negatiivisen_summan_lataaminen_ei_muuta_kortin_saldoa(self):
         saldo_aluksi = self.kortti.saldo

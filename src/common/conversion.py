@@ -19,7 +19,6 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 from typing import Any
 
 from src.common.exceptions import ConversionError, ValidationError
-from src.common.types      import NonNegativeInt, NonNegativeFloat, NonEmptyStr
 from src.common.validation import validate_float, validate_int, validate_str
 
 from src.gui.screens.callback_classes import StringInput
@@ -69,15 +68,11 @@ def convert_input_fields(string_inputs : dict[str, StringInput],
         try:
             string_value = string_inputs[key].value
 
-            if field_type in [int, NonNegativeInt]:
+            if field_type == int:
                 converted_value = str_to_int(name, string_value)
 
-            elif field_type in [float, NonNegativeFloat]:
+            elif field_type == float:
                 converted_value = str_to_float(name, string_value)
-
-            elif field_type == NonEmptyStr:
-                validate_str(key, string_value, empty_allowed=False)
-                converted_value = string_value
 
             elif field_type == str:
                 converted_value = string_value

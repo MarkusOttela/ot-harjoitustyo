@@ -22,7 +22,6 @@ from typing import Any
 
 from src.common.conversion import convert_input_fields
 from src.common.statics    import Color, ColorScheme
-from src.common.types      import NonEmptyStr
 from src.common.validation import floats
 
 from src.diet.ingredient import Ingredient, ingredient_metadata
@@ -70,7 +69,7 @@ def add_ingredient_menu(gui           : 'GUI',
             if i in [2, 3, 9, 11, 15, 23, 24]:
                 menu.menu.add.label('\n', font_size=5)  # Spacing
 
-            valid_chars = None if ingredient_metadata[k][1] in [str, NonEmptyStr] else floats
+            valid_chars = None if ingredient_metadata[k][1] == str else floats
             font_color  = Color.RED.value if k in failed_conversions else ColorScheme.FONT_COLOR.value
             menu.menu.add.text_input(f'{fields[i]}: ',
                                      onchange=string_inputs[k].set_value,

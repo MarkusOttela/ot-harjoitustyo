@@ -21,8 +21,6 @@ import inspect
 from typing import Any, Callable
 
 from src.common.exceptions import ValidationError
-from src.common.types      import NonEmptyStr, NonNegativeFloat, NonNegativeInt
-
 
 integers = list(map(str, range(0, 10)))
 floats   = integers + ['.']
@@ -97,14 +95,15 @@ def validate_params(func   : Callable[[Any], Any],
         expected_type  = annotations[arg_name]
         arg_value      = locals_[arg_name]
 
-        if expected_type in [str, NonEmptyStr]:
-            validate_str(arg_name, arg_value, empty_allowed=expected_type != NonEmptyStr)
-
-        if expected_type in [int, NonNegativeInt]:
-            validate_int(arg_name, arg_value, negative_allowed=expected_type != NonNegativeInt)
-
-        if expected_type in [float, NonNegativeFloat]:
-            validate_float(arg_name, arg_value, negative_allowed=expected_type != NonNegativeFloat)
+        # Python 3.10+
+        # if expected_type in [str, NonEmptyStr]:
+        #     validate_str(arg_name, arg_value, empty_allowed=expected_type != NonEmptyStr)
+        # 
+        # if expected_type in [int, NonNegativeInt]:
+        #     validate_int(arg_name, arg_value, negative_allowed=expected_type != NonNegativeInt)
+        # 
+        # if expected_type in [float, NonNegativeFloat]:
+        #     validate_float(arg_name, arg_value, negative_allowed=expected_type != NonNegativeFloat)
 
         if expected_type == bool:
             validate_bool(arg_name, arg_value)

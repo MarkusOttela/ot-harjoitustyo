@@ -23,17 +23,14 @@ from typing import Any
 
 from src.common.exceptions import IngredientNotFound
 from src.common.statics    import DatabaseFileNames, Directories
-from src.common.types      import NonEmptyStr, NonNegativeFloat, DatabaseTypes
 from src.common.utils      import ensure_dir
 from src.common.validation import validate_params
 from src.diet.ingredient   import Ingredient, ingredient_metadata
-
+from src.common.types      import DatabaseTypes
 
 column_type_dict : dict[Any, str] = {
-    str              : DatabaseTypes.TEXT.value,
-    NonEmptyStr      : DatabaseTypes.TEXT.value,
-    NonNegativeFloat : DatabaseTypes.REAL.value,
-    float            : DatabaseTypes.REAL.value
+    str   : DatabaseTypes.TEXT.value,
+    float : DatabaseTypes.REAL.value
 }
 
 
@@ -100,7 +97,7 @@ class IngredientDatabase:
         return ingredients
 
     def get_ingredient(self,
-                       name         : NonEmptyStr,
+                       name         : str,
                        manufacturer : str = ''
                        ) -> Ingredient:
         """Get Ingredient from database by name (and manufacturer)."""

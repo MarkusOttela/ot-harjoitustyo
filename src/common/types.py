@@ -16,22 +16,9 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from enum   import Enum
-from typing import Annotated
-
-from annotated_types import Gt, MinLen
-
+from enum import Enum
 
 class DatabaseTypes(Enum):
     """SQL Database types."""
     TEXT = 'TEXT'
     REAL = 'REAL'
-
-# Ints
-NonNegativeInt = Annotated[int, Gt(0)]
-
-# Floats
-NonNegativeFloat = Annotated[float, Gt(0)]
-
-# Strings
-NonEmptyStr = Annotated[str, MinLen(1)]

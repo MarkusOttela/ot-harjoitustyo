@@ -62,7 +62,7 @@ $ poetry install --without dev
 ### Launching
 
 ```
-$ poetry invoke start
+$ poetry run invoke start
 ```
 
 Or if you prefer an alias
@@ -97,20 +97,20 @@ $ poetry install
 
 **Launch**
 ```
-$ poetry invoke start
+$ poetry run invoke start
 ```
 
 **Unit Tests**
 ```
-$ poetry invoke test
+$ poetry run invoke test
 ```
 
 **mypy type checker**
 ```
-$ poetry invoke mypy
+$ poetry run invoke mypy
 ```
 
 **Coverage Report**
 ```
-$ poetry invoke coverage-report
+$ poetry run invoke coverage-report
 ```

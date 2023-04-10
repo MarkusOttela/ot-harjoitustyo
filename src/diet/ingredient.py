@@ -199,43 +199,17 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
 
     def __repr__(self) -> str:
         """Format Ingredient attributes."""
-        return (f"<Ingredient-object {id(self)}>\n"
-                f"  <{self.name          = }>\n"
-                f"  <{self.manufacturer  = }>\n"
-                f" Energy\n"
-                f"  <{self.kcal          = }>\n"
-                f" Macronutrients\n"
-                f"  <{self.carbohydrates = }>\n"
-                f"  <{self.protein       = }>\n"
-                f"  <{self.fat           = }>\n"
-                f"  <{self.satisfied_fat = }>\n"
-                f"  <{self.fiber         = }>\n"
-                f"  <{self.salt          = }>\n"
-                f" Micronutrients\n"
-                f"  <{self.omega3_dha    =}>\n"
-                f"  <{self.omega3_epa    =}>\n"
-                f"  <{self.vitamin_a     =}>\n"
-                f"  <{self.vitamin_d     =}>\n"
-                f"  <{self.vitamin_e     =}>\n"
-                f"  <{self.vitamin_k     =}>\n"
-                f"  <{self.vitamin_b1    =}>\n"
-                f"  <{self.vitamin_b2    =}>\n"
-                f"  <{self.vitamin_b3    =}>\n"
-                f"  <{self.vitamin_b5    =}>\n"
-                f"  <{self.vitamin_b6    =}>\n"
-                f"  <{self.vitamin_b7    =}>\n"
-                f"  <{self.vitamin_b9    =}>\n"
-                f"  <{self.vitamin_b12   =}>\n"
-                f"  <{self.vitamin_c     =}>\n"
-                f"  <{self.calcium       =}>\n"
-                f"  <{self.chromium      =}>\n"
-                f"  <{self.iodine        =}>\n"
-                f"  <{self.potassium     =}>\n"
-                f"  <{self.iron          =}>\n"
-                f"  <{self.magnesium     =}>\n"
-                f"  <{self.zinc          =}>\n"
-                f"  <{self.caffeine      =}>\n"
-                f"  <{self.creatine      =}>\n")
+        lines  = [f"<Ingredient-object {id(self)}>"]
+        indent = len(max(self.__dict__.keys(), key=len)) + 1
+        lines.extend([f'    <{k:{indent}}: {v}>' for k, v in self.__dict__.items()])
+
+        # Sub-headers for lines
+        for index, txt in [( 1, 'General Info'),
+                           ( 4, 'Energy'),
+                           ( 6, 'Macronutrients'),
+                           (13, 'Micronutrients')]:
+            lines.insert(index, f'  {txt}')
+        return '\n'.join(lines)
 
     @classmethod
     def from_dict(cls, purp_dictionary: dict[str, Any]) -> 'Ingredient':

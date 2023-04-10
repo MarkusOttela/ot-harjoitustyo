@@ -28,11 +28,12 @@ The code quality is maintained with several linters:
 
 ### autopep8
 
-Calorinator is mostly PEP8 compliant.
+* Code styling inspection
 
-However: Code is not read just horizontally, but vertically as well.
-The custom style aims to improve readability in some cases where vertical alignment
-of assignment operators, keywords such as import, etc. make the code easier to read. 
+Calorinator is mostly PEP8 compliant. However, code is not read just horizontally, 
+but vertically as well. The custom style aims to improve readability in some cases 
+where vertical alignment of assignment operators, keywords such as import, etc. 
+make the code easier to read. 
 
 Following PEP8 inspections have been disabled:
 

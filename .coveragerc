@@ -3,6 +3,7 @@
 
 # Only evaluate source files (i.e. exclude unit tests from coverage)
 include = */src/*
+exclude = */src/gui/*
 
 # Regexes for lines to exclude from consideration
 exclude_lines =

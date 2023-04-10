@@ -39,4 +39,20 @@ Changelog
 * Sunday
 
 ## Calendar Week 14
+* Monday
+* Tuesday
+* Wednesday
+* Thursday
+* Friday
+* Saturday
+* Sunday
+
 ## Calendar Week 15
+* Monday
+  * Add `autopep8` and `pylint` to release pipeline
+* Tuesday
+* Wednesday
+* Thursday
+* Friday
+* Saturday
+* Sunday

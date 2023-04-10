@@ -26,8 +26,8 @@ Hour Tracker
 * Saturday
 * Sunday
 
-## Calendar Week 14
-* Monday 0h
+## Calendar Week 14 (0h in total)
+* Monday
 * Tuesday
 * Wednesday
 * Thursday
@@ -35,4 +35,12 @@ Hour Tracker
 * Saturday
 * Sunday
 
-## Calendar Week 15
+## Calendar Week 15 (4h in total)
+* Monday (4h)
+  * 19..23 Code styling, linters, refactoring, CI improvement.
+* Tuesday
+* Wednesday
+* Thursday
+* Friday
+* Saturday
+* Sunday

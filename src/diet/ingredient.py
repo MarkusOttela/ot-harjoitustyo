@@ -24,51 +24,51 @@ from src.common.validation import validate_params
 ingredient_metadata = {
 
     # General information
-    'name'         : ('Name',   str),
-    'manufacturer' : ('Manuf.', str),
+    'name':         ('Name',   str),
+    'manufacturer': ('Manuf.', str),
 
     # Macronutrients
-    'kcal'          : ('KCal',     float),
-    'carbohydrates' : ('Carbs',    float),
-    'protein'       : ('Protein',  float),
-    'fat'           : ('Fat',      float),
-    'satisfied_fat' : ('Sat. Fat', float),
-    'fiber'         : ('Fiber',    float),
-    'salt'          : ('Salt',     float),
+    'kcal':          ('KCal',     float),
+    'carbohydrates': ('Carbs',    float),
+    'protein':       ('Protein',  float),
+    'fat':           ('Fat',      float),
+    'satisfied_fat': ('Sat. Fat', float),
+    'fiber':         ('Fiber',    float),
+    'salt':          ('Salt',     float),
 
     # Micronutrients
 
     # Omega-3 fatty acids
-    'omega3_dha' : ('Ω3 DHA', float),
-    'omega3_epa' : ('Ω3 EPA', float),
+    'omega3_dha': ('Ω3 DHA', float),
+    'omega3_epa': ('Ω3 EPA', float),
 
     # Fat soluble vitamins
-    'vitamin_a' : ('Vit. A', float),
-    'vitamin_d' : ('Vit. D', float),
-    'vitamin_e' : ('Vit. E', float),
-    'vitamin_k' : ('Vit. K', float),
+    'vitamin_a': ('Vit. A', float),
+    'vitamin_d': ('Vit. D', float),
+    'vitamin_e': ('Vit. E', float),
+    'vitamin_k': ('Vit. K', float),
 
     # Water soluble vitamins
-    'vitamin_b1'  : ('Vit. B1',  float),
-    'vitamin_b2'  : ('Vit. B2',  float),
-    'vitamin_b3'  : ('Vit. B3',  float),
-    'vitamin_b5'  : ('Vit. B5',  float),
-    'vitamin_b6'  : ('Vit. B6',  float),
-    'vitamin_b7'  : ('Vit. B7',  float),
-    'vitamin_b9'  : ('Vit. B9',  float),
-    'vitamin_b12' : ('Vit. B12', float),
-    'vitamin_c'   : ('Vit. C',   float),
+    'vitamin_b1':  ('Vit. B1',  float),
+    'vitamin_b2':  ('Vit. B2',  float),
+    'vitamin_b3':  ('Vit. B3',  float),
+    'vitamin_b5':  ('Vit. B5',  float),
+    'vitamin_b6':  ('Vit. B6',  float),
+    'vitamin_b7':  ('Vit. B7',  float),
+    'vitamin_b9':  ('Vit. B9',  float),
+    'vitamin_b12': ('Vit. B12', float),
+    'vitamin_c':   ('Vit. C',   float),
 
     # Minerals etc.
-    'calcium'   : ('Calcium',   float),
-    'chromium'  : ('Chromium',  float),
-    'iodine'    : ('Iodine',    float),
-    'potassium' : ('Potassium', float),
-    'iron'      : ('Iron',      float),
-    'magnesium' : ('Magnesium', float),
-    'zinc'      : ('Zinc',      float),
-    'caffeine'  : ('Caffeine',  float),
-    'creatine'  : ('Creatine',  float),
+    'calcium':   ('Calcium',   float),
+    'chromium':  ('Chromium',  float),
+    'iodine':    ('Iodine',    float),
+    'potassium': ('Potassium', float),
+    'iron':      ('Iron',      float),
+    'magnesium': ('Magnesium', float),
+    'zinc':      ('Zinc',      float),
+    'caffeine':  ('Caffeine',  float),
+    'creatine':  ('Creatine',  float),
 }
 
 
@@ -80,6 +80,7 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
     Note: pylint suppressions here because Ingredient is more or less a data-class
           that holds all metadata for the specified ingredient.
     """
+
     def __init__(self,  # pylint: disable=too-many-arguments, too-many-locals
                  name         : str,
                  manufacturer : str = '',

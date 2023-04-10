@@ -2,6 +2,7 @@ import unittest
 
 from maksukortti import Maksukortti
 
+
 class TestMaksukortti(unittest.TestCase):
 
     ALKUSUMMA = 1000

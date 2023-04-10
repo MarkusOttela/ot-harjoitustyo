@@ -22,7 +22,15 @@ coverage = "^7.2.2"
 pytest-cov = "^4.0.0"
 mypy = "^1.1.1"
 pylint = "^2.17.2"
+autopep8 = "^2.0.2"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.autopep8]
+max_line_length = 100
+ignore = ['E201', 'E202', 'E203', 'E221', 'E222', 'E272']
+in-place = true
+recursive = true
+aggressive = 3

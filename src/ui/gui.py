@@ -20,7 +20,7 @@ import sys
 
 import pygame
 
-from src.common.statics import Program, ColorScheme, AsssetFiles
+from src.common.statics import Program, ColorScheme, AssetFiles
 
 
 class GUI:
@@ -44,7 +44,7 @@ class GUI:
         pygame.init()
         pygame.mixer.init()
         pygame.display.set_caption(Program.NAME.value)
-        pygame.display.set_icon(pygame.image.load(AsssetFiles.ICON_FILE.value))
+        pygame.display.set_icon(pygame.image.load(AssetFiles.ICON_FILE.value))
 
     def tick(self) -> None:
         """Advance the clock by one tick."""

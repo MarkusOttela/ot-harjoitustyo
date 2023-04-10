@@ -27,7 +27,7 @@ class Program(Enum):
     FPS        = 60
 
 
-class AsssetFiles(Enum):
+class AssetFiles(Enum):
     """Paths to assets."""
     ICON_FILE  = 'Assets/icon.png'
     BACKGROUND = 'Assets/background.jpg'

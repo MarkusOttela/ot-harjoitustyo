@@ -22,7 +22,7 @@ from typing import Optional
 
 from pygame_menu import BaseImage, Menu, Theme
 
-from src.common.statics import AsssetFiles, ColorScheme, Program
+from src.common.statics import AssetFiles, ColorScheme, Program
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -41,7 +41,7 @@ class GUIMenu:
         """Create new GUIMenu with pygame-menu."""
         self.gui = gui
 
-        self.background_image = BaseImage(image_path=AsssetFiles.BACKGROUND.value)
+        self.background_image = BaseImage(image_path=AssetFiles.BACKGROUND.value)
 
         self.theme = self.get_theme()
         self.theme.set_background_color_opacity(0.75)

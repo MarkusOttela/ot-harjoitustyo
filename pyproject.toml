@@ -30,7 +30,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.autopep8]
 max_line_length = 100
-ignore = ['E201', 'E202', 'E203', 'E221', 'E222', 'E272']
+ignore = ['E201', 'E202', 'E203', 'E221', 'E222', 'E241', 'E272']
 in-place = true
 recursive = true
 aggressive = 3

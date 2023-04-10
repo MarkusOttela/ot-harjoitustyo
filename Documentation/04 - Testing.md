@@ -41,6 +41,7 @@ Following PEP8 inspections have been disabled:
 * `E203 - Whitespace before ':'`
 * `E221 - Multiple spaces before operator`
 * `E222 - Multiple spaces after operator`
+* `E241 - Multiple spaces after ','`
 * `E272 - Space around keywords`
 
 

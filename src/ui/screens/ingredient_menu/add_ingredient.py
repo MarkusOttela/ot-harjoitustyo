@@ -26,17 +26,17 @@ from src.common.validation import floats
 
 from src.diet.ingredient import Ingredient, ingredient_metadata
 
-from src.gui.gui_menu                 import GUIMenu
-from src.gui.screens.callback_classes import Button, StringInput
-from src.gui.screens.get_yes          import get_yes
-from src.gui.screens.show_message     import show_message
+from src.ui.gui_menu                 import GUIMenu
+from src.ui.screens.callback_classes import Button, StringInput
+from src.ui.screens.get_yes          import get_yes
+from src.ui.screens.show_message     import show_message
 
 if typing.TYPE_CHECKING:
-    from src.gui.gui import GUI
+    from src.ui.gui import GUI
     from src.database.ingredient_database import IngredientDatabase
 
 
-def add_ingredient_menu(gui           : 'GUI',  # pylint: disable=too-many-locals
+def add_ingredient_menu(gui           : 'GUI',
                         ingredient_db : 'IngredientDatabase'
                         ) -> None:
     """Render the `Add Ingredient` menu."""

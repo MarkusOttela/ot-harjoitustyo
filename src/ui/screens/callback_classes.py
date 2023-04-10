@@ -21,10 +21,10 @@ import typing
 from typing import Optional
 
 if typing.TYPE_CHECKING:
-    from src.gui.gui_menu import GUIMenu
+    from src.ui.gui_menu import GUIMenu
 
 
-class Button:  # pylint: disable=too-few-public-methods
+class Button:
     """Button callback-object."""
 
     def __init__(self, menu: 'GUIMenu', closes_menu: bool = False) -> None:
@@ -40,7 +40,7 @@ class Button:  # pylint: disable=too-few-public-methods
             self.menu.menu.disable()
 
 
-class StringInput:  # pylint: disable=too-few-public-methods
+class StringInput:
     """String input callback-object."""
 
     def __init__(self) -> None:
@@ -52,7 +52,7 @@ class StringInput:  # pylint: disable=too-few-public-methods
         self.value = value
 
 
-class UserInput:  # pylint: disable=too-few-public-methods
+class UserInput:
     """User input callback-object."""
 
     def __init__(self) -> None:
@@ -65,7 +65,7 @@ class UserInput:  # pylint: disable=too-few-public-methods
         self.value = value
 
 
-class BooleanSelector:  # pylint: disable=too-few-public-methods
+class BooleanSelector:
     """Boolean selection callback-object."""
 
     def __init__(self, default_value: bool) -> None:

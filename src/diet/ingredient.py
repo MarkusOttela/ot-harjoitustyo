@@ -81,7 +81,7 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
           that holds all metadata for the specified ingredient.
     """
 
-    def __init__(self,  # pylint: disable=too-many-arguments, too-many-locals
+    def __init__(self,  # pylint: disable=too-many-arguments, too-many-locals, too-many-statements
                  name         : str,
                  manufacturer : str = '',
 

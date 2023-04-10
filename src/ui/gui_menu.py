@@ -25,13 +25,13 @@ from pygame_menu import BaseImage, Menu, Theme
 from src.common.statics import AsssetFiles, ColorScheme, Program
 
 if typing.TYPE_CHECKING:
-    from src.gui.gui import GUI
+    from src.ui.gui import GUI
 
 
 class GUIMenu:
     """GUIMenu is a wrapper for Calorinator's Pygame-menu that holds settings etc."""
 
-    def __init__(self,  # pylint: disable=too-many-arguments
+    def __init__(self,
                  gui              : 'GUI',
                  menu_title       : str,
                  columns          : int           = 1,

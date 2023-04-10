@@ -18,10 +18,10 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 from typing import TYPE_CHECKING
 
-from src.gui.gui_menu import GUIMenu
+from src.ui.gui_menu import GUIMenu
 
 if TYPE_CHECKING:
-    from src.gui.gui import GUI
+    from src.ui.gui import GUI
 
 
 def show_message(gui     : 'GUI',

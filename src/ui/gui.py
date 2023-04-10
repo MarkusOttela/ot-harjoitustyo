@@ -40,11 +40,8 @@ class GUI:
 
     @staticmethod
     def init_pygame() -> None:
-        """Initialize pygame.
-
-        Note: The pylint suppression is for the library, not Calorinator.
-        """
-        pygame.init()  # pylint: disable=no-member
+        """Initialize pygame."""
+        pygame.init()
         pygame.mixer.init()
         pygame.display.set_caption(Program.NAME.value)
         pygame.display.set_icon(pygame.image.load(AsssetFiles.ICON_FILE.value))
@@ -64,10 +61,7 @@ class GUI:
 
     @staticmethod
     def check_events() -> None:
-        """Check if events have occurred.
-
-        Note: The pylint suppression is for the library, not Calorinator.
-        """
+        """Check if events have occurred."""
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # pylint: disable=no-member
+            if event.type == pygame.QUIT:
                 sys.exit()

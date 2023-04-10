@@ -20,13 +20,13 @@ import sys
 import typing
 
 from src.common.statics                 import Program
-from src.gui.gui_menu                   import GUIMenu
-from src.gui.screens.callback_classes   import Button
+from src.ui.gui_menu                   import GUIMenu
+from src.ui.screens.callback_classes   import Button
 
-from src.gui.screens.ingredient_menu.manage_ingredients import manage_ingredients_menu
+from src.ui.screens.ingredient_menu.manage_ingredients import manage_ingredients_menu
 
 if typing.TYPE_CHECKING:
-    from src.gui.gui import GUI
+    from src.ui.gui import GUI
     from src.database.ingredient_database import IngredientDatabase
 
 

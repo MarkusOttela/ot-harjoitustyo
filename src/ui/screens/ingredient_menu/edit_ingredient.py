@@ -25,19 +25,19 @@ from src.common.statics    import Color
 
 from src.diet.ingredient import ingredient_metadata, Ingredient
 
-from src.gui.gui_menu                 import GUIMenu
-from src.gui.screens.callback_classes import Button, StringInput
-from src.gui.screens.get_yes          import get_yes
-from src.gui.screens.show_message     import show_message
+from src.ui.gui_menu                 import GUIMenu
+from src.ui.screens.callback_classes import Button, StringInput
+from src.ui.screens.get_yes          import get_yes
+from src.ui.screens.show_message     import show_message
 
-from src.gui.screens.ingredient_menu.add_ingredient import add_ingredient_attributes
+from src.ui.screens.ingredient_menu.add_ingredient import add_ingredient_attributes
 
 if typing.TYPE_CHECKING:
-    from src.gui.gui import GUI
+    from src.ui.gui import GUI
     from src.database.ingredient_database import IngredientDatabase
 
 
-def edit_ingredient(gui             : 'GUI',  # pylint: disable=too-many-locals
+def edit_ingredient(gui             : 'GUI',
                     ingredient_db   : 'IngredientDatabase',
                     orig_ingredient : Ingredient,
                     ) -> None:

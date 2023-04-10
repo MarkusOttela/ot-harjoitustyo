@@ -68,7 +68,6 @@ class GUIMenu:
                      widget_font_color=ColorScheme.FONT_COLOR.value,
                      widget_box_background_color=ColorScheme.BACKGROUND.value)
 
-
     def get_background(self) -> BaseImage:
         """Get the background image."""
         return self.background_image.draw(self.gui.display)

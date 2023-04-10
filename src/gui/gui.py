@@ -39,7 +39,7 @@ class GUI:
         self.display = pygame.display.set_mode(Program.RESOLUTION.value)
 
     @staticmethod
-    def init_pygame()-> None:
+    def init_pygame() -> None:
         """Initialize pygame.
 
         Note: The pylint suppression is for the library, not Calorinator.

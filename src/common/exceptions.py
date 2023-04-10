@@ -23,17 +23,22 @@ from typing     import Any, Iterator, Type
 class CalorinatorException(Exception):
     """Base-class for internal program exceptions."""
 
+
 class DatabaseException(CalorinatorException):
     """Base-class for database exceptions."""
+
 
 class IngredientNotFound(DatabaseException):
     """Exception raised when the Ingredient is not found in the Ingredient database."""
 
+
 class ValidationError(CalorinatorException):
     """Exception raised when a value fails validation"""
 
+
 class ConversionError(CalorinatorException):
     """Exception raised when a value fails to convert."""
+
 
 class IncompleteConversion(CalorinatorException):
     """Exception raised when conversion of all values fails."""

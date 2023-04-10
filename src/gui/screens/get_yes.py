@@ -37,7 +37,7 @@ def get_yes(gui:         'GUI',
     if default_str not in [answer_yes, answer_no]:
         raise ValueError("Invalid answer.")
 
-    default_bool   = default_str.lower().capitalize()==answer_yes
+    default_bool   = default_str.lower().capitalize() == answer_yes
     bool_selection = BooleanSelector(default_value=default_bool)
 
     menu = GUIMenu(gui, title)

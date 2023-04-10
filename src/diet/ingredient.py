@@ -71,6 +71,7 @@ ingredient_metadata = {
     'creatine'  : ('Creatine',  float),
 }
 
+
 class Ingredient:  # pylint: disable=too-many-instance-attributes
     """\
     Food ingredient is an object that represents something
@@ -217,7 +218,7 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
         ingredient = Ingredient(purp_dictionary['name'])
 
         for key in ingredient.__dict__:
-            if not key in purp_dictionary.keys():
+            if key not in purp_dictionary.keys():
                 raise KeyError(f"Missing key '{key}'")
             setattr(ingredient, key, purp_dictionary[key])
 

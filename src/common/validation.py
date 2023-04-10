@@ -6,12 +6,12 @@ Calorinator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorinator.
-Calorinator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorinator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorinator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorinator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -32,7 +32,8 @@ def validate_type(key            : str,
                   ) -> None:
     """Validate the type of value."""
     if not isinstance(purported_type, expected_type):
-        raise ValidationError(f"Expected {expected_type}, but type of '{key}' was {type(purported_type)}")
+        raise ValidationError(f"Expected {expected_type}, "
+                              f"but type of '{key}' was {type(purported_type)}")
 
 
 def validate_str(key           : str,
@@ -94,16 +95,6 @@ def validate_params(func   : Callable[[Any], Any],
 
         expected_type  = annotations[arg_name]
         arg_value      = locals_[arg_name]
-
-        # Python 3.10+
-        # if expected_type in [str, NonEmptyStr]:
-        #     validate_str(arg_name, arg_value, empty_allowed=expected_type != NonEmptyStr)
-        # 
-        # if expected_type in [int, NonNegativeInt]:
-        #     validate_int(arg_name, arg_value, negative_allowed=expected_type != NonNegativeInt)
-        # 
-        # if expected_type in [float, NonNegativeFloat]:
-        #     validate_float(arg_name, arg_value, negative_allowed=expected_type != NonNegativeFloat)
 
         if expected_type == bool:
             validate_bool(arg_name, arg_value)

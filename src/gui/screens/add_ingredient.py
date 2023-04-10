@@ -6,12 +6,12 @@ Calorinator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorinator.
-Calorinator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorinator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorinator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorinator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -54,10 +54,18 @@ def add_ingredient_menu(gui           : 'GUI',
     if debug:
         string_inputs['name'].value = 'Mansikkahillo'
         string_inputs['manufacturer'].value = 'Atria'
-        attr_list = ['kcal', 'carbohydrates', 'protein', 'fat', 'satisfied_fat', 'fiber', 'salt', 'omega3_dha',
-                     'omega3_epa', 'vitamin_a', 'vitamin_d', 'vitamin_e', 'vitamin_k', 'vitamin_b1', 'vitamin_b2',
-                     'vitamin_b3', 'vitamin_b5', 'vitamin_b6', 'vitamin_b7', 'vitamin_b9', 'vitamin_b12', 'vitamin_c',
-                     'calcium', 'chromium', 'iodine', 'potassium', 'iron', 'magnesium', 'zinc', 'caffeine', 'creatine']
+
+        attr_list = ['kcal',
+                     'carbohydrates', 'protein', 'fat', 'satisfied_fat',
+                     'fiber', 'salt',
+                     'omega3_dha', 'omega3_epa',
+                     'vitamin_a', 'vitamin_d', 'vitamin_e', 'vitamin_k',
+                     'vitamin_b1', 'vitamin_b2', 'vitamin_b3', 'vitamin_b5',
+                     'vitamin_b6', 'vitamin_b7', 'vitamin_b9', 'vitamin_b12',
+                     'vitamin_c',
+                     'calcium', 'chromium', 'iodine', 'potassium', 'iron', 'magnesium', 'zinc',
+                     'caffeine', 'creatine']
+
         for attr in attr_list:
             string_inputs[attr].value = '1.0'
 
@@ -69,8 +77,11 @@ def add_ingredient_menu(gui           : 'GUI',
             if i in [2, 3, 9, 11, 15, 23, 24]:
                 menu.menu.add.label('\n', font_size=5)  # Spacing
 
+            warning_color = Color.RED.value
+            normal_color  = ColorScheme.FONT_COLOR.value
+
             valid_chars = None if ingredient_metadata[k][1] == str else floats
-            font_color  = Color.RED.value if k in failed_conversions else ColorScheme.FONT_COLOR.value
+            font_color  = warning_color if k in failed_conversions else normal_color
             menu.menu.add.text_input(f'{fields[i]}: ',
                                      onchange=string_inputs[k].set_value,
                                      default=string_inputs[k].value,
@@ -104,7 +115,9 @@ def add_ingredient_menu(gui           : 'GUI',
                 show_message(gui, title, 'Ingredient has been added.')
                 return
 
-            if get_yes(gui, title, f'Ingredient {str(new_ingredient)} already exists. Overwrite(?)', default_str='No'):
+            if get_yes(gui, title,
+                       f'Ingredient {str(new_ingredient)} already exists. Overwrite(?)',
+                       default_str='No'):
                 ingredient_db.replace(new_ingredient)
                 show_message(gui, title, 'Ingredient has been replaced.')
                 return

@@ -6,12 +6,12 @@ Calorinator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorinator.
-Calorinator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorinator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorinator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorinator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -22,13 +22,14 @@ from typing import Optional
 
 from pygame_menu import BaseImage, Menu, Theme
 
-from src.common.statics import AsssetFiles, ColorScheme, Literals
+from src.common.statics import AsssetFiles, ColorScheme, Program
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
 
 
 class GUIMenu:
+    """GUIMenu is a wrapper for Calorinator's Pygame-menu that holds settings etc."""
 
     def __init__(self,
                  gui              : 'GUI',
@@ -45,10 +46,12 @@ class GUIMenu:
         self.theme = self.get_theme()
         self.theme.set_background_color_opacity(0.75)
 
-        resolution_x = Literals.RESOLUTION.value[0]
-        resolution_y = Literals.RESOLUTION.value[1]
+        resolution_x = Program.RESOLUTION.value[0]
+        resolution_y = Program.RESOLUTION.value[1]
         self.menu = Menu(width=resolution_x, height=resolution_y,
-                         title=menu_title, theme=self.theme, columns=columns, rows=rows, column_max_width=column_max_width)
+                         title=menu_title, theme=self.theme,
+                         columns=columns, rows=rows,
+                         column_max_width=column_max_width)
 
     @staticmethod
     def get_theme() -> Theme:
@@ -72,4 +75,6 @@ class GUIMenu:
 
     def start(self) -> None:
         """Start the menu."""
-        self.menu.mainloop(self.gui.display, bgfun=self.get_background, fps_limit=Literals.FPS.value)
+        self.menu.mainloop(self.gui.display,
+                           bgfun=self.get_background,
+                           fps_limit=Program.FPS.value)

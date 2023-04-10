@@ -6,12 +6,12 @@ Calorinator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorinator.
-Calorinator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorinator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorinator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorinator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -36,10 +36,14 @@ column_type_dict : dict[Any, str] = {
 
 class IngredientDB(Enum):
     """Ingredient database literals."""
-    table_name = 'Ingredients'
+    TABLE_NAME = 'Ingredients'
 
 
 class IngredientDatabase:
+    """IngredientDatabase is an SQLite3 database for storing ingredient related metadata.
+
+    The database is intended to be public and shareable, thus it is not encrypted.
+    """
 
     def __init__(self) -> None:
         """Create new IngredientDatabase object."""
@@ -47,7 +51,7 @@ class IngredientDatabase:
         path_to_db = f'{Directories.USERDATA.value}/{DatabaseFileNames.INGREDIENT_DATABASE.value}'
         self.connection = sqlite3.connect(path_to_db)
 
-        self.table = IngredientDB.table_name.value
+        self.table = IngredientDB.TABLE_NAME.value
 
         self.cursor = self.connection.cursor()
         self.connection.isolation_level = None
@@ -57,9 +61,9 @@ class IngredientDatabase:
         """Create the database table procedurally from Enum fields."""
         sql_command = f'CREATE TABLE IF NOT EXISTS {self.table} ('
 
-        for key in ingredient_metadata.keys():
+        for key, value in ingredient_metadata.items():
             column_name  = key
-            data_type    = ingredient_metadata[key][1]
+            data_type    = value[1]
             sql_command += f"{column_name} {column_type_dict[data_type]}, "
 
         sql_command  = sql_command[:-2]  # Remove trailing comma and space
@@ -116,9 +120,9 @@ class IngredientDatabase:
 
         if results:
             return Ingredient(name, *results[0])
-        else:
-            manuf_info = f" by '{manufacturer}'" if manufacturer else ''
-            raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
+
+        manuf_info = f" by '{manufacturer}'" if manufacturer else ''
+        raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
 
     def remove(self, ingredient: Ingredient) -> None:
         """Remove ingredient from database."""

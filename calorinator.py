@@ -16,7 +16,7 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from src.common.statics               import Literals
+from src.common.statics               import Program
 from src.database.ingredient_database import IngredientDatabase
 from src.gui.gui                      import GUI
 from src.gui.screens.main_menu        import main_menu
@@ -30,7 +30,7 @@ def main() -> None:
         2. Informing them about the daily consumption in relation to their goal values
         3. Creating statistics about food and nutrient consumption, and progress of the diet
     """
-    print(f'{Literals.PROGRAM_NAME.value} {Literals.VERSION.value}\n')
+    print(f'{Program.NAME.value} {Program.VERSION.value}\n')
 
     gui           = GUI()
     ingredient_db = IngredientDatabase()

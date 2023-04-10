@@ -6,12 +6,12 @@ Calorinator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorinator.
-Calorinator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorinator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorinator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorinator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -19,7 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 from typing import Any
 
 from src.common.exceptions import ConversionError, ValidationError
-from src.common.validation import validate_float, validate_int, validate_str
+from src.common.validation import validate_float, validate_int
 
 from src.gui.screens.callback_classes import StringInput
 
@@ -87,5 +87,4 @@ def convert_input_fields(string_inputs : dict[str, StringInput],
 
     if failed_conversions:
         return False, failed_conversions
-    else:
-        return True, converted_values
+    return True, converted_values

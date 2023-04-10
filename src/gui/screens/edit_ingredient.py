@@ -6,12 +6,12 @@ Calorienator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorienator.
-Calorienator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorienator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorienator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorienator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -51,7 +51,7 @@ def edit_ingredient(gui             : 'GUI',
 
         string_inputs = {k: StringInput() for k in keys}  # type: dict[str, StringInput]
 
-        for k, v in string_inputs.items():
+        for k in string_inputs.keys():
             string_inputs[k].set_value(getattr(orig_ingredient, k))
 
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
@@ -61,8 +61,11 @@ def edit_ingredient(gui             : 'GUI',
             if i in [2, 3, 9, 11, 15, 23, 24]:
                 menu.menu.add.label('\n', font_size=5)  # Spacing
 
+            warning_color = Color.RED.value
+            normal_color  = ColorScheme.FONT_COLOR.value
+
             valid_chars = None if ingredient_metadata[k][1] == str else floats
-            font_color  = Color.RED.value if k in failed_conversions else ColorScheme.FONT_COLOR.value
+            font_color  = warning_color if k in failed_conversions else normal_color
             menu.menu.add.text_input(f'{fields[i]}: ',
                                      onchange=string_inputs[k].set_value,
                                      default=string_inputs[k].value,
@@ -111,7 +114,9 @@ def edit_ingredient(gui             : 'GUI',
                 show_message(gui, title, 'Ingredient has been renamed and updated.')
                 return
 
-            if get_yes(gui, title, f'Another ingredient {str(new_ingredient)} already exists. Overwrite(?)', default_str='No'):
+            if get_yes(gui, title,
+                       f'Another ingredient {str(new_ingredient)} already exists. Overwrite(?)',
+                       default_str='No'):
                 ingredient_db.remove(orig_ingredient)
                 ingredient_db.replace(new_ingredient)
                 show_message(gui, title, 'Ingredient has been replaced.')

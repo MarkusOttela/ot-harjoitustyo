@@ -84,7 +84,7 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
                  manufacturer : str = '',
 
                  # Energy
-                 kcal          : float = 0.0,
+                 kcal : float = 0.0,
 
                  # Macronutrients
                  carbohydrates : float = 0.0,
@@ -97,8 +97,8 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
                  # Micronutrients
 
                  # Omega-3 fatty acids
-                 omega3_dha: float = 0.0,
-                 omega3_epa: float = 0.0,
+                 omega3_dha : float = 0.0,
+                 omega3_epa : float = 0.0,
 
                  # Fat soluble vitamins
                  vitamin_a : float = 0.0,
@@ -107,15 +107,15 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
                  vitamin_k : float = 0.0,
 
                  # Water soluble vitamins
-                 vitamin_b1   : float = 0.0,
-                 vitamin_b2   : float = 0.0,
-                 vitamin_b3   : float = 0.0,
-                 vitamin_b5   : float = 0.0,
-                 vitamin_b6   : float = 0.0,
-                 vitamin_b7   : float = 0.0,
-                 vitamin_b9   : float = 0.0,
-                 vitamin_b12  : float = 0.0,
-                 vitamin_c    : float = 0.0,
+                 vitamin_b1  : float = 0.0,
+                 vitamin_b2  : float = 0.0,
+                 vitamin_b3  : float = 0.0,
+                 vitamin_b5  : float = 0.0,
+                 vitamin_b6  : float = 0.0,
+                 vitamin_b7  : float = 0.0,
+                 vitamin_b9  : float = 0.0,
+                 vitamin_b12 : float = 0.0,
+                 vitamin_c   : float = 0.0,
 
                  # Minerals etc.
                  calcium   : float = 0.0,
@@ -135,11 +135,11 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
         """
         validate_params(self.__init__, locals())  # type: ignore
 
-        self.name          = name
-        self.manufacturer  = manufacturer
+        self.name         = name
+        self.manufacturer = manufacturer
 
         # Energy
-        self.kcal          = kcal
+        self.kcal = kcal
 
         # Macronutrients
         self.carbohydrates = carbohydrates

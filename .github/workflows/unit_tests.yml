@@ -44,3 +44,5 @@ jobs:
           flags: unittests
           name: codecov-umbrella
           verbose: true
+          ignore:
+            - "src/ui"

@@ -22,7 +22,8 @@ import typing
 from src.common.statics                 import Program
 from src.gui.gui_menu                   import GUIMenu
 from src.gui.screens.callback_classes   import Button
-from src.gui.screens.manage_ingredients import manage_ingredients_menu
+
+from src.gui.screens.ingredient_menu.manage_ingredients import manage_ingredients_menu
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI

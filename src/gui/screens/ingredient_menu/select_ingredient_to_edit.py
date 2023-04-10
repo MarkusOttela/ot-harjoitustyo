@@ -19,9 +19,10 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.gui.gui_menu                 import GUIMenu
-from src.gui.screens.edit_ingredient  import edit_ingredient
 from src.gui.screens.show_message     import show_message
 from src.gui.screens.callback_classes import Button
+
+from src.gui.screens.ingredient_menu.edit_ingredient import edit_ingredient
 
 if typing.TYPE_CHECKING:
     from src.database.ingredient_database import IngredientDatabase

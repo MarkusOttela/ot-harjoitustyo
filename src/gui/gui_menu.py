@@ -31,7 +31,7 @@ if typing.TYPE_CHECKING:
 class GUIMenu:
     """GUIMenu is a wrapper for Calorinator's Pygame-menu that holds settings etc."""
 
-    def __init__(self,
+    def __init__(self,  # pylint: disable=too-many-arguments
                  gui              : 'GUI',
                  menu_title       : str,
                  columns          : int           = 1,

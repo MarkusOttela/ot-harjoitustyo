@@ -21,8 +21,7 @@ import typing
 from typing import Any
 
 from src.common.conversion import convert_input_fields
-from src.common.statics    import Color, ColorScheme
-from src.common.validation import floats
+from src.common.statics    import Color
 
 from src.diet.ingredient import ingredient_metadata, Ingredient
 
@@ -31,18 +30,20 @@ from src.gui.screens.callback_classes import Button, StringInput
 from src.gui.screens.get_yes          import get_yes
 from src.gui.screens.show_message     import show_message
 
+from src.gui.screens.ingredient_menu.add_ingredient import add_ingredient_attributes
+
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI
     from src.database.ingredient_database import IngredientDatabase
 
 
-def edit_ingredient(gui             : 'GUI',
+def edit_ingredient(gui             : 'GUI',  # pylint: disable=too-many-locals
                     ingredient_db   : 'IngredientDatabase',
                     orig_ingredient : Ingredient,
                     ) -> None:
     """Render the `Edit Ingredient` menu."""
-    title = 'Edit Ingredient'
-    failed_conversions: dict[str, None] = {}
+    title              = 'Edit Ingredient'
+    failed_conversions = {}  # type: dict[str, None]
 
     while True:
         keys        = list(ingredient_metadata.keys())
@@ -56,24 +57,7 @@ def edit_ingredient(gui             : 'GUI',
 
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
 
-        for i, k in enumerate(keys):
-
-            if i in [2, 3, 9, 11, 15, 23, 24]:
-                menu.menu.add.label('\n', font_size=5)  # Spacing
-
-            warning_color = Color.RED.value
-            normal_color  = ColorScheme.FONT_COLOR.value
-
-            valid_chars = None if ingredient_metadata[k][1] == str else floats
-            font_color  = warning_color if k in failed_conversions else normal_color
-            menu.menu.add.text_input(f'{fields[i]}: ',
-                                     onchange=string_inputs[k].set_value,
-                                     default=string_inputs[k].value,
-                                     valid_chars=valid_chars,
-                                     maxchar=19,
-                                     font_color=font_color)
-
-        failed_conversions.clear()
+        add_ingredient_attributes(menu, keys, string_inputs, failed_conversions, fields)
 
         return_button = Button(menu, closes_menu=True)
         done_button   = Button(menu, closes_menu=True)

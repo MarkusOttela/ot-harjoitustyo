@@ -36,7 +36,7 @@ if typing.TYPE_CHECKING:
     from src.database.ingredient_database import IngredientDatabase
 
 
-def add_ingredient_menu(gui           : 'GUI',
+def add_ingredient_menu(gui           : 'GUI',  # pylint: disable=too-many-locals
                         ingredient_db : 'IngredientDatabase'
                         ) -> None:
     """Render the `Add Ingredient` menu."""
@@ -72,24 +72,7 @@ def add_ingredient_menu(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
 
-        for i, k in enumerate(keys):
-
-            if i in [2, 3, 9, 11, 15, 23, 24]:
-                menu.menu.add.label('\n', font_size=5)  # Spacing
-
-            warning_color = Color.RED.value
-            normal_color  = ColorScheme.FONT_COLOR.value
-
-            valid_chars = None if ingredient_metadata[k][1] == str else floats
-            font_color  = warning_color if k in failed_conversions else normal_color
-            menu.menu.add.text_input(f'{fields[i]}: ',
-                                     onchange=string_inputs[k].set_value,
-                                     default=string_inputs[k].value,
-                                     valid_chars=valid_chars,
-                                     maxchar=19,
-                                     font_color=font_color)
-
-        failed_conversions.clear()
+        add_ingredient_attributes(menu, keys, string_inputs, failed_conversions, fields)
 
         return_button = Button(menu, closes_menu=True)
         done_button   = Button(menu, closes_menu=True)
@@ -121,3 +104,28 @@ def add_ingredient_menu(gui           : 'GUI',
                 ingredient_db.replace(new_ingredient)
                 show_message(gui, title, 'Ingredient has been replaced.')
                 return
+
+
+def add_ingredient_attributes(menu:               GUIMenu,
+                              keys:               list[Any],
+                              string_inputs:      dict[str, StringInput],
+                              failed_conversions: dict[str, None],
+                              fields:             list[Any]) -> None:
+    """Add the ingredient attributes."""
+    for i, k in enumerate(keys):
+
+        if i in [2, 3, 9, 11, 15, 23, 24]:
+            menu.menu.add.label('\n', font_size=5)  # Spacing
+
+        warning_color = Color.RED.value
+        normal_color = ColorScheme.FONT_COLOR.value
+
+        valid_chars = None if ingredient_metadata[k][1] == str else floats
+        font_color = warning_color if k in failed_conversions else normal_color
+        menu.menu.add.text_input(f'{fields[i]}: ',
+                                 onchange=string_inputs[k].set_value,
+                                 default=string_inputs[k].value,
+                                 valid_chars=valid_chars,
+                                 maxchar=19,
+                                 font_color=font_color)
+    failed_conversions.clear()

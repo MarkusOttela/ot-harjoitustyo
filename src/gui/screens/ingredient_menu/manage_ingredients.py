@@ -6,12 +6,12 @@ Calorienator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorienator.
-Calorienator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorienator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorienator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorienator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -19,9 +19,10 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.gui.gui_menu                          import GUIMenu
-from src.gui.screens.add_ingredient            import add_ingredient_menu
 from src.gui.screens.callback_classes          import Button
-from src.gui.screens.select_ingredient_to_edit import select_ingredient_to_edit
+
+from src.gui.screens.ingredient_menu.add_ingredient            import add_ingredient_menu
+from src.gui.screens.ingredient_menu.select_ingredient_to_edit import select_ingredient_to_edit
 
 if typing.TYPE_CHECKING:
     from src.gui.gui import GUI

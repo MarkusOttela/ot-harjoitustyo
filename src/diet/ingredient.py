@@ -6,12 +6,12 @@ Calorinator - Diet tracker
 Copyright (C) 2023 Markus Ottela
 
 This file is part of Calorinator.
-Calorinator is free software: you can redistribute it and/or modify it under the 
-terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
-version. Calorinator is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+Calorinator is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. Calorinator is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
@@ -71,12 +71,15 @@ ingredient_metadata = {
     'creatine'  : ('Creatine',  float),
 }
 
-class Ingredient:
+class Ingredient:  # pylint: disable=too-many-instance-attributes
     """\
     Food ingredient is an object that represents something
     drinks, servings, and mealpreps are cooked from.
+
+    Note: pylint suppressions here because Ingredient is more or less a data-class
+          that holds all metadata for the specified ingredient.
     """
-    def __init__(self,
+    def __init__(self,  # pylint: disable=too-many-arguments, too-many-locals
                  name         : str,
                  manufacturer : str = '',
 
@@ -239,7 +242,7 @@ class Ingredient:
         """Initialize Ingredient from dictionary."""
         ingredient = Ingredient(purp_dictionary['name'])
 
-        for key in ingredient.__dict__.keys():
+        for key in ingredient.__dict__:
             if not key in purp_dictionary.keys():
                 raise KeyError(f"Missing key '{key}'")
             setattr(ingredient, key, purp_dictionary[key])

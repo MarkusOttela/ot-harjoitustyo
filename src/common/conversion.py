@@ -34,9 +34,10 @@ def str_to_float(key              : str,
         validate_float(key, conversion, negative_allowed)
         return conversion
 
-    except (TypeError, ValueError, ValidationError):
+    except (TypeError, ValueError, ValidationError) as conv_error:
         specifier = '' if negative_allowed else 'positive'
-        raise ConversionError(f"'{string}' is not a valid {specifier} decimal number.")
+        raise ConversionError(f"'{string}' is not a valid "
+                              f"{specifier} decimal number.") from conv_error
 
 
 def str_to_int(key              : str,
@@ -49,9 +50,9 @@ def str_to_int(key              : str,
         validate_int(key, conversion, negative_allowed)
         return conversion
 
-    except (TypeError, ValueError, ValidationError):
+    except (TypeError, ValueError, ValidationError) as conv_error:
         specifier = '' if negative_allowed else 'positive'
-        raise ConversionError(f"'{string}' is not a valid {specifier} integer.")
+        raise ConversionError(f"'{string}' is not a valid {specifier} integer.") from conv_error
 
 
 def convert_input_fields(string_inputs : dict[str, StringInput],

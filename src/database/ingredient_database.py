@@ -28,6 +28,7 @@ from src.common.validation import validate_params
 from src.diet.ingredient   import Ingredient, ingredient_metadata
 from src.common.types      import DatabaseTypes
 
+
 column_type_dict : dict[Any, str] = {
     str   : DatabaseTypes.TEXT.value,
     float : DatabaseTypes.REAL.value
@@ -92,8 +93,8 @@ class IngredientDatabase:
 
     def get_list_of_ingredients(self) -> list[Ingredient]:
         """Get list of Ingredients in the database."""
-        sql_command  = f'SELECT '
-        sql_command += f', '.join(list(ingredient_metadata.keys()))
+        sql_command  =  'SELECT '
+        sql_command +=  ', '.join(list(ingredient_metadata.keys()))
         sql_command += f' FROM {self.table}'
 
         results     = self.cursor.execute(sql_command).fetchall()
@@ -107,8 +108,8 @@ class IngredientDatabase:
         """Get Ingredient from database by name (and manufacturer)."""
         validate_params(self.get_ingredient, locals())
 
-        sql_command  = f'SELECT '
-        sql_command += f', '.join(list(ingredient_metadata.keys())[1:])
+        sql_command  =  'SELECT '
+        sql_command +=  ', '.join(list(ingredient_metadata.keys())[1:])
         sql_command += f' FROM {self.table}'
         sql_command += f" WHERE {ingredient_metadata['name'][0]} == '{name}'"
 

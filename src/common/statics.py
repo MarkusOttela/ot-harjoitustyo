@@ -22,7 +22,7 @@ from enum import Enum
 class Program(Enum):
     """Program information and global settings."""
     NAME       = 'Calorinator'
-    VERSION    = '0.23.03'
+    VERSION    = '0.23.04'
     RESOLUTION = (1600, 900)
     FPS        = 60
 

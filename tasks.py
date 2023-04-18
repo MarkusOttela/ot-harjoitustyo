@@ -37,3 +37,8 @@ def mypy(ctx):
 @task
 def coverage_report(ctx):
     ctx.run("python3 -m pytest tests --cov=src/ --cov-report=html", pty=True)
+
+
+@task
+def lint(ctx):
+    ctx.run("poetry run python3 -m pylint src --rcfile=.pylintrc", pty=True)

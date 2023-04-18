@@ -45,7 +45,7 @@ class IncompleteConversion(CalorinatorException):
 
 
 @contextmanager
-def ignored(*exceptions: Type[BaseException]) -> Iterator[Any]:
+def ignored(*exceptions) -> Iterator[Any]:
     """Ignore an exception."""
     try:
         yield

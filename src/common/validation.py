@@ -81,7 +81,7 @@ def validate_bool(key   : str,
 
 
 def validate_params(func   : Callable[[Any], Any],
-                    locals_: dict[Any, Any]
+                    locals_: dict,
                     ) -> None:
     """Validate parameters given to a function."""
     arg_names   = inspect.getfullargspec(func).args

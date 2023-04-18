@@ -27,7 +27,18 @@ if typing.TYPE_CHECKING:
 
 def ensure_dir(directory: str) -> None:
     """Ensure directory exists."""
+    if not directory.endswith('/'):
+        directory += '/'
+
     name = os.path.dirname(directory)
     if not os.path.exists(name):
         with ignored(FileExistsError):
             os.makedirs(name)
+
+
+def write_bytes(path_to_file: str, data: bytes) -> None:
+    """Ensure bytestring is written to the disc."""
+    with open(path_to_file, 'wb') as f:
+        f.write(data)
+        f.flush()
+        os.fsync(f)

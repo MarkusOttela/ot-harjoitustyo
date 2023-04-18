@@ -19,11 +19,12 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import sys
 import typing
 
-from src.common.statics                 import Program
-from src.ui.gui_menu                   import GUIMenu
-from src.ui.screens.callback_classes   import Button
+from src.common.statics              import Program
+from src.ui.gui_menu                 import GUIMenu
+from src.ui.screens.callback_classes import Button
 
 from src.ui.screens.ingredient_menu.manage_ingredients import manage_ingredients_menu
+from src.ui.screens.login.create_new_user              import create_new_user
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -37,17 +38,23 @@ def main_menu(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, Program.NAME.value)
 
-        ingredient_menu = Button(menu, closes_menu=True)
-        exit_button     = Button(menu, closes_menu=True)
+        create_user_bt   = Button(menu, closes_menu=True)
+        ingredient_menu_bt = Button(menu, closes_menu=True)
+        exit_bt     = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Manage Ingredients',  action=ingredient_menu.set_pressed)
-        menu.menu.add.button('Exit',                action=exit_button.set_pressed)
+        menu.menu.add.button('Create New User',    action=create_user_bt.set_pressed)
+        menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)
+        menu.menu.add.button('Exit',               action=exit_bt.set_pressed)
 
         menu.start()
 
-        if ingredient_menu.pressed:
+        if ingredient_menu_bt.pressed:
             manage_ingredients_menu(gui, ingredient_db)
             continue
 
-        if exit_button.pressed:
+        if create_user_bt.pressed:
+            user = create_new_user(gui)
+            print(repr(user))
+
+        if exit_bt.pressed:
             sys.exit()

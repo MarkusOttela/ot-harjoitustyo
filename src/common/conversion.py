@@ -56,10 +56,10 @@ def str_to_int(key              : str,
 
 
 def convert_input_fields(string_inputs : dict,
-                         keys          : list[str],
-                         fields        : list[str],
-                         field_types   : list[type]
-                         ) -> tuple[bool, dict]:
+                         keys          : list,
+                         fields        : list,
+                         field_types   : list
+                         ) -> tuple:
     """Convert input fields of `Add Ingredient` menu to correct data types."""
     converted_values   : dict = {}
     failed_conversions : dict = {}

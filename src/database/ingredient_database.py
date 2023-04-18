@@ -91,7 +91,7 @@ class IngredientDatabase:
         """Returns True if ingredient exists in the database."""
         return any(i == ingredient for i in self.get_list_of_ingredients())
 
-    def get_list_of_ingredients(self) -> list[Ingredient]:
+    def get_list_of_ingredients(self) -> list:
         """Get list of Ingredients in the database."""
         sql_command  =  'SELECT '
         sql_command +=  ', '.join(list(ingredient_metadata.keys()))

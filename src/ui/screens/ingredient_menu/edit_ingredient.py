@@ -47,8 +47,8 @@ def edit_ingredient(gui             : 'GUI',
 
     while True:
         keys        = list(ingredient_metadata.keys())
-        fields      = [ingredient_metadata[k][0] for k in keys]  # type: list[Any]
-        field_types = [ingredient_metadata[k][1] for k in keys]  # type: list[Any]
+        fields      = [ingredient_metadata[k][0] for k in keys]  # type: list
+        field_types = [ingredient_metadata[k][1] for k in keys]  # type: list
 
         string_inputs = {k: StringInput() for k in keys}  # type: dict
 

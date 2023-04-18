@@ -57,6 +57,8 @@ Calorinator supports the user in maintaining their diet by
 * [Testing](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/04%20-%20Testing.md)
 * [Hour Tracker](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/05%20-%20Hour%20Tracker.md)
 * [Changelog](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/06%20-%20Changelog.md)
+* [Architecture](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/08%20-%20Architecture.md)
+
 
 ---
 

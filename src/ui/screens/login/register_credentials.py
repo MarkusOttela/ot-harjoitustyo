@@ -49,8 +49,14 @@ def register_credentials(gui: 'GUI') -> tuple:
                                  onchange=user_name.set_value,
                                  default=user_name.value)
 
-        menu.menu.add.text_input(f'Password: ',         onchange=password_1.set_value, password=True)
-        menu.menu.add.text_input(f'Password (again): ', onchange=password_2.set_value, password=True)
+        menu.menu.add.text_input(
+            f'Password: ',
+            onchange=password_1.set_value,
+            password=True)
+        menu.menu.add.text_input(
+            f'Password (again): ',
+            onchange=password_2.set_value,
+            password=True)
 
         menu.menu.add.button('Done',   action=menu.menu.disable)
         menu.menu.add.label(f'')

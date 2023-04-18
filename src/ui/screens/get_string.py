@@ -37,7 +37,10 @@ def get_string(gui:         'GUI',
     menu = GUIMenu(gui, title)
 
     menu.menu.add.label(f'{message}\n')
-    menu.menu.add.text_input(f'{description}: ', onchange=user_input.set_value, password=is_password)
+    menu.menu.add.text_input(
+        f'{description}: ',
+        onchange=user_input.set_value,
+        password=is_password)
     menu.menu.add.button(f'Done', action=menu.menu.disable)
     menu.start()
 

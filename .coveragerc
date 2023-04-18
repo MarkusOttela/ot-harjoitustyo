@@ -2,8 +2,10 @@
 [report]
 
 # Only evaluate source files (i.e. exclude unit tests from coverage)
-include = */src/*
-omit = */src/gui/*
+
+# Note: Finding the right switches to omit directories for pytest is a WIP.
+# The coverage is defined in https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/tasks.py#L40
+# TODO: Fix
 
 # Regexes for lines to exclude from consideration
 exclude_lines =

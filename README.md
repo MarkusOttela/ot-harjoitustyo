@@ -11,7 +11,7 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/markusottela/ot-harjoitustyo/badge)](https://www.codefactor.io/repository/github/markusottela/ot-harjoitustyo)
 
-The program supports the user in maintaining their diet by
+Calorinator supports the user in maintaining their diet by
   1. Tracking their meals, and by counting the nutritional values of each meal
   2. Informing them about the daily consumption in relation to their goal values
   3. Creating statistics about food and nutrient consumption, and progress of the diet
@@ -49,7 +49,7 @@ The program supports the user in maintaining their diet by
 * Linux / Python 3.8+
 
 
-### Documentation
+## Documentation
 
 * [User Manual](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/01%20-%20User%20Manual.md)
 * [Functional Specification](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/02%20-%20Functional%20Specification.md)
@@ -60,22 +60,22 @@ The program supports the user in maintaining their diet by
 
 ---
 
-### Installation
+## Installation
 
 ##### 1. Install dependencies
 
 ```
 $ sudo apt update
 $ sudo apt install -y curl git
-$ curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/poetry python3 -
-$ echo "export PATH=\"\$HOME/poetry/bin:\$PATH\"" >> $HOME/.bashrc && bash
-$ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.bashrc && bash
+$ curl -sSL https://install.python-poetry.org | POETRY_HOME=~/poetry python3 -
+$ echo "export PATH=\"\~/poetry/bin:\$PATH\"" >> ~/.bashrc && bash
+$ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> ~/.bashrc && bash
 ```
 
 ##### 2. Install Calorinator
 ```
-$ git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
-$ cd $HOME/calorinator/
+$ git clone https://github.com/MarkusOttela/ot-harjoitustyo.git ~/calorinator
+$ cd ~/calorinator/
 $ poetry install
 ```
 
@@ -89,49 +89,48 @@ $ poetry run invoke start
 Or if you prefer an alias
 
 ```
-$ echo 'alias calorinator="poetry run python3 $HOME/calorinator/calorinator.py"' >> $HOME/.bashrc && bash
+$ echo 'alias calorinator="poetry run python3 ~/calorinator/calorinator.py"' >> ~/.bashrc && bash
 $ calorinator 
 ```
 
 ---
 
-### Development
+## Development
 
-##### 1. Install dependencies
 
-```
-$ sudo apt update
-$ sudo apt install -y curl git
-$ curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/poetry python3 -
-$ echo "export PATH=\"\$HOME/poetry/bin:\$PATH\"" >> $HOME/.bashrc && bash
-$ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.bashrc && bash
-```
+### Available Tasks
 
-##### 2. Install Calorinator
-```
-$ git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
-$ cd $HOME/calorinator/
-$ poetry install
-```
 
-##### 3. Available Tasks
+**Unit tests**
 
-**Launch**
-```
-$ poetry run invoke start
-```
-
-**Unit Tests**
 ```
 $ poetry run invoke test
 ```
 
+**Unit test coverage report**
+
+```
+$ poetry run invoke coverage-report
+$ xdg-open ~/calorinator/htmlcov/index.html
+```
+
+
+### Linters
+
+**pylint style checks**
+
+```
+$ poetry run invoke lint
+```
+
 **mypy type checker**
+
 ```
 $ poetry run invoke mypy
 ```
 
-**Coverage Report**
+**AutoPEP8 linter**
+
 ```
-$ poetry run invoke coverage-report
+$ poetry run invoke pep8
 ```

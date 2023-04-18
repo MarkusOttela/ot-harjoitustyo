@@ -47,3 +47,7 @@ def coverage_report(ctx):
 @task
 def lint(ctx):
     ctx.run("poetry run python3 -m pylint src --rcfile=.pylintrc", pty=True)
+
+
+def pep8(ctx):
+    ctx.run("poetry run autopep8 --in-place --recursive src", pty=True)

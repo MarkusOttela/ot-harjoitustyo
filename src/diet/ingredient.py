@@ -214,7 +214,7 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
         return '\n'.join(lines)
 
     @classmethod
-    def from_dict(cls, purp_dictionary: dict[str, Any]) -> 'Ingredient':
+    def from_dict(cls, purp_dictionary: dict) -> 'Ingredient':
         """Initialize Ingredient from dictionary."""
         ingredient = Ingredient(purp_dictionary['name'])
 

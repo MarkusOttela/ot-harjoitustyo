@@ -43,14 +43,14 @@ def edit_ingredient(gui             : 'GUI',
                     ) -> None:
     """Render the `Edit Ingredient` menu."""
     title              = 'Edit Ingredient'
-    failed_conversions = {}  # type: dict[str, None]
+    failed_conversions = {}  # type: dict
 
     while True:
         keys        = list(ingredient_metadata.keys())
         fields      = [ingredient_metadata[k][0] for k in keys]  # type: list[Any]
         field_types = [ingredient_metadata[k][1] for k in keys]  # type: list[Any]
 
-        string_inputs = {k: StringInput() for k in keys}  # type: dict[str, StringInput]
+        string_inputs = {k: StringInput() for k in keys}  # type: dict
 
         for k in string_inputs.keys():
             string_inputs[k].set_value(getattr(orig_ingredient, k))

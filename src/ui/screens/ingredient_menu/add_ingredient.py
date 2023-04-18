@@ -45,7 +45,7 @@ def add_ingredient_menu(gui           : 'GUI',
     fields      = [ingredient_metadata[k][0] for k in keys]  # type: list[Any]
     field_types = [ingredient_metadata[k][1] for k in keys]  # type: list[Any]
 
-    failed_conversions : dict[str, None] = {}
+    failed_conversions : dict = {}
 
     string_inputs = {k: StringInput() for k in keys}
 
@@ -108,8 +108,8 @@ def add_ingredient_menu(gui           : 'GUI',
 
 def add_ingredient_attributes(menu:               GUIMenu,
                               keys:               list[Any],
-                              string_inputs:      dict[str, StringInput],
-                              failed_conversions: dict[str, None],
+                              string_inputs:      dict,
+                              failed_conversions: dict,
                               fields:             list[Any]) -> None:
     """Add the ingredient attributes."""
     for i, k in enumerate(keys):

@@ -55,14 +55,14 @@ def str_to_int(key              : str,
         raise ConversionError(f"'{string}' is not a valid {specifier} integer.") from conv_error
 
 
-def convert_input_fields(string_inputs : dict[str, StringInput],
+def convert_input_fields(string_inputs : dict,
                          keys          : list[str],
                          fields        : list[str],
                          field_types   : list[type]
-                         ) -> tuple[bool, dict[str, Any]]:
+                         ) -> tuple[bool, dict]:
     """Convert input fields of `Add Ingredient` menu to correct data types."""
-    converted_values   : dict[str, Any ] = {}
-    failed_conversions : dict[str, None] = {}
+    converted_values   : dict = {}
+    failed_conversions : dict = {}
     converted_value    : Any
 
     for key, name, field_type in zip(keys, fields, field_types):

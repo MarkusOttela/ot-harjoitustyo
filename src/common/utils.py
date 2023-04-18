@@ -35,10 +35,10 @@ def ensure_dir(directory: str) -> None:
 
 def write_bytes(path_to_file: str, data: bytes) -> None:
     """Ensure bytestring is written to the disc."""
-    with open(path_to_file, 'wb') as f:
-        f.write(data)
-        f.flush()
-        os.fsync(f)
+    with open(path_to_file, 'wb') as f_ptr:
+        f_ptr.write(data)
+        f_ptr.flush()
+        os.fsync(f_ptr)
 
 
 def get_list_of_user_account_names() -> list:

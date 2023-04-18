@@ -69,8 +69,8 @@ class UserCredentials:
         userdata_dir   = f'{Directories.USERDATA.value}/{name}'
         credentials_db = f'{userdata_dir}/credentials.db'
 
-        with open(credentials_db, 'rb') as f:
-            data = f.read()
+        with open(credentials_db, 'rb') as f_ptr:
+            data = f_ptr.read()
 
         salt   = data[:CryptoLiterals.SALT_LENGTH.value]
         digest = data[CryptoLiterals.SALT_LENGTH.value:]
@@ -80,5 +80,5 @@ class UserCredentials:
 
         if secrets.compare_digest(digest, prup_digest):
             return UserCredentials(name, salt, purp_key)
-        else:
-            raise IncorrectPassword("Incorrect password")
+
+        raise IncorrectPassword("Incorrect password")

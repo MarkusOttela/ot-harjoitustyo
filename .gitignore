@@ -13,9 +13,6 @@ pytest_cache/
 .coverage
 coverage.xml
 
-# Poetry
-poetry.lock
-
 # User data
 user_data/
 

@@ -28,4 +28,4 @@ class User:
 
     def __repr__(self) -> str:
         """Format User attributes."""
-        return f"<User-object {id(self)}>\n    Username: {self.name}"
+        return f"<User-object {id(self)}> (Username: {self.name})"

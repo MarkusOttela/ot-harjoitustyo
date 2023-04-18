@@ -61,11 +61,11 @@ def main_menu(gui           : 'GUI',
 
             if create_user_bt.pressed:
                 user = create_new_user(gui)
-                print(repr(user))
+                print(f"Created {repr(user)}")
 
             if login_bt.pressed:
                 user = login_existing_user(gui)
-                print(repr(user))
+                print(f"Logged in {repr(user)}")
 
             if exit_bt.pressed:
                 sys.exit()

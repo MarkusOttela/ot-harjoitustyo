@@ -69,15 +69,15 @@ Calorinator supports the user in maintaining their diet by
 ```
 $ sudo apt update
 $ sudo apt install -y curl git
-$ curl -sSL https://install.python-poetry.org | POETRY_HOME=~/poetry python3 -
-$ echo "export PATH=\"\~/poetry/bin:\$PATH\"" >> ~/.bashrc && bash
-$ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> ~/.bashrc && bash
+$ curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/poetry python3 -
+$ echo "export PATH=\"\$HOME/poetry/bin:\$PATH\"" >> $HOME/.bashrc && bash
+$ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.bashrc && bash
 ```
 
 ##### 2. Install Calorinator
 ```
-$ git clone https://github.com/MarkusOttela/ot-harjoitustyo.git ~/calorinator
-$ cd ~/calorinator/
+$ git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
+$ cd $HOME/calorinator/
 $ poetry install
 ```
 
@@ -91,11 +91,9 @@ $ poetry run invoke start
 Or if you prefer an alias
 
 ```
-$ echo 'alias calorinator="poetry run python3 ~/calorinator/calorinator.py"' >> ~/.bashrc && bash
+$ echo 'alias calorinator="poetry run python3 $HOME/calorinator/calorinator.py"' >> $HOME/.bashrc && bash
 $ calorinator 
 ```
-
----
 
 ## Development
 
@@ -113,7 +111,7 @@ $ poetry run invoke test
 
 ```
 $ poetry run invoke coverage-report
-$ xdg-open ~/calorinator/htmlcov/index.html
+$ xdg-open $HOME/calorinator/htmlcov/index.html
 ```
 
 

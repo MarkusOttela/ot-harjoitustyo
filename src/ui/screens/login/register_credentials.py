@@ -32,15 +32,15 @@ def register_credentials(gui: 'GUI') -> tuple:
     title   = 'Create Account'
     message = 'Welcome! To start, enter your desired credentials.'
 
+    user_name = StringInput()
+
     while True:
         menu = GUIMenu(gui, title)
 
-        user_name  = StringInput()
         password_1 = StringInput()
         password_2 = StringInput()
         return_bt  = Button(menu, closes_menu=True)
 
-        menu.menu.add.label(message)
         menu.menu.add.label(f'{message}\n')
 
         menu.menu.add.text_input(f'Your name: ',

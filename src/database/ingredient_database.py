@@ -29,7 +29,7 @@ from src.diet.ingredient   import Ingredient, ingredient_metadata
 from src.common.types      import DatabaseTypes
 
 
-column_type_dict : dict[Any, str] = {
+column_type_dict : dict = {
     str   : DatabaseTypes.TEXT.value,
     float : DatabaseTypes.REAL.value
 }

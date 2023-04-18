@@ -18,9 +18,30 @@ The program supports the user in maintaining their diet by
 
 **Privacy preserving design**
 
-* Locally hosted, all persistent data encrypted
-* State-of-the-art cryptography (Argon2id, XChaCha20-Poly1305, BLAKE2b)
-* Web UI that can be used via Tailscale (WireGuard) 
+* Locally hosted, all persistent sensitive data encrypted
+* State-of-the-art primitives, all based on the [ChaCha](https://cr.yp.to/chacha/chacha-20080128.pdf) stream cipher.
+  * BLAKE2b cryptographic hash function
+    * Argon2id password hashing function
+  * ChaCha20 stream cipher
+    * XChaCha20-Poly1305 AEAD (IETF variant)
+    * Linux kernel primary DRNG
+
+
+## Progress
+
+* [x] Ingredient database
+* [x] User registration
+* [x] Password login
+* [ ] Initial survey
+* [ ] Daily tracking
+* [ ] Meal creation
+* [ ] Mealprep creation
+* [ ] Statistics
+
+
+### Stretch goals
+
+* [ ] Web UI
 
 
 ## Platform Support
@@ -55,7 +76,7 @@ $ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.b
 ```
 $ git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
 $ cd $HOME/calorinator/
-$ poetry install --without dev
+$ poetry install
 ```
 
 

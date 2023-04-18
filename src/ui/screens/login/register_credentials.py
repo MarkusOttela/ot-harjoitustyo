@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions           import ReturnToMainMenu
+from src.common.exceptions           import AbortMenuOperation
 from src.common.utils                import get_list_of_user_account_names
 from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import StringInput, Button
@@ -65,7 +65,7 @@ def register_credentials(gui: 'GUI') -> tuple:
         menu.start()
 
         if return_bt.pressed:
-            raise ReturnToMainMenu
+            raise AbortMenuOperation
 
         if user_name.value in accounts:
             show_message(gui, title, f"Error: The user account {user_name.value} already exists!")

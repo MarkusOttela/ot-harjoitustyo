@@ -48,7 +48,7 @@ class IncorrectPassword(CalorinatorException):
     """Exception raised when the user enters an incorrect password."""
 
 
-class ReturnToMainMenu(CalorinatorException):
+class AbortMenuOperation(CalorinatorException):
     """Exception raised when the user returns to main menu."""
 
 

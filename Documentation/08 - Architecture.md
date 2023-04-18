@@ -1,5 +1,5 @@
 
-# Class diagram
+# Program class hierarchy
 
 
 ```mermaid
@@ -10,4 +10,19 @@ classDiagram
     Main               "1" -- "1" GUI
     Main               "1" -- "1" IngredientDatabase
     User               "1" -- "1" UserCredentials
+```
+
+# Program exception hierarchy
+
+```mermaid
+classDiagram
+    
+    Exception            <|-- CalorinatorException
+    CalorinatorException <|-- DatabaseException 
+    DatabaseException    <|-- IngredientNotFound
+    CalorinatorException <|-- ValidationError 
+    CalorinatorException <|-- ConversionError 
+    CalorinatorException <|-- IncompleteConversion 
+    CalorinatorException <|-- IncorrectPassword 
+    CalorinatorException <|-- AbortMenuOperation 
 ```

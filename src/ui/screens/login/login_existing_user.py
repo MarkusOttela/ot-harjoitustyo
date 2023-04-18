@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions                import IncorrectPassword, ReturnToMainMenu
+from src.common.exceptions                import IncorrectPassword, AbortMenuOperation
 from src.common.security.user_credentials import UserCredentials
 from src.common.statics                   import Directories
 from src.common.utils                     import ensure_dir, get_list_of_user_account_names
@@ -65,7 +65,7 @@ def login_existing_user(gui: 'GUI') -> User:
         menu.start()
 
         if return_bt.pressed:
-            raise ReturnToMainMenu
+            raise AbortMenuOperation
 
         if not user_name_ds.value:
             show_message(gui, title, 'Error: No account selected')

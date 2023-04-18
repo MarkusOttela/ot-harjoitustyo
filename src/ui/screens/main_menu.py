@@ -19,6 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import sys
 import typing
 
+from src.common.exceptions import ReturnToMainMenu
 from src.common.statics              import Program
 from src.common.utils                import get_list_of_user_account_names
 from src.ui.gui_menu                 import GUIMenu
@@ -38,32 +39,36 @@ def main_menu(gui           : 'GUI',
               ) -> None:
     """Render the Main Menu."""
     while True:
-        menu = GUIMenu(gui, Program.NAME.value)
+        try:
+            menu = GUIMenu(gui, Program.NAME.value)
 
-        create_user_bt     = Button(menu, closes_menu=True)
-        login_bt           = Button(menu, closes_menu=True)
-        ingredient_menu_bt = Button(menu, closes_menu=True)
-        exit_bt            = Button(menu, closes_menu=True)
+            create_user_bt     = Button(menu, closes_menu=True)
+            login_bt           = Button(menu, closes_menu=True)
+            ingredient_menu_bt = Button(menu, closes_menu=True)
+            exit_bt            = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Create New User',    action=create_user_bt.set_pressed)
-        if get_list_of_user_account_names():
-            menu.menu.add.button('Login Existing User', action=login_bt.set_pressed)
-        menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)
-        menu.menu.add.button('Exit',               action=exit_bt.set_pressed)
+            menu.menu.add.button('Create New User',    action=create_user_bt.set_pressed)
+            if get_list_of_user_account_names():
+                menu.menu.add.button('Login Existing User', action=login_bt.set_pressed)
+            menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)
+            menu.menu.add.button('Exit',               action=exit_bt.set_pressed)
 
-        menu.start()
+            menu.start()
 
-        if ingredient_menu_bt.pressed:
-            manage_ingredients_menu(gui, ingredient_db)
+            if ingredient_menu_bt.pressed:
+                manage_ingredients_menu(gui, ingredient_db)
+                continue
+
+            if create_user_bt.pressed:
+                user = create_new_user(gui)
+                print(repr(user))
+
+            if login_bt.pressed:
+                user = login_existing_user(gui)
+                print(repr(user))
+
+            if exit_bt.pressed:
+                sys.exit()
+
+        except ReturnToMainMenu:
             continue
-
-        if create_user_bt.pressed:
-            user = create_new_user(gui)
-            print(repr(user))
-
-        if login_bt.pressed:
-            user = login_existing_user(gui)
-            print(repr(user))
-
-        if exit_bt.pressed:
-            sys.exit()

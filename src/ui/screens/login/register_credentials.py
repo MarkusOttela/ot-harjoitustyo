@@ -18,7 +18,9 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.screens.get_string import get_string
+from src.common.exceptions           import ReturnToMainMenu
+from src.ui.gui_menu                 import GUIMenu
+from src.ui.screens.callback_classes import StringInput, Button
 from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
@@ -27,17 +29,38 @@ if typing.TYPE_CHECKING:
 
 def register_credentials(gui: 'GUI') -> tuple:
     """Get credentials for new user."""
-    title = 'Create Account'
+    title   = 'Create Account'
     message = 'Welcome! To start, enter your desired credentials.'
 
-    user_name = get_string(gui, title, message, 'Username')
-
     while True:
-        password1 = get_string(gui, title, message, 'Password',          is_password=True)
-        password2 = get_string(gui, title, message, 'Password (repeat)', is_password=True)
-        if password1 != password2:
-            show_message(gui, title, "Error: Passwords did not match!")
-            continue
-        break
+        menu = GUIMenu(gui, title)
 
-    return user_name, password1
+        user_name  = StringInput()
+        password_1 = StringInput()
+        password_2 = StringInput()
+        return_bt  = Button(menu, closes_menu=True)
+
+        menu.menu.add.label(message)
+        menu.menu.add.label(f'{message}\n')
+
+        menu.menu.add.text_input(f'Your name: ',
+                                 onchange=user_name.set_value,
+                                 default=user_name.value)
+
+        menu.menu.add.text_input(f'Password: ',         onchange=password_1.set_value, password=True)
+        menu.menu.add.text_input(f'Password (again): ', onchange=password_2.set_value, password=True)
+
+        menu.menu.add.button('Done',   action=menu.menu.disable)
+        menu.menu.add.label(f'')
+        menu.menu.add.button('Return', return_bt.set_pressed)
+
+        menu.start()
+
+        if return_bt.pressed:
+            raise ReturnToMainMenu
+
+        if password_1.value == password_2.value:
+            return user_name.value, password_1.value
+
+        else:
+            show_message(gui, title, "Error: passwords did not match!")

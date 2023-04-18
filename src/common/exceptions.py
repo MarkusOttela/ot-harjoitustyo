@@ -48,6 +48,10 @@ class IncorrectPassword(CalorinatorException):
     """Exception raised when the user enters an incorrect password."""
 
 
+class ReturnToMainMenu(CalorinatorException):
+    """Exception raised when the user returns to main menu."""
+
+
 @contextmanager
 def ignored(*exceptions: Any) -> Iterator:
     """Ignore an exception."""

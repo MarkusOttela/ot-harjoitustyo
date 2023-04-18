@@ -17,7 +17,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 from contextlib import contextmanager
-from typing     import Any, Iterator, Type
+from typing     import Any, Iterator
 
 
 class CalorinatorException(Exception):
@@ -45,7 +45,7 @@ class IncompleteConversion(CalorinatorException):
 
 
 @contextmanager
-def ignored(*exceptions) -> Iterator:
+def ignored(*exceptions: Any) -> Iterator:
     """Ignore an exception."""
     try:
         yield

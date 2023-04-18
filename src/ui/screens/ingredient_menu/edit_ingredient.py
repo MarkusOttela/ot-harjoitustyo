@@ -18,8 +18,6 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from typing import Any
-
 from src.common.conversion import convert_input_fields
 from src.common.statics    import Color
 

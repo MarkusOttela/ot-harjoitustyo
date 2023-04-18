@@ -18,8 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import sqlite3
 
-from enum   import Enum
-from typing import Any
+from enum import Enum
 
 from src.common.exceptions import IngredientNotFound
 from src.common.statics    import DatabaseFileNames, Directories

@@ -21,8 +21,6 @@ from typing import Any
 from src.common.exceptions import ConversionError, ValidationError
 from src.common.validation import validate_float, validate_int
 
-from src.ui.screens.callback_classes import StringInput
-
 
 def str_to_float(key              : str,
                  string           : str,

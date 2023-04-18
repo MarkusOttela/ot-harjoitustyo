@@ -19,6 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import os
 import typing
 
+from src.common.exceptions import IncorrectPassword
 from src.common.security.user_credentials import UserCredentials
 from src.common.statics                   import Directories
 from src.common.utils                     import ensure_dir, get_list_of_user_account_names
@@ -60,9 +61,12 @@ def login_existing_user(gui: 'GUI') -> User:
         if not user_name_ds.value:
             show_message(gui, title, 'Error: No account selected')
             continue
-        break
 
-    password  = get_string(gui, title, 'To log in, please enter your password.', 'Password', is_password=True)
-    user_credentials = UserCredentials.from_password(user_name_ds.value, password)
-    user             = User(user_credentials)
-    return user
+        password = get_string(gui, title, 'To log in, please enter your password.', 'Password', is_password=True)
+
+        try:
+            user_credentials = UserCredentials.from_password(user_name_ds.value, password)
+        except IncorrectPassword as f:
+            show_message(gui, title, f"Error: {f}")
+            continue
+        return User(user_credentials)

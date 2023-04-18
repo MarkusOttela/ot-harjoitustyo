@@ -16,10 +16,9 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-import os
 import typing
 
-from src.common.exceptions import IncorrectPassword
+from src.common.exceptions                import IncorrectPassword, ReturnToMainMenu
 from src.common.security.user_credentials import UserCredentials
 from src.common.statics                   import Directories
 from src.common.utils                     import ensure_dir, get_list_of_user_account_names
@@ -27,9 +26,8 @@ from src.common.utils                     import ensure_dir, get_list_of_user_ac
 from src.entities.user import User
 
 from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import DropSelection
-from src.ui.screens.get_string       import get_string
-from src.ui.screens.show_message import show_message
+from src.ui.screens.callback_classes import DropSelection, Button, StringInput
+from src.ui.screens.show_message     import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -44,28 +42,39 @@ def login_existing_user(gui: 'GUI') -> User:
 
     title = 'Login existing user'
 
-    while True:
-        menu  = GUIMenu(gui, title)
+    user_name_ds = DropSelection()
+    default_un   = None
 
-        user_name_ds = DropSelection()
+    while True:
+        menu = GUIMenu(gui, title)
+
+        return_bt = Button(menu, closes_menu=True)
+        password  = StringInput()
 
         menu.menu.add.dropselect('Select User Account',
                                  onreturn=user_name_ds.set_value,
                                  items=sel_items,
-                                 default=None,
+                                 default=default_un,
                                  selection_box_width=280)
 
+        menu.menu.add.text_input(f'Password: ', onchange=password.set_value, password=True)
         menu.menu.add.button('Done', action=menu.menu.disable)
+        menu.menu.add.label(f'')
+        menu.menu.add.button('Return', return_bt.set_pressed)
+
         menu.start()
+
+        if return_bt.pressed:
+            raise ReturnToMainMenu
 
         if not user_name_ds.value:
             show_message(gui, title, 'Error: No account selected')
             continue
 
-        password = get_string(gui, title, 'To log in, please enter your password.', 'Password', is_password=True)
+        default_un = accounts.index(user_name_ds.value)
 
         try:
-            user_credentials = UserCredentials.from_password(user_name_ds.value, password)
+            user_credentials = UserCredentials.from_password(user_name_ds.value, password.value)
         except IncorrectPassword as f:
             show_message(gui, title, f"Error: {f}")
             continue

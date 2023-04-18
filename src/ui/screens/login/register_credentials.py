@@ -21,7 +21,7 @@ import typing
 from src.common.exceptions           import ReturnToMainMenu
 from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import StringInput, Button
-from src.ui.screens.show_message import show_message
+from src.ui.screens.show_message     import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

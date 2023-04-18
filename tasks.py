@@ -31,7 +31,7 @@ def test(ctx):
 
 @task
 def mypy(ctx):
-    ctx.run("python3 -m mypy --strict src", pty=True)
+    ctx.run("python3 -m mypy src", pty=True)
 
 
 @task

@@ -77,8 +77,8 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
     Food ingredient is an object that represents something
     drinks, servings, and mealpreps are cooked from.
 
-    Note: The pylint suppressions here are because Ingredient is more or less
-          a data-class that holds all metadata for the specified ingredient.
+    Note: The `pylint: disable=` suppressions here are because Ingredient is more
+          or less a data-class that holds all metadata for the specified ingredient.
     """
 
     def __init__(self,  # pylint: disable=too-many-arguments, too-many-locals, too-many-statements

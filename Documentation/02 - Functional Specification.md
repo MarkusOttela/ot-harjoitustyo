@@ -25,9 +25,12 @@ The program supports the user in maintaining their diet by
   * User can log in, or register a new account
 
 
-**User registration**
+**DONE: User registration**
   * The user selects a username that hasn't been reserved locally yet
   * The user sets a password for their account
+
+
+**Initial Survey**
   * The user enters their 
     * Initial weight, height, body circumferences and skin-fold information
     * Diet goals (target fat percentage, body mass index (BMI) and waist circumference)
@@ -37,7 +40,7 @@ The program supports the user in maintaining their diet by
     * User's daily calorie goal based on given values
 
 
-**Login**
+**DONE: Login**
   * The user selects their username from list
   * The user enters their password
   * The user is greeted with the main menu
@@ -57,7 +60,7 @@ The program supports the user in maintaining their diet by
     * Exits the program
 
 
-**Ingredient Database**
+**DONE: Ingredient Database**
   * The system comes with pre-generated initial ingredient database
   * The user can add ingredients to their own database
   * The user can export their ingredient database (users can create content)

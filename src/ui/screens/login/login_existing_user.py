@@ -28,6 +28,7 @@ from src.entities.user import User
 from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import DropSelection
 from src.ui.screens.get_string       import get_string
+from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -41,21 +42,27 @@ def login_existing_user(gui: 'GUI') -> User:
     sel_items = [(a, a) for a in accounts]
 
     title = 'Login existing user'
-    menu  = GUIMenu(gui, title)
 
-    user_name_ds = DropSelection()
+    while True:
+        menu  = GUIMenu(gui, title)
 
-    menu.menu.add.dropselect('Select User Account',
-                             onreturn=user_name_ds.set_value,
-                             items=sel_items,
-                             default=None,
-                             selection_box_width=280)
+        user_name_ds = DropSelection()
 
-    menu.menu.add.button('Done', action=menu.menu.disable)
-    menu.start()
+        menu.menu.add.dropselect('Select User Account',
+                                 onreturn=user_name_ds.set_value,
+                                 items=sel_items,
+                                 default=None,
+                                 selection_box_width=280)
 
-    user_name = user_name_ds.value
+        menu.menu.add.button('Done', action=menu.menu.disable)
+        menu.start()
+
+        if not user_name_ds.value:
+            show_message(gui, title, 'Error: No account selected')
+            continue
+        break
+
     password  = get_string(gui, title, 'To log in, please enter your password.', 'Password', is_password=True)
-    user_credentials = UserCredentials.from_password(user_name, password)
+    user_credentials = UserCredentials.from_password(user_name_ds.value, password)
     user             = User(user_credentials)
     return user

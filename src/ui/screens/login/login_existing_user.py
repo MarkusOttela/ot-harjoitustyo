@@ -53,7 +53,7 @@ def login_existing_user(gui: 'GUI') -> User:
 
         menu.menu.add.dropselect('Select User Account',
                                  onreturn=user_name_ds.set_value,
-                                 items=sel_items,
+                                 items=sel_items,  # type: ignore
                                  default=default_un,
                                  selection_box_width=280)
 

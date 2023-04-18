@@ -19,7 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import UserInput
+from src.ui.screens.callback_classes import StringInput
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -32,7 +32,7 @@ def get_string(gui:         'GUI',
                is_password: bool = False,
                ) -> str:
     """Get a string from the user."""
-    user_input = UserInput()
+    user_input = StringInput()
 
     menu = GUIMenu(gui, title)
 
@@ -40,4 +40,5 @@ def get_string(gui:         'GUI',
     menu.menu.add.text_input(f'{description}: ', onchange=user_input.set_value, password=is_password)
     menu.menu.add.button(f'Done', action=menu.menu.disable)
     menu.start()
+
     return user_input.value

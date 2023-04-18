@@ -25,6 +25,7 @@ from src.ui.screens.callback_classes import Button
 
 from src.ui.screens.ingredient_menu.manage_ingredients import manage_ingredients_menu
 from src.ui.screens.login.create_new_user              import create_new_user
+from src.ui.screens.login.login_existing_user          import login_existing_user
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -38,11 +39,13 @@ def main_menu(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, Program.NAME.value)
 
-        create_user_bt   = Button(menu, closes_menu=True)
+        create_user_bt     = Button(menu, closes_menu=True)
+        login_bt           = Button(menu, closes_menu=True)
         ingredient_menu_bt = Button(menu, closes_menu=True)
-        exit_bt     = Button(menu, closes_menu=True)
+        exit_bt            = Button(menu, closes_menu=True)
 
         menu.menu.add.button('Create New User',    action=create_user_bt.set_pressed)
+        menu.menu.add.button('Login',              action=login_bt.set_pressed)
         menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)
         menu.menu.add.button('Exit',               action=exit_bt.set_pressed)
 
@@ -54,6 +57,10 @@ def main_menu(gui           : 'GUI',
 
         if create_user_bt.pressed:
             user = create_new_user(gui)
+            print(repr(user))
+
+        if login_bt.pressed:
+            user = login_existing_user(gui)
             print(repr(user))
 
         if exit_bt.pressed:

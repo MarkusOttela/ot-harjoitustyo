@@ -16,36 +16,16 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-import hashlib
-
-from src.common.statics import Directories
-from src.common.utils import ensure_dir, write_bytes
+from src.common.security.user_credentials import UserCredentials
 
 
 class User:
-    """User object stores all information about the user."""
+    """UserCredentials object manages all information about the user."""
 
-    def __init__(self, name: str, salt: bytes, database_key: bytes) -> None:
-        """Create new User object."""
-        self.__name         : str   = name
-        self.__salt         : bytes = salt
-        self.__database_key : bytes = database_key
-        self.__userdata_dir : str   = f'{Directories.USERDATA.value}/{self.__name}'
-
-        self.store_credentials()
+    def __init__(self, credentials: UserCredentials) -> None:
+        self.name        = credentials.get_username()
+        self.credentials = credentials
 
     def __repr__(self) -> str:
-        """Represent user object's data."""
-        return f"Username:    {self.__name}\n" \
-               f"Salt:        {self.__salt.hex()}\n" \
-               f"DB key hash: {self.get_key_hash().hex()}"
-
-    def get_key_hash(self) -> bytes:
-        """Get key hash."""
-        return hashlib.blake2b(self.__database_key).digest()
-
-    def store_credentials(self) -> None:
-        """Store credentials into a database."""
-        data_to_store = self.__salt + self.get_key_hash()
-        ensure_dir(self.__userdata_dir)
-        write_bytes(f'{self.__userdata_dir}/credentials.db', data_to_store)
+        """Format User attributes."""
+        return f"<User-object {id(self)}>\n    Username: {self.name}"

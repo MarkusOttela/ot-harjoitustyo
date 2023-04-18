@@ -19,6 +19,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import multiprocessing
 import os
 
+from typing import Optional
+
 import argon2
 
 from enum import Enum
@@ -27,18 +29,20 @@ from enum import Enum
 class CryptoLiterals(Enum):
     """Cryptographic variables."""
     SYMMETRIC_KEY_LENGTH = 32
+    BLAKE2_DIGEST_LENGTH = 64
+    SALT_LENGTH          = 32
 
 
-def derive_database_key(password: str) -> tuple:
+def derive_database_key(password: str, salt: Optional[bytes] = None) -> tuple:
     """Derive encryption key from password and salt."""
-
-    salt = os.getrandom(32, flags=0)
+    if salt is None:
+        salt = os.getrandom(CryptoLiterals.SALT_LENGTH.value, flags=0)
 
     key = argon2.low_level.hash_secret_raw(secret=password.encode(),
                                            salt=salt,
                                            time_cost=20,
-                                           memory_cost=512*1024,
+                                           memory_cost=1000,  # TODO REPLACE WITH 512*1024,
                                            parallelism=multiprocessing.cpu_count(),
                                            hash_len=CryptoLiterals.SYMMETRIC_KEY_LENGTH.value,
                                            type=argon2.Type.ID)  # type: bytes
-    return key, salt
+    return salt, key

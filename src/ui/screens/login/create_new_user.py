@@ -18,7 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.security import derive_database_key
+from src.common.security.crypto           import derive_database_key
+from src.common.security.user_credentials import UserCredentials
 
 from src.entities.user import User
 
@@ -32,6 +33,7 @@ def create_new_user(gui: 'GUI') -> User:
     """Create new user."""
     username, password = register_credentials(gui)
     salt, database_key = derive_database_key(password)
-    user               = User(username, salt, database_key)
+    user_credentials   = UserCredentials(username, salt, database_key)
+    user               = User(user_credentials)
 
     return user

@@ -47,7 +47,7 @@ class IngredientDatabase:
 
     def __init__(self) -> None:
         """Create new IngredientDatabase object."""
-        ensure_dir(f'{Directories.USERDATA.value}/')
+        ensure_dir(Directories.USERDATA.value)
         path_to_db = f'{Directories.USERDATA.value}/{DatabaseFileNames.INGREDIENT_DATABASE.value}'
         self.connection = sqlite3.connect(path_to_db)
 

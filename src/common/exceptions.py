@@ -44,6 +44,10 @@ class IncompleteConversion(CalorinatorException):
     """Exception raised when conversion of all values fails."""
 
 
+class IncorrectPassword(CalorinatorException):
+    """Exception raised when the user enters an incorrect password."""
+
+
 @contextmanager
 def ignored(*exceptions: Any) -> Iterator:
     """Ignore an exception."""

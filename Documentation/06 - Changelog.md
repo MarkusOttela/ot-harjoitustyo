@@ -59,7 +59,8 @@ Changelog
 
 ## Calendar Week 15
 * Monday
-  * 
+  * Add user account creation, login, and related database key derivation with Argon2.
+  * Fix Cubbli launch issues
 * Tuesday
 * Wednesday
 * Thursday

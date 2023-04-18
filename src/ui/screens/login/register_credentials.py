@@ -19,6 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.exceptions           import ReturnToMainMenu
+from src.common.utils                import get_list_of_user_account_names
 from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import StringInput, Button
 from src.ui.screens.show_message     import show_message
@@ -32,6 +33,7 @@ def register_credentials(gui: 'GUI') -> tuple:
     title   = 'Create Account'
     message = 'Welcome! To start, enter your desired credentials.'
 
+    accounts  = get_list_of_user_account_names()
     user_name = StringInput()
 
     while True:
@@ -59,8 +61,12 @@ def register_credentials(gui: 'GUI') -> tuple:
         if return_bt.pressed:
             raise ReturnToMainMenu
 
+        if user_name.value in accounts:
+            show_message(gui, title, f"Error: The user account {user_name.value} already exists!")
+            continue
+
         if password_1.value == password_2.value:
             return user_name.value, password_1.value
 
         else:
-            show_message(gui, title, "Error: passwords did not match!")
+            show_message(gui, title, "Error: Passwords did not match!")

@@ -50,7 +50,7 @@ def add_ingredient_menu(gui           : 'GUI',
     # Testing code TODO: Remove
     debug = True
     if debug:
-        string_inputs['name'].value = 'Mansikkahillo'
+        string_inputs['name'].value         = 'Mansikkahillo'
         string_inputs['manufacturer'].value = 'Atria'
 
         attr_list = ['kcal',
@@ -116,10 +116,10 @@ def add_ingredient_attributes(menu:               GUIMenu,
             menu.menu.add.label('\n', font_size=5)  # Spacing
 
         warning_color = Color.RED.value
-        normal_color = ColorScheme.FONT_COLOR.value
+        normal_color  = ColorScheme.FONT_COLOR.value
 
         valid_chars = None if ingredient_metadata[k][1] == str else floats
-        font_color = warning_color if k in failed_conversions else normal_color
+        font_color  = warning_color if k in failed_conversions else normal_color
         menu.menu.add.text_input(f'{fields[i]}: ',
                                  onchange=string_inputs[k].set_value,
                                  default=string_inputs[k].value,

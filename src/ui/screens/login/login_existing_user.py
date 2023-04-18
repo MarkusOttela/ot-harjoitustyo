@@ -78,4 +78,5 @@ def login_existing_user(gui: 'GUI') -> User:
         except IncorrectPassword as f:
             show_message(gui, title, f"Error: {f}")
             continue
+
         return User(user_credentials)

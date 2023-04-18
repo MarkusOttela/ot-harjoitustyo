@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu import GUIMenu
+from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import UserInput
 
 if typing.TYPE_CHECKING:

@@ -21,7 +21,7 @@ import typing
 
 from src.common.security.user_credentials import UserCredentials
 from src.common.statics                   import Directories
-from src.common.utils                     import ensure_dir
+from src.common.utils                     import ensure_dir, get_list_of_user_account_names
 
 from src.entities.user import User
 
@@ -37,7 +37,7 @@ def login_existing_user(gui: 'GUI') -> User:
     """Login with existing user account"""
     ensure_dir(Directories.USERDATA.value)
 
-    accounts  = next(os.walk(Directories.USERDATA.value))[1]
+    accounts  = get_list_of_user_account_names()
     sel_items = [(a, a) for a in accounts]
 
     title = 'Login existing user'

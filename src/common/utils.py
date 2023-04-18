@@ -17,12 +17,9 @@ along with Calorienator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 import os
-import typing
 
 from src.common.exceptions import ignored
-
-if typing.TYPE_CHECKING:
-    pass
+from src.common.statics    import Directories
 
 
 def ensure_dir(directory: str) -> None:
@@ -42,3 +39,8 @@ def write_bytes(path_to_file: str, data: bytes) -> None:
         f.write(data)
         f.flush()
         os.fsync(f)
+
+
+def get_list_of_user_account_names() -> list:
+    """Get list of user account names."""
+    return next(os.walk(Directories.USERDATA.value))[1]

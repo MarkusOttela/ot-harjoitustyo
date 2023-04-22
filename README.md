@@ -19,7 +19,7 @@ Calorinator supports the user in maintaining their diet by
 **Privacy preserving design**
 
 * Locally hosted, all persistent sensitive data encrypted
-* State-of-the-art primitives, all based on the [ChaCha](https://cr.yp.to/chacha/chacha-20080128.pdf) stream cipher.
+* State-of-the-art primitives, all based on the [ChaCha](https://cr.yp.to/chacha/chacha-20080128.pdf) stream cipher
   * BLAKE2b cryptographic hash function
     * Argon2id password hashing function
   * ChaCha20 stream cipher

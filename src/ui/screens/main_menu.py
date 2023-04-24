@@ -47,7 +47,7 @@ def main_menu(gui           : 'GUI',
             ingredient_menu_bt = Button(menu, closes_menu=True)
             exit_bt            = Button(menu, closes_menu=True)
 
-            menu.menu.add.button('Create New User',    action=create_user_bt.set_pressed)
+            menu.menu.add.button('Create New User', action=create_user_bt.set_pressed)
             if get_list_of_user_account_names():
                 menu.menu.add.button('Login Existing User', action=login_bt.set_pressed)
             menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)

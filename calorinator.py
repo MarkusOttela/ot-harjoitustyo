@@ -18,8 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 from src.common.statics               import Program
 from src.database.ingredient_database import IngredientDatabase
-from src.ui.gui                      import GUI
-from src.ui.screens.main_menu        import main_menu
+from src.ui.gui                       import GUI
+from src.ui.screens.main_menu         import main_menu
 
 
 def main() -> None:

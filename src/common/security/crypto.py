@@ -22,6 +22,7 @@ import os
 from enum   import Enum
 from typing import Optional
 
+# noinspection PyPackageRequirements
 import argon2
 
 

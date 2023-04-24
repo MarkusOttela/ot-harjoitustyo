@@ -45,6 +45,11 @@ def login_existing_user(gui: 'GUI') -> User:
     user_name_ds = DropSelection()
     default_un   = None
 
+    # If there's only one user, automatically select it from the drop-down list.
+    if len(accounts) == 1:
+        default_un = 0
+        user_name_ds.set_value(None, accounts[0])
+
     while True:
         menu = GUIMenu(gui, title)
 

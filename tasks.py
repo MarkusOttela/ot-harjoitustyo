@@ -29,11 +29,6 @@ def test(ctx):
     ctx.run("python3 -m pytest tests", pty=True)
 
 
-@task
-def mypy(ctx):
-    ctx.run("python3 -m mypy src", pty=True)
-
-
 # TODO: Figure out how to properly omit ui.
 @task
 def coverage_report(ctx):
@@ -43,6 +38,12 @@ def coverage_report(ctx):
             "--cov=src/diet "
             "--cov=src/entities "
             "--cov-report=html", pty=True)
+
+
+@task
+def mypy(ctx):
+    ctx.run("python3 -m mypy src", pty=True)
+
 
 @task
 def lint(ctx):

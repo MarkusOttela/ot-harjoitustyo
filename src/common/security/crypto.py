@@ -105,7 +105,6 @@ def auth_and_decrypt(nonce_ct_tag    : bytes,       # Nonce + ciphertext + tag
             ct_tag, associated_data, nonce, key)  # type: bytes
         return plaintext
     except nacl.exceptions.CryptoError:
-        if file_name:
-            raise SecurityException(
-                f"Authentication of data in file '{file_name}' failed.") from BaseException
-        raise
+        raise SecurityException(
+            f"Authentication of data in file '{file_name}' failed."
+        ) from nacl.exceptions.CryptoError

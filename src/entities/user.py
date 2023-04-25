@@ -75,12 +75,13 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
     def __repr__(self) -> str:
         """Format User attributes."""
         string = (f"<User-object {id(self)}>\n"
-                  f"  Name:        {self._name}\n"
-                  f"  Birthday:    {self._birthday}\n"
-                  f"  Gender:      {self._gender.value}\n"
-                  f"  Height:      {self._height_cm}\n"
-                  f"  Init Weight: {self._init_weight_kg}\n"
-                  f"  PAL:         {self._pal.value}\n"
+                  f"  Name:         {self._name}\n"
+                  f"  Birthday:     {self._birthday}\n"
+                  f"  Gender:       {self._gender.value}\n"
+                  f"  Height:       {self._height_cm}\n"
+                  f"  Init Weight:  {self._init_weight_kg}\n"
+                  f"  Curr. Weight: {self.get_todays_weight()}\n"
+                  f"  PAL:          {self._pal.value}\n"
                   f"  Daily goals:\n")
         for key, value in self.daily_macro_goals.items():
             string += f'    {key:8}: {value:.1f}'

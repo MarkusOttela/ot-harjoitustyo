@@ -1,7 +1,7 @@
 Hour Tracker
 ---
 
-## Total: 41.8h
+## Total: 44.8h
 
 ## Calendar Week 12 (23.5h in total)
 * Monday (6h)
@@ -59,7 +59,7 @@ Hour Tracker
 * Monday 
   * 1h
 * Tuesday 
-  * 6h
+  * 9h
 * Wednesday
 * Thursday
 * Friday

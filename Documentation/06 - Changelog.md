@@ -73,7 +73,9 @@ Changelog
 * Monday
   * Work on code quality
 * Tuesday
-  * Add initial survey
+  * Add initial survey that allows the program now to calculate daily energy requirement and macro-nutrients
+  * Add encrypted database for user's private information
+  * Add more unit tests
 * Wednesday
 * Thursday
 * Friday

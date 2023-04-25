@@ -60,7 +60,7 @@ def register_credentials(gui: 'GUI') -> tuple:
 
         menu.menu.add.button('Done',   action=menu.menu.disable)
         menu.menu.add.label(f'')
-        menu.menu.add.button('Return', return_bt.set_pressed)
+        menu.menu.add.button('Cancel', return_bt.set_pressed)
 
         menu.start()
 

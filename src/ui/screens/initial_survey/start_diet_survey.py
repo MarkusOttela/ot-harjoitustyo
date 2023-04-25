@@ -19,40 +19,37 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.exceptions import AbortMenuOperation
-from src.common.statics    import Gender
-from src.common.validation import date
+from src.common.statics    import FontSize
+
+from src.diet.enums import PhysicalActivityLevel
 
 from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button
+from src.ui.screens.callback_classes import DropSelection, Button
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User
     from src.ui.gui        import GUI
 
 
-def get_dob_and_gender(gui: 'GUI', user: 'User') -> None:
-    """Get the date of birth, and the gender of the user."""
+def start_diet_survey(gui: 'GUI', user: 'User') -> None:
+    """Start initial diet survey."""
+    options   = [(member.value, member) for member in PhysicalActivityLevel]
+    selection = DropSelection()
+
     error_message = ''
-
     while True:
-
-        menu = GUIMenu(gui, "Initial Survey")
+        menu      = GUIMenu(gui, 'Initial Diet Survey')
+        return_bt = Button(menu, closes_menu=True)
 
         try:
-            return_bt = Button(menu, closes_menu=True)
-
-            menu.menu.add.text_input('Your DoB <dd/mm/yyyy> : ',
-                                     valid_chars=date, maxchar=10,
-                                     onchange=user.set_birthday,
-                                     default=user.get_birthday())
-
-            menu.menu.add.toggle_switch('Your gender :',
-                                        onchange=user.set_gender,
-                                        state_text=(Gender.FEMALE.value, Gender.MALE.value),
-                                        state_values=(Gender.FEMALE, Gender.MALE),
-                                        default=user.get_gender() != Gender.MALE.value)
-
+            menu.menu.add.dropselect(f'Non-exercise PAL: ',
+                                     onchange=selection.set_value,
+                                     items=options,
+                                     selection_box_height=len(options),
+                                     selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
+                                     selection_box_width=300)
             menu.menu.add.button('Done', action=menu.menu.disable)
+
             menu.menu.add.label(f'')
             menu.menu.add.button('Cancel', return_bt.set_pressed)
 
@@ -62,12 +59,10 @@ def get_dob_and_gender(gui: 'GUI', user: 'User') -> None:
             if return_bt.pressed:
                 raise AbortMenuOperation
 
-            # Validate inputs
-            for requested_action, var in [( 'enter your birthday', user.get_birthday() ),
-                                          ( 'select your gender',  user.get_gender()   )]:
-                if var is None or var == '' or var == []:
-                    raise ValueError(f'Please {requested_action}')
+            if selection.value is None:
+                raise ValueError("Please select an option from the drop menu.")
 
+            user.set_pal(selection.value)
             return
 
         except ValueError as e:

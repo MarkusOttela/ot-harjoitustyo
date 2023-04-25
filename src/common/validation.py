@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import inspect
 
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 from src.common.exceptions import ValidationError
 
@@ -71,6 +71,32 @@ def validate_float(key              : str,
 
     if not negative_allowed and value < 0.0:
         raise ValidationError(f"Expected a positive value for '{key}', but value was {value}")
+
+
+def validate_positive_float(string      : str,
+                            var_name    : str = '',
+                            upper_limit : Optional[float] = None
+                            ) -> float:
+    """Validate a string evaluates into a floating point value."""
+    try:
+        if string is None or string == '':
+            raise ValueError
+
+        decimal_value = float(string)
+
+        if decimal_value <= 0.0:
+            raise ValueError
+
+        if upper_limit is not None and decimal_value > upper_limit:
+            raise ValueError
+
+        return decimal_value
+
+    except ValueError:
+        ceil_text = '' if upper_limit is None else f' smaller than {upper_limit}'
+        var_text  = '' if var_name == '' else      f' for {var_name}'
+
+        raise ValueError(f"Please enter a positive number{ceil_text}{var_text}")
 
 
 def validate_bool(key   : str,

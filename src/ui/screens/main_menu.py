@@ -25,10 +25,12 @@ from src.common.utils                import get_list_of_user_account_names
 from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import Button
 
-from src.ui.screens.ingredient_menu.manage_ingredients import manage_ingredients_menu
-from src.ui.screens.initial_survey.initial_survey      import get_dob_and_gender
-from src.ui.screens.login.create_new_user              import create_new_user
-from src.ui.screens.login.login_existing_user          import login_existing_user
+from src.ui.screens.ingredient_menu.manage_ingredients   import manage_ingredients_menu
+from src.ui.screens.initial_survey.get_body_measurements import get_body_measurements
+from src.ui.screens.initial_survey.initial_survey        import get_dob_and_gender
+from src.ui.screens.initial_survey.start_diet_survey     import start_diet_survey
+from src.ui.screens.login.create_new_user                import create_new_user
+from src.ui.screens.login.login_existing_user            import login_existing_user
 
 if typing.TYPE_CHECKING:
     from src.ui.gui                       import GUI
@@ -49,8 +51,10 @@ def main_menu(gui           : 'GUI',
             exit_bt            = Button(menu, closes_menu=True)
 
             menu.menu.add.button('Create New User', action=create_user_bt.set_pressed)
+
             if get_list_of_user_account_names():
                 menu.menu.add.button('Login Existing User', action=login_bt.set_pressed)
+
             menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)
             menu.menu.add.button('Exit',               action=exit_bt.set_pressed)
 
@@ -63,10 +67,14 @@ def main_menu(gui           : 'GUI',
             if create_user_bt.pressed:
                 user = create_new_user(gui)
                 get_dob_and_gender(gui, user)
+                get_body_measurements(gui, user)
+                start_diet_survey(gui, user)
+                print(repr(user))
 
             if login_bt.pressed:
                 user = login_existing_user(gui)
                 user.load_db()
+                print(repr(user))
 
             if exit_bt.pressed:
                 sys.exit()

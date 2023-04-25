@@ -22,7 +22,7 @@ from typing import Optional
 
 from pygame_menu import BaseImage, Menu, Theme
 
-from src.common.statics import AssetFiles, ColorScheme, Program
+from src.common.statics import AssetFiles, ColorScheme, Program, Color, FontSize
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -77,3 +77,10 @@ class GUIMenu:
         self.menu.mainloop(self.gui.display,
                            bgfun=self.get_background,
                            fps_limit=Program.FPS.value)
+
+    def show_error_message(self, error_message: str) -> None:
+        """Print an error message on screen if necessary."""
+        if error_message:
+            self.menu.add.label(error_message,
+                                font_color=Color.RED.value,
+                                font_size=FontSize.FONT_SIZE_SMALL.value)

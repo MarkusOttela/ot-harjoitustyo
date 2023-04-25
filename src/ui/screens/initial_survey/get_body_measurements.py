@@ -87,6 +87,7 @@ def get_body_measurements(gui: 'GUI', user: 'User') -> None:
 
             user.set_height(height_f)
             user.set_init_weight(weight_f)
+            user.set_bmr()
             return
 
         except ValueError as e:

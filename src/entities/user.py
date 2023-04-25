@@ -18,13 +18,18 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import json
 
-from enum import Enum, unique
+from datetime import datetime
+from enum     import Enum, unique
 
+from src.common.conversion                import Conversion
 from src.common.security.user_credentials import UserCredentials
-from src.database.encrypted_database      import EncryptedDatabase
 
-from src.common.statics import Gender
-from src.diet.enums     import PhysicalActivityLevel
+from src.database.encrypted_database import EncryptedDatabase
+
+from src.common.statics import Gender, Format
+
+from src.diet.bmr   import calculate_bmr
+from src.diet.enums import PhysicalActivityLevel
 
 
 @unique
@@ -36,6 +41,7 @@ class DBKeys(Enum):
     HEIGHT_CM      = 'height_cm'
     INIT_WEIGHT_KG = 'init_weight_kg'
     PAL            = 'pal'
+    BMR            = 'bmr'
 
 
 class User:
@@ -52,6 +58,7 @@ class User:
         self._init_weight_kg = 0
 
         self._pal = PhysicalActivityLevel.LightlyActive
+        self._bmr = 0.0
 
         self.database = EncryptedDatabase(self.credentials)
 
@@ -63,7 +70,9 @@ class User:
                 f"  Gender:      {self._gender.value}\n"
                 f"  Height:      {self._height_cm}\n"
                 f"  Init Weight: {self._init_weight_kg}\n"
-                f"  PAL:         {self._pal.value}\n")
+                f"  PAL:         {self._pal.value}\n"
+                f"  BMR:         {self._bmr:.1f}\n"
+                )
 
     # Databases
     def serialize(self) -> bytes:
@@ -74,6 +83,7 @@ class User:
                            DBKeys.HEIGHT_CM.value      : self._height_cm,
                            DBKeys.INIT_WEIGHT_KG.value : self._init_weight_kg,
                            DBKeys.PAL.value            : self._pal.value,
+                           DBKeys.BMR.value            : self._bmr,
                            }).encode()
 
     def store_db(self) -> None:
@@ -91,8 +101,10 @@ class User:
         self._init_weight_kg = json_db[DBKeys.INIT_WEIGHT_KG.value]
         self._gender         = Gender(               json_db[DBKeys.GENDER.value])
         self._pal            = PhysicalActivityLevel(json_db[DBKeys.PAL.value])
+        self._bmr            = json_db[DBKeys.BMR.value]
 
     # Setters
+    # -------
     def set_birthday(self, birthday: str) -> None:
         """Set the birthday of the user."""
         self._birthday = birthday
@@ -103,13 +115,11 @@ class User:
         self._gender = gender
         self.store_db()
 
-    # Setters
     def set_height(self, height: float) -> None:
         """Set the height of the user."""
         self._height_cm = height
         self.store_db()
 
-    # Setters
     def set_init_weight(self, weight: float) -> None:
         """Set the initial weight of the user."""
         self._init_weight_kg = weight
@@ -120,7 +130,12 @@ class User:
         self._pal = pal
         self.store_db()
 
+    def set_bmr(self) -> None:
+        """Calculate the user's basal metabolic rate."""
+        self._bmr = calculate_bmr(self._gender, self._init_weight_kg, self._height_cm, self.get_age())
+
     # Getters
+    # -------
     def get_gender(self) -> 'Gender':
         """Get the user's gender."""
         return self._gender
@@ -128,6 +143,12 @@ class User:
     def get_birthday(self) -> str:
         """Get the user's birthday."""
         return self._birthday
+
+    def get_age(self) -> float:
+        """Return the current age of the user in years."""
+        dt_birthday = datetime.strptime(self._birthday, Format.DATETIME_DATE.value)
+        age_in_years = ((datetime.today() - dt_birthday).days / Conversion.DAYS_PER_YEAR.value)
+        return age_in_years
 
     def get_height(self) -> float:
         """Get the user's height in centimeters."""
@@ -140,3 +161,7 @@ class User:
     def get_pal(self) -> 'PhysicalActivityLevel':
         """Get the user's Physical Activity Level (PAL)."""
         return self._pal
+
+    def get_bmr(self) -> float:
+        """Get the user's Basal Metabolic Rate (kcal/day)."""
+        return self._bmr

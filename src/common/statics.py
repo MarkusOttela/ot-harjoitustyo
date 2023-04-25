@@ -44,6 +44,17 @@ class DatabaseFileNames(Enum):
     USER_DATABASE       = 'userdata.db'
 
 
+class Gender(Enum):
+    """Gender for approximation algorithms."""
+    MALE   = 'Male'
+    FEMALE = 'Female'
+
+
+class Format(Enum):
+    """String formats."""
+    DATETIME_DATE = '%d/%m/%Y'
+
+
 class Color(Enum):
     """Pygame colors."""
     WHITE    = (255, 255, 255)
@@ -65,9 +76,3 @@ class ColorScheme(Enum):
     """Program's color scheme."""
     BACKGROUND = Color.GREY.value
     FONT_COLOR = Color.LGREY.value
-
-
-class Gender(Enum):
-    """Gender for approximation algorithms."""
-    MALE   = 'male'
-    FEMALE = 'female'

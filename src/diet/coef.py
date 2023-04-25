@@ -44,10 +44,10 @@ def get_pal_multiplier(activity_level: PhysicalActivityLevel) -> float:
 def get_calorie_deficit_multiplier(diet_stage: 'DietStage') -> float:
     """Determine the calorie deficit multiplier."""
     multiplier_d = {
-        DietStage.DIET                   : 0.8,
-        DietStage.MUSCLE_MASS_GROWTH     : 0.9,
-        DietStage.BODY_BUILDING          : 1.1,
-        DietStage.SHREDDED_BODY_BUILDING : 1.0,
+        DietStage.DIET:                   0.8,
+        DietStage.MUSCLE_MASS_GROWTH:     0.9,
+        DietStage.BODY_BUILDING:          1.1,
+        DietStage.SHREDDED_BODY_BUILDING: 1.0,
     }
 
     return multiplier_d[diet_stage]

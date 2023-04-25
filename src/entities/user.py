@@ -90,13 +90,13 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
     # Databases
     def serialize(self) -> bytes:
         """Serialize user's attributes into a bytestring."""
-        return json.dumps({DBKeys.NAME.value           : self._name,
-                           DBKeys.BIRTHDAY.value       : self._birthday,
-                           DBKeys.GENDER.value         : self._gender.value,
-                           DBKeys.HEIGHT_CM.value      : self._height_cm,
-                           DBKeys.INIT_WEIGHT_KG.value : self._init_weight_kg,
-                           DBKeys.PAL.value            : self._pal.value,
-                           DBKeys.WEIGHT_LOG.value     : json.dumps(self._weight_log),
+        return json.dumps({DBKeys.NAME.value:           self._name,
+                           DBKeys.BIRTHDAY.value:       self._birthday,
+                           DBKeys.GENDER.value:         self._gender.value,
+                           DBKeys.HEIGHT_CM.value:      self._height_cm,
+                           DBKeys.INIT_WEIGHT_KG.value: self._init_weight_kg,
+                           DBKeys.PAL.value:            self._pal.value,
+                           DBKeys.WEIGHT_LOG.value:     json.dumps(self._weight_log),
                            }).encode()
 
     def store_db(self) -> None:

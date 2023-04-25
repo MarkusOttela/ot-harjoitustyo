@@ -46,8 +46,12 @@ class DBKeys(Enum):
     WEIGHT_LOG     = 'weight_log'
 
 
-class User:
-    """UserCredentials object manages all information about the user."""
+class User:  # pylint: disable=too-many-instance-attributes, too-many-public-methods
+    """UserCredentials object manages all information about the user.
+
+    Note: The `pylint: disable=` suppressions here are because User is more
+          or less a data-class that holds all data for the user.
+    """
 
     def __init__(self, credentials: UserCredentials) -> None:
         self.credentials = credentials
@@ -59,12 +63,12 @@ class User:
         self._height_cm      = 0.0
         self._init_weight_kg = 0.0
 
-        self._pal        = PhysicalActivityLevel.LightlyActive
-        self._diet_stage = DietStage.Diet
+        self._pal        = PhysicalActivityLevel.LIGHTLY_ACTIVE
+        self._diet_stage = DietStage.DIET
         self._bmr        = 0.0
 
-        self.daily_macro_goals : dict = dict()
-        self._weight_log       : dict = dict()
+        self.daily_macro_goals : dict = {}
+        self._weight_log       : dict = {}
 
         self.database = EncryptedDatabase(self.credentials)
 
@@ -170,7 +174,7 @@ class User:
         protein_goal_kcal = protein_goal_g * CalContent.KCAL_PER_GRAM_PROTEIN.value
         fat_goal_kcal     = 0.25 * kcal_goal
         fat_goal_g        = fat_goal_kcal / CalContent.KCAL_PER_GRAM_FAT.value
-        carbs_goal_kcal   = (kcal_goal - protein_goal_kcal - fat_goal_kcal)
+        carbs_goal_kcal   = kcal_goal - protein_goal_kcal - fat_goal_kcal
         carbs_goal_g      = carbs_goal_kcal / CalContent.KCAL_PER_GRAM_CARB.value
 
         self.daily_macro_goals = {'Energy'  : kcal_goal,
@@ -190,8 +194,8 @@ class User:
 
     def get_age(self) -> float:
         """Return the current age of the user in years."""
-        dt_birthday = datetime.strptime(self._birthday, Format.DATETIME_DATE.value)
-        age_in_years = ((datetime.today() - dt_birthday).days / Conversion.DAYS_PER_YEAR.value)
+        dt_birthday  = datetime.strptime(self._birthday, Format.DATETIME_DATE.value)
+        age_in_years = (datetime.today() - dt_birthday).days / Conversion.DAYS_PER_YEAR.value
         return age_in_years
 
     def get_height(self) -> float:

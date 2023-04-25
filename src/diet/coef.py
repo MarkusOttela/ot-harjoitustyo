@@ -33,10 +33,10 @@ def get_pal_multiplier(activity_level: PhysicalActivityLevel) -> float:
     1.70-1.99   Moderately Active   Construction worker / Walking job
     2.00-2.40   Vigorously active   Non-mechanized agricultural worker
     """
-    multiplier_d = {PhysicalActivityLevel.Sedentary        : 1.2,
-                    PhysicalActivityLevel.LightlyActive    : 1.375,
-                    PhysicalActivityLevel.ModeratelyActive : 1.555,
-                    PhysicalActivityLevel.HighlyActive     : 1.725}
+    multiplier_d = {PhysicalActivityLevel.SEDENTARY         : 1.2,
+                    PhysicalActivityLevel.LIGHTLY_ACTIVE    : 1.375,
+                    PhysicalActivityLevel.MODERATELY_ACTIVE : 1.555,
+                    PhysicalActivityLevel.HIGHLY_ACTIVE     : 1.725}
 
     return multiplier_d[activity_level]
 
@@ -44,10 +44,10 @@ def get_pal_multiplier(activity_level: PhysicalActivityLevel) -> float:
 def get_calorie_deficit_multiplier(diet_stage: 'DietStage') -> float:
     """Determine the calorie deficit multiplier."""
     multiplier_d = {
-        DietStage.Diet                 : 0.8,
-        DietStage.MuscleMassGrowth     : 0.9,
-        DietStage.BodyBuilding         : 1.1,
-        DietStage.ShreddedBodyBuilding : 1.0,
+        DietStage.DIET                   : 0.8,
+        DietStage.MUSCLE_MASS_GROWTH     : 0.9,
+        DietStage.BODY_BUILDING          : 1.1,
+        DietStage.SHREDDED_BODY_BUILDING : 1.0,
     }
 
     return multiplier_d[diet_stage]

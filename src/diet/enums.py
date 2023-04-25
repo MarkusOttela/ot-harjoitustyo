@@ -26,18 +26,18 @@ if typing.TYPE_CHECKING:
 
 class PhysicalActivityLevel(Enum):
     """Activity lifestyle types."""
-    Sedentary        = 'Sedentary'
-    LightlyActive    = 'Lightly Active'
-    ModeratelyActive = 'Moderately Active'
-    HighlyActive     = 'Highly Active'
+    SEDENTARY         = 'Sedentary'
+    LIGHTLY_ACTIVE    = 'Lightly Active'
+    MODERATELY_ACTIVE = 'Moderately Active'
+    HIGHLY_ACTIVE     = 'Highly Active'
 
 
 class DietStage(Enum):
     """Diet stage types."""
-    Diet                 = 'Diet'
-    MuscleMassGrowth     = 'Muscle mass growth'
-    BodyBuilding         = 'Body building'
-    ShreddedBodyBuilding = 'Shredded body building'
+    DIET                   = 'Diet'
+    MUSCLE_MASS_GROWTH     = 'Muscle mass growth'
+    BODY_BUILDING          = 'Body building'
+    SHREDDED_BODY_BUILDING = 'Shredded body building'
 
 
 class CalContent(Enum):

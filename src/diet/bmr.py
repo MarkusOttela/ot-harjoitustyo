@@ -31,7 +31,8 @@ def calculate_bmr(gender    : Gender,
         ~75% with overweight
         On average, ~5% more accurate than Harris-Benedict
 
-    [1] https://inspire.edu.lb/inspire/educational-article-resources/How-to-Calculate-Your-Calorie-Intake-BMR-and-TDEE
+    [1] https://inspire.edu.lb/inspire/educational-article-resources/
+        How-to-Calculate-Your-Calorie-Intake-BMR-and-TDEE
     """
     constant = 5 if gender == Gender.MALE else -161
 

@@ -92,11 +92,11 @@ def validate_positive_float(string      : str,
 
         return decimal_value
 
-    except ValueError:
+    except ValueError as exc:
         ceil_text = '' if upper_limit is None else f' smaller than {upper_limit}'
-        var_text  = '' if var_name == '' else      f' for {var_name}'
+        var_text  = '' if var_name == '' else f' for {var_name}'
 
-        raise ValueError(f"Please enter a positive number{ceil_text}{var_text}")
+        raise ValueError(f"Please enter a positive number{ceil_text}{var_text}") from exc
 
 
 def validate_bool(key   : str,

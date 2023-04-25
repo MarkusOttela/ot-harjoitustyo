@@ -150,11 +150,12 @@ class TestArgon2Wrapper(unittest.TestCase):
         self.salt     = 6 * b'salt'
         self.password = 'password'
 
-    def test_derive_database_key(self):
+    @mock.patch('multiprocessing.cpu_count', return_value=1)
+    def test_derive_database_key(self, _):
         """Test same password and salt produce the same value consistently during development."""
         salt, key = derive_database_key(self.password, self.salt)
         self.assertEqual(salt, self.salt)
-        self.assertEqual(key.hex(), '6c813b85441b77d16233324a98ad848ebb45a4f3774a11800fd16aca0778552b')
+        self.assertEqual(key.hex(), 'b402e985f14bb42fc10d1ed490f9d306f1dbbacd5aa244ee892d096fd7e3e325')
 
 
 class TestXChaCha20Poly1305(unittest.TestCase):

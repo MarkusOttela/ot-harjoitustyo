@@ -32,7 +32,7 @@ Calorinator supports the user in maintaining their diet by
 * [x] Ingredient database
 * [x] User registration
 * [x] Password login
-* [ ] Initial survey
+* [x] Initial survey
 * [ ] Daily tracking
 * [ ] Meal creation
 * [ ] Mealprep creation

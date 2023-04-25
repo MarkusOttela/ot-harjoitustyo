@@ -30,14 +30,14 @@ The program supports the user in maintaining their diet by
   * The user sets a password for their account
 
 
-**Initial Survey**
-  * The user enters their 
-    * Initial weight, height, body circumferences and skin-fold information
-    * Diet goals (target fat percentage, body mass index (BMI) and waist circumference)
-  * The system then calculates
-    * The user's basal metabolic rate (calories/day if they just lied on couch)
-    * The user's fat percentage
-    * User's daily calorie goal based on given values
+**DONE: Initial Survey**
+  * The user enters their
+    * Date of Birth
+    * Initial weight, height
+    * Diet details
+    * The system then calculates
+      * The user's basal metabolic rate (calories/day if they just lied on couch)
+      * User's daily calorie and macronutrient goals based on given values
 
 
 **DONE: Login**

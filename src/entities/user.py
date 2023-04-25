@@ -23,6 +23,7 @@ from enum     import Enum, unique
 
 from src.common.conversion                import Conversion
 from src.common.security.user_credentials import UserCredentials
+from src.common.utils                     import get_today_str
 
 from src.database.encrypted_database import EncryptedDatabase
 
@@ -42,7 +43,7 @@ class DBKeys(Enum):
     HEIGHT_CM      = 'height_cm'
     INIT_WEIGHT_KG = 'init_weight_kg'
     PAL            = 'pal'
-    BMR            = 'bmr'
+    WEIGHT_LOG     = 'weight_log'
 
 
 class User:
@@ -63,6 +64,7 @@ class User:
         self._bmr        = 0.0
 
         self.daily_macro_goals = dict()
+        self._weight_log       = dict()
 
         self.database = EncryptedDatabase(self.credentials)
 
@@ -90,6 +92,7 @@ class User:
                            DBKeys.HEIGHT_CM.value      : self._height_cm,
                            DBKeys.INIT_WEIGHT_KG.value : self._init_weight_kg,
                            DBKeys.PAL.value            : self._pal.value,
+                           DBKeys.WEIGHT_LOG.value     : json.dumps(self._weight_log),
                            }).encode()
 
     def store_db(self) -> None:
@@ -107,6 +110,7 @@ class User:
         self._init_weight_kg = json_db[DBKeys.INIT_WEIGHT_KG.value]
         self._gender         = Gender(               json_db[DBKeys.GENDER.value])
         self._pal            = PhysicalActivityLevel(json_db[DBKeys.PAL.value])
+        self._weight_log     = json.loads(json_db[DBKeys.WEIGHT_LOG.value])
 
     # Setters
     # -------
@@ -140,24 +144,29 @@ class User:
         self._diet_stage = diet_stage
         self.store_db()
 
+    def set_todays_weight(self, weight_kg: float) -> None:
+        """Set the day's weight."""
+        self._weight_log[get_today_str()] = weight_kg
+        self.store_db()
+
     # Dynamically generated values
     def calculate_bmr(self, weight_kg: float) -> None:
         """Calculate the user's basal metabolic rate."""
         self._bmr = calculate_bmr(self._gender, weight_kg, self._height_cm, self.get_age())
 
-    def calculate_daily_macros(self, daily_weight_kg: float) -> None:
+    def calculate_daily_macros(self) -> None:
         """Calculate the daily macro goals for the user.
 
         Protein goal: avg. form https://youtu.be/l7jIU_73ZaM?t=403
         """
-        self.calculate_bmr(daily_weight_kg)
+        self.calculate_bmr(self.get_todays_weight())
 
         theoretical_maintenance_kcal = get_pal_multiplier(self._pal) * self._bmr
         calorie_deficit_multiplier   = get_calorie_deficit_multiplier(self._diet_stage)
 
         kcal_goal = calorie_deficit_multiplier * theoretical_maintenance_kcal
 
-        protein_goal_g    = 1.9  * daily_weight_kg
+        protein_goal_g    = 1.9  * self.get_todays_weight()
         protein_goal_kcal = protein_goal_g * CalContent.KCAL_PER_GRAM_PROTEIN.value
         fat_goal_kcal     = 0.25 * kcal_goal
         fat_goal_g        = fat_goal_kcal / CalContent.KCAL_PER_GRAM_FAT.value
@@ -189,6 +198,10 @@ class User:
         """Get the user's height in centimeters."""
         return self._height_cm
 
+    def get_todays_weight(self) -> float:
+        """Get today's weight."""
+        return self._weight_log[get_today_str()]
+
     def get_initial_weight(self) -> float:
         """Get the user's initial weight in kilograms."""
         return self._init_weight_kg
@@ -200,3 +213,9 @@ class User:
     def get_bmr(self) -> float:
         """Get the user's Basal Metabolic Rate (kcal/day)."""
         return self._bmr
+
+    # Has'ers
+    # -------
+    def has_weight_entry_for_the_day(self) -> bool:
+        """Return True if the daily weight entry has been recorded."""
+        return get_today_str() in self._weight_log.keys()

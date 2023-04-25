@@ -19,11 +19,12 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import sys
 import typing
 
-from src.common.exceptions           import AbortMenuOperation
-from src.common.statics              import Program
-from src.common.utils                import get_list_of_user_account_names
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button
+from src.common.exceptions             import AbortMenuOperation
+from src.common.statics                import Program
+from src.common.utils                  import get_list_of_user_account_names
+from src.ui.gui_menu                   import GUIMenu
+from src.ui.screens.callback_classes   import Button
+from src.ui.screens.get_morning_weight import get_morning_weight
 
 from src.ui.screens.ingredient_menu.manage_ingredients   import manage_ingredients_menu
 from src.ui.screens.initial_survey.get_body_measurements import get_body_measurements
@@ -69,13 +70,16 @@ def main_menu(gui           : 'GUI',
                 get_dob_and_gender(gui, user)
                 get_body_measurements(gui, user)
                 start_diet_survey(gui, user)
-                user.calculate_daily_macros(user.get_initial_weight())
+                user.calculate_daily_macros()
                 print(repr(user))
 
             if login_bt.pressed:
                 user = login_existing_user(gui)
                 user.load_db()
-                user.calculate_daily_macros(user.get_initial_weight())
+
+                if not user.has_weight_entry_for_the_day():
+                    get_morning_weight(gui, user)
+                user.calculate_daily_macros()
                 print(repr(user))
 
             if exit_bt.pressed:

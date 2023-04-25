@@ -18,30 +18,25 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions import AbortMenuOperation
-from src.common.validation import validate_positive_float, floats
-
+from src.common.validation           import validate_positive_float, floats
 from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button, UserInput
+from src.ui.screens.callback_classes import UserInput
 
 if typing.TYPE_CHECKING:
-    from src.entities.user import User
     from src.ui.gui        import GUI
+    from src.entities.user import User
 
 
-def get_body_measurements(gui: 'GUI', user: 'User') -> None:
-    """Get initial body measurements (weight and height) from the user."""
+def get_morning_weight(gui: 'GUI', user: 'User') -> None:
+    """Get morning weight from the user."""
+    weight = UserInput()
+
     error_message = ''
 
-    weight = UserInput()
-    height = UserInput()
-
     while True:
-        menu = GUIMenu(gui, "Body Measurements")
-
-        return_bt = Button(menu, closes_menu=True)
-
+        menu = GUIMenu(gui, "Morning Weight")
         try:
+
             # Pre-fill only valid inputs if an error occurred.
             if weight.value is not None:
                 try:
@@ -51,43 +46,19 @@ def get_body_measurements(gui: 'GUI', user: 'User') -> None:
             else:
                 default_weight = ''
 
-            if height.value is not None:
-                try:
-                    default_height = str(validate_positive_float(height.value))
-                except ValueError:
-                    default_height = ''
-            else:
-                default_height = ''
-
-            menu.menu.add.text_input('Your height (cm) : ',
-                                     onchange=height.set_value,
-                                     default=default_height,
-                                     valid_chars=floats,
-                                     maxchar=5)
-
+            menu.menu.add.label('Good Morning!\n')
             menu.menu.add.text_input('Your weight (kg) : ',
                                      onchange=weight.set_value,
                                      default=default_weight,
                                      valid_chars=floats,
                                      maxchar=5)
-
             menu.menu.add.button('Done', action=menu.menu.disable)
-            menu.menu.add.label(f'')
-            menu.menu.add.button('Cancel', return_bt.set_pressed)
-
             menu.show_error_message(error_message)
             menu.start()
 
-            if return_bt.pressed:
-                raise AbortMenuOperation
+            weight_kg = validate_positive_float(weight.value)
 
-            # Validate and add body
-            weight_f = validate_positive_float(weight.value)
-            height_f = validate_positive_float(height.value)
-
-            user.set_height(height_f)
-            user.set_init_weight(weight_f)
-            user.set_todays_weight(weight_f)
+            user.set_todays_weight(weight_kg)
             return
 
         except ValueError as e:

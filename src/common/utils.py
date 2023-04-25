@@ -18,8 +18,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import os
 
+from datetime import datetime
+
 from src.common.exceptions import ignored
-from src.common.statics    import Directories
+from src.common.statics    import Directories, Format
 
 
 def ensure_dir(directory: str) -> None:
@@ -51,3 +53,8 @@ def separate_header(bytestring    : bytes,     # Bytestring to slice
                     ) -> tuple[bytes, bytes]:  # Header and payload
     """Separate `header_length` first bytes from a bytestring."""
     return bytestring[:header_length], bytestring[header_length:]
+
+
+def get_today_str() -> str:
+    """Get today's date in string format."""
+    return datetime.today().strftime(Format.DATETIME_DATE.value)

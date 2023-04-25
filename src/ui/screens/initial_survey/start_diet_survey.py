@@ -21,7 +21,7 @@ import typing
 from src.common.exceptions import AbortMenuOperation
 from src.common.statics    import FontSize
 
-from src.diet.enums import PhysicalActivityLevel
+from src.diet.enums import PhysicalActivityLevel, DietStage
 
 from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import DropSelection, Button
@@ -33,8 +33,11 @@ if typing.TYPE_CHECKING:
 
 def start_diet_survey(gui: 'GUI', user: 'User') -> None:
     """Start initial diet survey."""
-    options   = [(member.value, member) for member in PhysicalActivityLevel]
-    selection = DropSelection()
+    pal_options        = [(member.value, member) for member in PhysicalActivityLevel]
+    diet_stage_options = [(member.value, member) for member in DietStage]
+
+    pal_ds        = DropSelection()
+    diet_stage_ds = DropSelection()
 
     error_message = ''
     while True:
@@ -43,11 +46,19 @@ def start_diet_survey(gui: 'GUI', user: 'User') -> None:
 
         try:
             menu.menu.add.dropselect(f'Non-exercise PAL: ',
-                                     onchange=selection.set_value,
-                                     items=options,
-                                     selection_box_height=len(options),
+                                     onchange=pal_ds.set_value,
+                                     items=pal_options,
+                                     selection_box_height=len(pal_options),
                                      selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
                                      selection_box_width=300)
+
+            menu.menu.add.dropselect(f'Diet stage: ',
+                                     onchange=diet_stage_ds.set_value,
+                                     items=diet_stage_options,
+                                     selection_box_height=len(diet_stage_options),
+                                     selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
+                                     selection_box_width=300)
+
             menu.menu.add.button('Done', action=menu.menu.disable)
 
             menu.menu.add.label(f'')
@@ -59,10 +70,11 @@ def start_diet_survey(gui: 'GUI', user: 'User') -> None:
             if return_bt.pressed:
                 raise AbortMenuOperation
 
-            if selection.value is None:
-                raise ValueError("Please select an option from the drop menu.")
+            if not diet_stage_ds.value:
+                raise ValueError("Please select one option from each drop-down menu.")
 
-            user.set_pal(selection.value)
+            user.set_pal(pal_ds.value)
+            user.set_diet_stage(diet_stage_ds.value)
             return
 
         except ValueError as e:

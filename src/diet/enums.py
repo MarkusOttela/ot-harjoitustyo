@@ -30,3 +30,18 @@ class PhysicalActivityLevel(Enum):
     LightlyActive    = 'Lightly Active'
     ModeratelyActive = 'Moderately Active'
     HighlyActive     = 'Highly Active'
+
+
+class DietStage(Enum):
+    """Diet stage types."""
+    Diet                 = 'Diet'
+    MuscleMassGrowth     = 'Muscle mass growth'
+    BodyBuilding         = 'Body building'
+    ShreddedBodyBuilding = 'Shredded body building'
+
+
+class CalContent(Enum):
+    """Calorie content of macros."""
+    KCAL_PER_GRAM_CARB    = 4
+    KCAL_PER_GRAM_PROTEIN = 4
+    KCAL_PER_GRAM_FAT     = 9

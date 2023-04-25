@@ -69,11 +69,13 @@ def main_menu(gui           : 'GUI',
                 get_dob_and_gender(gui, user)
                 get_body_measurements(gui, user)
                 start_diet_survey(gui, user)
+                user.calculate_daily_macros(user.get_initial_weight())
                 print(repr(user))
 
             if login_bt.pressed:
                 user = login_existing_user(gui)
                 user.load_db()
+                user.calculate_daily_macros(user.get_initial_weight())
                 print(repr(user))
 
             if exit_bt.pressed:

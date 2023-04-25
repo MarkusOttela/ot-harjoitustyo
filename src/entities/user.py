@@ -29,7 +29,8 @@ from src.database.encrypted_database import EncryptedDatabase
 from src.common.statics import Gender, Format
 
 from src.diet.bmr   import calculate_bmr
-from src.diet.enums import PhysicalActivityLevel
+from src.diet.enums import PhysicalActivityLevel, DietStage, CalContent
+from src.diet.coef  import get_pal_multiplier, get_calorie_deficit_multiplier
 
 
 @unique
@@ -57,22 +58,28 @@ class User:
         self._height_cm      = 0
         self._init_weight_kg = 0
 
-        self._pal = PhysicalActivityLevel.LightlyActive
-        self._bmr = 0.0
+        self._pal        = PhysicalActivityLevel.LightlyActive
+        self._diet_stage = DietStage.Diet
+        self._bmr        = 0.0
+
+        self.daily_macro_goals = dict()
 
         self.database = EncryptedDatabase(self.credentials)
 
     def __repr__(self) -> str:
         """Format User attributes."""
-        return (f"<User-object {id(self)}>\n"
-                f"  Name:        {self._name}\n"
-                f"  Birthday:    {self._birthday}\n"
-                f"  Gender:      {self._gender.value}\n"
-                f"  Height:      {self._height_cm}\n"
-                f"  Init Weight: {self._init_weight_kg}\n"
-                f"  PAL:         {self._pal.value}\n"
-                f"  BMR:         {self._bmr:.1f}\n"
-                )
+        string = (f"<User-object {id(self)}>\n"
+                  f"  Name:        {self._name}\n"
+                  f"  Birthday:    {self._birthday}\n"
+                  f"  Gender:      {self._gender.value}\n"
+                  f"  Height:      {self._height_cm}\n"
+                  f"  Init Weight: {self._init_weight_kg}\n"
+                  f"  PAL:         {self._pal.value}\n"
+                  f"  Daily goals:\n")
+        for key, value in self.daily_macro_goals.items():
+            string += f'    {key:8}: {value:.1f}'
+            string += 'kcal\n' if key == 'Energy' else 'g\n'
+        return string
 
     # Databases
     def serialize(self) -> bytes:
@@ -83,7 +90,6 @@ class User:
                            DBKeys.HEIGHT_CM.value      : self._height_cm,
                            DBKeys.INIT_WEIGHT_KG.value : self._init_weight_kg,
                            DBKeys.PAL.value            : self._pal.value,
-                           DBKeys.BMR.value            : self._bmr,
                            }).encode()
 
     def store_db(self) -> None:
@@ -101,7 +107,6 @@ class User:
         self._init_weight_kg = json_db[DBKeys.INIT_WEIGHT_KG.value]
         self._gender         = Gender(               json_db[DBKeys.GENDER.value])
         self._pal            = PhysicalActivityLevel(json_db[DBKeys.PAL.value])
-        self._bmr            = json_db[DBKeys.BMR.value]
 
     # Setters
     # -------
@@ -130,9 +135,39 @@ class User:
         self._pal = pal
         self.store_db()
 
-    def set_bmr(self) -> None:
+    def set_diet_stage(self, diet_stage: 'DietStage') -> None:
+        """Set the Physical Activity Level (PAL) for the user."""
+        self._diet_stage = diet_stage
+        self.store_db()
+
+    # Dynamically generated values
+    def calculate_bmr(self, weight_kg: float) -> None:
         """Calculate the user's basal metabolic rate."""
-        self._bmr = calculate_bmr(self._gender, self._init_weight_kg, self._height_cm, self.get_age())
+        self._bmr = calculate_bmr(self._gender, weight_kg, self._height_cm, self.get_age())
+
+    def calculate_daily_macros(self, daily_weight_kg: float) -> None:
+        """Calculate the daily macro goals for the user.
+
+        Protein goal: avg. form https://youtu.be/l7jIU_73ZaM?t=403
+        """
+        self.calculate_bmr(daily_weight_kg)
+
+        theoretical_maintenance_kcal = get_pal_multiplier(self._pal) * self._bmr
+        calorie_deficit_multiplier   = get_calorie_deficit_multiplier(self._diet_stage)
+
+        kcal_goal = calorie_deficit_multiplier * theoretical_maintenance_kcal
+
+        protein_goal_g    = 1.9  * daily_weight_kg
+        protein_goal_kcal = protein_goal_g * CalContent.KCAL_PER_GRAM_PROTEIN.value
+        fat_goal_kcal     = 0.25 * kcal_goal
+        fat_goal_g        = fat_goal_kcal / CalContent.KCAL_PER_GRAM_FAT.value
+        carbs_goal_kcal   = (kcal_goal - protein_goal_kcal - fat_goal_kcal)
+        carbs_goal_g      = carbs_goal_kcal / CalContent.KCAL_PER_GRAM_CARB.value
+
+        self.daily_macro_goals = {'Energy'  : kcal_goal,
+                                  'Carbs'   : carbs_goal_g,
+                                  'Fat'     : fat_goal_g,
+                                  'Protein' : protein_goal_g}
 
     # Getters
     # -------

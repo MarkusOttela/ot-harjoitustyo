@@ -68,3 +68,14 @@ Changelog
 * Friday
 * Saturday
 * Sunday
+
+## Calendar Week 15
+* Monday
+  * Work on code quality
+* Tuesday
+  * Add initial survey
+* Wednesday
+* Thursday
+* Friday
+* Saturday
+* Sunday

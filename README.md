@@ -38,6 +38,10 @@ Calorinator supports the user in maintaining their diet by
 * [ ] Mealprep creation
 * [ ] Statistics
 
+### Latest Release
+
+* [Week 5 Release](https://github.com/MarkusOttela/ot-harjoitustyo/releases/tag/viikko5)
+
 
 ### Stretch goals
 

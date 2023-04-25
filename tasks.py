@@ -31,6 +31,16 @@ def test(ctx):
 
 # TODO: Figure out how to properly omit ui.
 @task
+def coverage_terminal(ctx):
+    ctx.run("python3 -m pytest tests "
+            "--cov=src/common "
+            "--cov=src/database "
+            "--cov=src/diet "
+            "--cov=src/entities "
+            "--cov-report term", pty=True)
+
+# TODO: Figure out how to properly omit ui.
+@task
 def coverage_report(ctx):
     ctx.run("python3 -m pytest tests "
             "--cov=src/common "

@@ -58,7 +58,7 @@ class IngredientDatabase:
         self.create_table()
 
     def create_table(self) -> None:
-        """Create the database table procedurally from Enum fields."""
+        """Create the database table procedurally."""
         sql_command = f'CREATE TABLE IF NOT EXISTS {self.table} ('
 
         for key, value in ingredient_metadata.items():

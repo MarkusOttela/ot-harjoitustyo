@@ -41,6 +41,7 @@ class Directories(Enum):
 class DatabaseFileNames(Enum):
     """Names of database files."""
     INGREDIENT_DATABASE = 'ingredient_database.sqlite3'
+    USER_DATABASE       = 'userdata.db'
 
 
 class Color(Enum):
@@ -54,7 +55,19 @@ class Color(Enum):
     CELESTE  = (14,  128, 113)
 
 
+class FontSize(Enum):
+    """Font sizes."""
+    FONT_SIZE_NORMAL = 40
+    FONT_SIZE_SMALL  = 30
+
+
 class ColorScheme(Enum):
     """Program's color scheme."""
     BACKGROUND = Color.GREY.value
     FONT_COLOR = Color.LGREY.value
+
+
+class Gender(Enum):
+    """Gender for approximation algorithms."""
+    MALE   = 'male'
+    FEMALE = 'female'

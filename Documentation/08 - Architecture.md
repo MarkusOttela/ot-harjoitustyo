@@ -25,4 +25,5 @@ classDiagram
     CalorinatorException <|-- IncompleteConversion 
     CalorinatorException <|-- IncorrectPassword 
     CalorinatorException <|-- AbortMenuOperation 
+    CalorinatorException <|-- SecurityException 
 ```

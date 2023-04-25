@@ -24,6 +24,7 @@ from src.common.exceptions import ValidationError
 
 integers = list(map(str, range(0, 10)))
 floats   = integers + ['.']
+date     = integers + ['/']
 
 
 def validate_type(key            : str,

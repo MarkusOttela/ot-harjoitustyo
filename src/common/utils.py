@@ -44,3 +44,10 @@ def write_bytes(path_to_file: str, data: bytes) -> None:
 def get_list_of_user_account_names() -> list:
     """Get list of user account names."""
     return next(os.walk(Directories.USERDATA.value))[1]
+
+
+def separate_header(bytestring    : bytes,     # Bytestring to slice
+                    header_length : int        # Number of header bytes to separate
+                    ) -> tuple[bytes, bytes]:  # Header and payload
+    """Separate `header_length` first bytes from a bytestring."""
+    return bytestring[:header_length], bytestring[header_length:]

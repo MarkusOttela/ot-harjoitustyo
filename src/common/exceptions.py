@@ -24,6 +24,10 @@ class CalorinatorException(Exception):
     """Base-class for internal program exceptions."""
 
 
+class SecurityException(CalorinatorException):
+    """Base-class for critical security exceptions that should close the program."""
+
+
 class DatabaseException(CalorinatorException):
     """Base-class for database exceptions."""
 

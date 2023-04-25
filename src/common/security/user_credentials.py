@@ -20,7 +20,7 @@ import hashlib
 import secrets
 
 from src.common.exceptions      import IncorrectPassword
-from src.common.security.crypto import CryptoLiterals, derive_database_key
+from src.common.security.crypto import CryptoLiterals, derive_database_key, encrypt_and_sign, auth_and_decrypt
 from src.common.statics         import Directories
 from src.common.utils           import ensure_dir, write_bytes
 
@@ -82,3 +82,11 @@ class UserCredentials:
             return UserCredentials(name, salt, purp_key)
 
         raise IncorrectPassword("Incorrect password")
+
+    def encrypt(self, plaintext: bytes) -> bytes:
+        """Encrypt the user data using XChaCha20-Poly1305 AEAD."""
+        return encrypt_and_sign(plaintext, self.__database_key)
+
+    def decrypt(self, ciphertext: bytes) -> bytes:
+        """Authenticate the Poly1305 tag and return decrypted data."""
+        return auth_and_decrypt(ciphertext, self.__database_key)

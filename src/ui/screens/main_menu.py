@@ -26,6 +26,7 @@ from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.callback_classes import Button
 
 from src.ui.screens.ingredient_menu.manage_ingredients import manage_ingredients_menu
+from src.ui.screens.initial_survey.initial_survey      import get_dob_and_gender
 from src.ui.screens.login.create_new_user              import create_new_user
 from src.ui.screens.login.login_existing_user          import login_existing_user
 
@@ -61,11 +62,11 @@ def main_menu(gui           : 'GUI',
 
             if create_user_bt.pressed:
                 user = create_new_user(gui)
-                print(f"Created {repr(user)}")
+                get_dob_and_gender(gui, user)
 
             if login_bt.pressed:
                 user = login_existing_user(gui)
-                print(f"Logged in {repr(user)}")
+                user.load_db()
 
             if exit_bt.pressed:
                 sys.exit()

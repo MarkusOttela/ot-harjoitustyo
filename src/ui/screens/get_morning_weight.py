@@ -20,7 +20,7 @@ import typing
 
 from src.common.validation           import validate_positive_float, floats
 from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import UserInput
+from src.ui.screens.callback_classes import StringInput
 
 if typing.TYPE_CHECKING:
     from src.ui.gui        import GUI
@@ -29,7 +29,7 @@ if typing.TYPE_CHECKING:
 
 def get_morning_weight(gui: 'GUI', user: 'User') -> None:
     """Get morning weight from the user."""
-    weight = UserInput()
+    weight = StringInput()
 
     error_message = ''
 

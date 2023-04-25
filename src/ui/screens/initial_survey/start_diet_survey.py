@@ -47,14 +47,14 @@ def start_diet_survey(gui: 'GUI', user: 'User') -> None:
         try:
             menu.menu.add.dropselect(f'Non-exercise PAL: ',
                                      onchange=pal_ds.set_value,
-                                     items=pal_options,
+                                     items=pal_options,  # type: ignore
                                      selection_box_height=len(pal_options),
                                      selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
                                      selection_box_width=300)
 
             menu.menu.add.dropselect(f'Diet stage: ',
                                      onchange=diet_stage_ds.set_value,
-                                     items=diet_stage_options,
+                                     items=diet_stage_options,  # type: ignore
                                      selection_box_height=len(diet_stage_options),
                                      selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
                                      selection_box_width=300)
@@ -73,8 +73,9 @@ def start_diet_survey(gui: 'GUI', user: 'User') -> None:
             if not diet_stage_ds.value:
                 raise ValueError("Please select one option from each drop-down menu.")
 
-            user.set_pal(pal_ds.value)
-            user.set_diet_stage(diet_stage_ds.value)
+            # TODO: Fix type issues
+            user.set_pal(PhysicalActivityLevel(pal_ds.value))  # type: ignore
+            user.set_diet_stage(diet_stage_ds.value)           # type: ignore
             return
 
         except ValueError as e:

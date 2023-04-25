@@ -22,7 +22,7 @@ from src.common.exceptions import AbortMenuOperation
 from src.common.validation import validate_positive_float, floats
 
 from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button, UserInput
+from src.ui.screens.callback_classes import Button, StringInput
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User
@@ -33,8 +33,8 @@ def get_body_measurements(gui: 'GUI', user: 'User') -> None:
     """Get initial body measurements (weight and height) from the user."""
     error_message = ''
 
-    weight = UserInput()
-    height = UserInput()
+    weight = StringInput()
+    height = StringInput()
 
     while True:
         menu = GUIMenu(gui, "Body Measurements")

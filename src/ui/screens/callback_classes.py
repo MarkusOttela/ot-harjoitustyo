@@ -59,7 +59,7 @@ class DropSelection:
         """Create new DropSelection object."""
         self.value = ''
 
-    def set_value(self, _: Any, value: str) -> None:
+    def set_value(self, _: Any, value: Any) -> None:
         """Set value to the string input field."""
         self.value = value
 

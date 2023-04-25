@@ -56,15 +56,15 @@ class User:
         self._birthday = ''
         self._gender   = Gender.MALE
 
-        self._height_cm      = 0
-        self._init_weight_kg = 0
+        self._height_cm      = 0.0
+        self._init_weight_kg = 0.0
 
         self._pal        = PhysicalActivityLevel.LightlyActive
         self._diet_stage = DietStage.Diet
         self._bmr        = 0.0
 
-        self.daily_macro_goals = dict()
-        self._weight_log       = dict()
+        self.daily_macro_goals : dict = dict()
+        self._weight_log       : dict = dict()
 
         self.database = EncryptedDatabase(self.credentials)
 

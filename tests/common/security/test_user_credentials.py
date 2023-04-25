@@ -20,6 +20,7 @@ import hashlib
 import os
 import typing
 import unittest
+from unittest import mock
 
 from src.common.security.crypto           import derive_database_key
 from src.common.security.user_credentials import UserCredentials
@@ -37,8 +38,9 @@ class TestUserCredentials(unittest.TestCase):
         self.unit_test_dir = cd_unit_test()
         self.test_password = 'password'
         self.test_salt     = 8*b'salt'
-        _, self.test_key   = derive_database_key(self.test_password, self.test_salt)
-        self.uc            = UserCredentials('test', self.test_salt, self.test_key)
+        with mock.patch('multiprocessing.cpu_count', return_value=1):
+            _, self.test_key = derive_database_key(self.test_password, self.test_salt)
+        self.uc = UserCredentials('test', self.test_salt, self.test_key)
 
     def tearDown(self) -> None:
         cleanup(self.unit_test_dir)
@@ -47,7 +49,7 @@ class TestUserCredentials(unittest.TestCase):
         self.assertEqual(repr(self.uc), """\
 Username:    test
 Salt:        73616c7473616c7473616c7473616c7473616c7473616c7473616c7473616c74
-DB key hash: c51faf44405620badf5b7a785f6b672582ad07fe840b64bfdddbecdf6d32b22ef2302c9e147bd06f9fa58cfb18e1ddc3e10c7628d5527cee36a1c2122b959671""")
+DB key hash: 8546602cc0544b1c731d76d776b44b12a1c85afd199e53d153645d493c1b4de3c474a954634756085a58cd351a21d215187bf885a7212e143805637359344c4f""")
 
     def test_get_username_returns_username(self):
         self.assertEqual(self.uc.get_username(), 'test')
@@ -63,7 +65,8 @@ DB key hash: c51faf44405620badf5b7a785f6b672582ad07fe840b64bfdddbecdf6d32b22ef23
     def test_loading_credentials_with_password(self):
         self.uc.store_credentials()
         self.assertTrue(os.path.isfile(f'{Directories.USERDATA.value}/test/credentials.db'))
-        uc = UserCredentials.from_password('test', self.test_password)
+        with mock.patch('multiprocessing.cpu_count', return_value=1):
+            uc = UserCredentials.from_password('test', self.test_password)
         self.assertEqual(self.uc.get_key_hash(), uc.get_key_hash())
 
     def test_encrypting_and_decrypting_is_bijective(self):

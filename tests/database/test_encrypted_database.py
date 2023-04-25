@@ -19,6 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import os
 import typing
 import unittest
+from unittest import mock
 
 from src.common.security.crypto           import derive_database_key
 from src.common.security.user_credentials import UserCredentials
@@ -36,8 +37,9 @@ class TestEncryptedDatabase(unittest.TestCase):
         self.unit_test_dir = cd_unit_test()
         self.test_password = 'password'
         self.test_salt     = 8*b'salt'
-        _, self.test_key   = derive_database_key(self.test_password, self.test_salt)
-        self.uc            = UserCredentials('test', self.test_salt, self.test_key)
+        with mock.patch('multiprocessing.cpu_count', return_value=1):
+            _, self.test_key = derive_database_key(self.test_password, self.test_salt)
+        self.uc = UserCredentials('test', self.test_salt, self.test_key)
 
     def tearDown(self) -> None:
         cleanup(self.unit_test_dir)

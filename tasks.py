@@ -39,6 +39,7 @@ def coverage_terminal(ctx):
             "--cov=src/entities "
             "--cov-report term", pty=True)
 
+
 # TODO: Figure out how to properly omit ui.
 @task
 def coverage_report(ctx):

@@ -66,10 +66,10 @@ def derive_database_key(password: str, salt: Optional[bytes] = None) -> tuple:
     return salt, key
 
 
-def encrypt_and_sign(plaintext: bytes,       # Plaintext to encrypt
-                     key:       bytes,       # 32-byte symmetric key
-                     ad:        bytes = b''  # Associated data
-                     ) -> bytes:             # Nonce + ciphertext + tag
+def encrypt_and_sign(plaintext       : bytes,       # Plaintext to encrypt
+                     key             : bytes,       # 32-byte symmetric key
+                     associated_data : bytes = b''  # Associated data
+                     ) -> bytes:                    # Nonce + ciphertext + tag
     """Encrypt plaintext with XChaCha20-Poly1305 (IETF variant)."""
     if len(key) != CryptoLiterals.SYMMETRIC_KEY_LENGTH.value:
         raise SecurityException(f"Invalid key length ({len(key)} bytes).")
@@ -77,18 +77,19 @@ def encrypt_and_sign(plaintext: bytes,       # Plaintext to encrypt
     nonce = os.getrandom(CryptoLiterals.XCHACHA20_NONCE_LENGTH.value, flags=0)
 
     try:
-        ct_tag = nacl.bindings.crypto_aead_xchacha20poly1305_ietf_encrypt(plaintext, ad, nonce, key)  # type: bytes
-    except nacl.exceptions.CryptoError as e:
-        raise SecurityException(str(e))
+        ct_tag = nacl.bindings.crypto_aead_xchacha20poly1305_ietf_encrypt(
+            plaintext, associated_data, nonce, key)  # type: bytes
+    except nacl.exceptions.CryptoError as error:
+        raise SecurityException(str(error)) from BaseException
 
     return nonce + ct_tag
 
 
-def auth_and_decrypt(nonce_ct_tag: bytes,       # Nonce + ciphertext + tag
-                     key:          bytes,       # 32-byte symmetric key
-                     file_name:    str   = '',  # When provided, gracefully exits program when the tag is invalid
-                     ad:           bytes = b''  # Associated data
-                     ) -> bytes:                # Plaintext
+def auth_and_decrypt(nonce_ct_tag    : bytes,       # Nonce + ciphertext + tag
+                     key             : bytes,       # 32-byte symmetric key
+                     file_name       : str   = '',  # Name of database.
+                     associated_data : bytes = b''  # Associated data
+                     ) -> bytes:                   # Plaintext
     """Authenticate and decrypt XChaCha20-Poly1305 ciphertext.
 
     The Poly1305 tag is checked using constant time `sodium_memcmp`:
@@ -100,9 +101,11 @@ def auth_and_decrypt(nonce_ct_tag: bytes,       # Nonce + ciphertext + tag
     nonce, ct_tag = separate_header(nonce_ct_tag, CryptoLiterals.XCHACHA20_NONCE_LENGTH.value)
 
     try:
-        plaintext = nacl.bindings.crypto_aead_xchacha20poly1305_ietf_decrypt(ct_tag, ad, nonce, key)  # type: bytes
+        plaintext = nacl.bindings.crypto_aead_xchacha20poly1305_ietf_decrypt(
+            ct_tag, associated_data, nonce, key)  # type: bytes
         return plaintext
     except nacl.exceptions.CryptoError:
         if file_name:
-            raise SecurityException(f"Authentication of data in file '{file_name}' failed.")
+            raise SecurityException(
+                f"Authentication of data in file '{file_name}' failed.") from BaseException
         raise

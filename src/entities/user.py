@@ -31,7 +31,7 @@ class User:
         self.credentials = credentials
         self._name       = credentials.get_username()
         self._birthday   = ''
-        self._gender     = None
+        self._gender     = Gender.MALE
         self._birthday   = ''
         self.database    = EncryptedDatabase(self.credentials)
 

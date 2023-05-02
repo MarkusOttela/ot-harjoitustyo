@@ -33,7 +33,11 @@ class DatabaseException(CalorinatorException):
 
 
 class IngredientNotFound(DatabaseException):
-    """Exception raised when the Ingredient is not found in the Ingredient database."""
+    """Exception raised when the Ingredient is not found in the IngredientDatabase."""
+
+
+class RecipeNotFound(DatabaseException):
+    """Exception raised when the Recipe is not found in the RecipeDatabase."""
 
 
 class ValidationError(CalorinatorException):

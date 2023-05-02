@@ -191,12 +191,12 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
             return False
         return self.name == other.name and self.manufacturer == other.manufacturer
 
-    def __neq__(self, other: Any) -> bool:
+    def __ne__(self, other: Any) -> bool:
         """Return True if two Ingredients are not equal."""
         return not self.__eq__(other)
 
     def __str__(self) -> str:
-        """Identifying version of the Ingredient"""
+        """Identifying version of the Ingredient."""
         return f'{self.name} ({self.manufacturer})'
 
     def __repr__(self) -> str:

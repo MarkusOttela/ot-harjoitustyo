@@ -22,35 +22,34 @@ from src.ui.gui_menu                 import GUIMenu
 from src.ui.screens.show_message     import show_message
 from src.ui.screens.callback_classes import Button
 
-from src.ui.screens.ingredient_menu.edit_ingredient import edit_ingredient
+from src.ui.screens.recipe_menu.edit_recipe import edit_recipe
 
 if typing.TYPE_CHECKING:
-    from src.database.unencrypted_database import IngredientDatabase
+    from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
     from src.ui.gui import GUI
 
 
-def select_ingredient_to_edit(gui           : 'GUI',
-                              ingredient_db : 'IngredientDatabase'
-                              ) -> None:
-    """Render the `Select Ingredient to Edit` menu."""
-    title = 'Select Ingredient to Edit'
+def select_recipe_to_edit(gui           : 'GUI',
+                          ingredient_db : 'IngredientDatabase',
+                          recipe_db     : 'RecipeDatabase',
+                          ) -> None:
+    """Render the `Select Recipe to Edit` menu."""
+    title = 'Select Recipe to Edit'
     while True:
         menu = GUIMenu(gui, title)
 
-        list_of_ingredients = ingredient_db.get_list_of_ingredients()
+        list_of_recipes = recipe_db.get_list_of_recipes()
 
-        if not list_of_ingredients:
-            show_message(gui, title, 'No ingredients yet in database.')
+        if not list_of_recipes:
+            show_message(gui, title, 'No recipes yet in database.')
             return
 
-        buttons       = {i.name: Button(menu, closes_menu=True) for i in list_of_ingredients}
+        buttons       = {i.name: Button(menu, closes_menu=True) for i in list_of_recipes}
         cancel_button = Button(menu, closes_menu=True)
 
-        for ingredient in list_of_ingredients:
-            label = f'{ingredient.name}'
-            if ingredient.manufacturer:
-                label += f' ({ingredient.manufacturer})'
-            menu.menu.add.button(label, action=buttons[ingredient.name].set_pressed)
+        for recipe in list_of_recipes:
+            menu.menu.add.button(f'{recipe.name} ({recipe.author})',
+                                 action=buttons[recipe.name].set_pressed)
         menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
 
         menu.start()
@@ -60,8 +59,8 @@ def select_ingredient_to_edit(gui           : 'GUI',
 
         for name, button in buttons.items():
             if button.pressed:
-                edit_ingredient(gui, ingredient_db, ingredient_db.get_ingredient(name))
+                edit_recipe(gui, ingredient_db, recipe_db, recipe_db.get_recipe(name))
 
-                # edit_ingredient might delete the last Ingredient before it returns
-                if not ingredient_db.get_list_of_ingredients():
+                # edit_recipe might delete the last Recipe before it returns
+                if not recipe_db.get_list_of_recipes():
                     return

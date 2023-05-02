@@ -23,7 +23,7 @@ from unittest import mock
 
 from src.common.security.crypto           import derive_database_key
 from src.common.security.user_credentials import UserCredentials
-from src.common.statics                   import Directories, DatabaseFileNames
+from src.common.statics                   import Directories, DatabaseFileName
 from src.database.encrypted_database      import EncryptedDatabase
 from tests.utils                          import cd_unit_test, cleanup
 
@@ -49,7 +49,7 @@ class TestEncryptedDatabase(unittest.TestCase):
         db.store_db(b'test_data')
 
         self.assertTrue(os.path.isdir(f'{Directories.USERDATA.value}/test/'))
-        self.assertTrue(os.path.isfile(f'{Directories.USERDATA.value}/test/{DatabaseFileNames.USER_DATABASE.value}'))
+        self.assertTrue(os.path.isfile(f'{Directories.USERDATA.value}/test/{DatabaseFileName.USER_DATABASE.value}.db'))
 
     def test_loading_data_works(self):
         test_data = b'test_data'

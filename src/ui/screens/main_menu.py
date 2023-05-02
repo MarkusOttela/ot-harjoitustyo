@@ -32,16 +32,19 @@ from src.ui.screens.initial_survey.initial_survey        import get_dob_and_gend
 from src.ui.screens.initial_survey.start_diet_survey     import start_diet_survey
 from src.ui.screens.login.create_new_user                import create_new_user
 from src.ui.screens.login.login_existing_user            import login_existing_user
+from src.ui.screens.recipe_menu.manage_recipes           import manage_recipes
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui                       import GUI
-    from src.database.ingredient_database import IngredientDatabase
+    from src.ui.gui                        import GUI
+    from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
 
 
 def main_menu(gui           : 'GUI',
-              ingredient_db : 'IngredientDatabase'
+              ingredient_db : 'IngredientDatabase',
+              recipe_db     : 'RecipeDatabase'
               ) -> None:
     """Render the Main Menu."""
+    manage_recipes(gui, ingredient_db, recipe_db)
     while True:
         try:
             menu = GUIMenu(gui, Program.NAME.value)
@@ -49,6 +52,7 @@ def main_menu(gui           : 'GUI',
             create_user_bt     = Button(menu, closes_menu=True)
             login_bt           = Button(menu, closes_menu=True)
             ingredient_menu_bt = Button(menu, closes_menu=True)
+            recipe_menu_bt     = Button(menu, closes_menu=True)
             exit_bt            = Button(menu, closes_menu=True)
 
             menu.menu.add.button('Create New User', action=create_user_bt.set_pressed)
@@ -57,12 +61,17 @@ def main_menu(gui           : 'GUI',
                 menu.menu.add.button('Login Existing User', action=login_bt.set_pressed)
 
             menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)
+            menu.menu.add.button('Manage Recipes',     action=recipe_menu_bt.set_pressed)
             menu.menu.add.button('Exit',               action=exit_bt.set_pressed)
 
             menu.start()
 
             if ingredient_menu_bt.pressed:
                 manage_ingredients_menu(gui, ingredient_db)
+                continue
+
+            if recipe_menu_bt.pressed:
+                manage_recipes(gui, ingredient_db, recipe_db)
                 continue
 
             if create_user_bt.pressed:

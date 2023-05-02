@@ -32,7 +32,7 @@ from src.ui.screens.ingredient_menu.add_ingredient import add_ingredient_attribu
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
-    from src.database.ingredient_database import IngredientDatabase
+    from src.database.unencrypted_database import IngredientDatabase
 
 
 def edit_ingredient(gui             : 'GUI',
@@ -72,7 +72,7 @@ def edit_ingredient(gui             : 'GUI',
 
         if delete_button.pressed:
             if get_yes(gui, title, f"Delete {str(orig_ingredient)}?", 'No'):
-                ingredient_db.remove(orig_ingredient)
+                ingredient_db.remove_ingredient(orig_ingredient)
                 show_message(gui, title, 'Ingredient has been removed.')
                 return
 
@@ -86,12 +86,12 @@ def edit_ingredient(gui             : 'GUI',
                 continue
 
             if not ingredient_id_changed:
-                ingredient_db.replace(new_ingredient)
+                ingredient_db.replace_ingredient(new_ingredient)
                 show_message(gui, title, 'Ingredient has been updated.')
                 return
 
             if not ingredient_db.has_ingredient(new_ingredient):
-                ingredient_db.remove(orig_ingredient)
+                ingredient_db.remove_ingredient(orig_ingredient)
                 ingredient_db.insert(new_ingredient)
                 show_message(gui, title, 'Ingredient has been renamed and updated.')
                 return
@@ -99,7 +99,7 @@ def edit_ingredient(gui             : 'GUI',
             if get_yes(gui, title,
                        f'Another ingredient {str(new_ingredient)} already exists. Overwrite(?)',
                        default_str='No'):
-                ingredient_db.remove(orig_ingredient)
-                ingredient_db.replace(new_ingredient)
+                ingredient_db.remove_ingredient(orig_ingredient)
+                ingredient_db.replace_ingredient(new_ingredient)
                 show_message(gui, title, 'Ingredient has been replaced.')
                 return

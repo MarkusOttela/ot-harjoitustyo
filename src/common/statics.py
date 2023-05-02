@@ -38,10 +38,16 @@ class Directories(Enum):
     USERDATA = 'user_data'
 
 
-class DatabaseFileNames(Enum):
-    """Names of database files."""
-    INGREDIENT_DATABASE = 'ingredient_database.sqlite3'
-    USER_DATABASE       = 'userdata.db'
+class DatabaseFileName(Enum):
+    """Names of database file names."""
+    USER_DATABASE   = 'UserData'
+    SHARED_DATABASE = 'SharedData'
+
+
+class DatabaseTableName(Enum):
+    """Database table names."""
+    INGREDIENTS   = 'Ingredients'
+    RECIPES       = 'Recipes'
 
 
 class Gender(Enum):
@@ -70,6 +76,7 @@ class FontSize(Enum):
     """Font sizes."""
     FONT_SIZE_NORMAL = 40
     FONT_SIZE_SMALL  = 30
+    FONT_SIZE_XSMALL = 20
 
 
 class ColorScheme(Enum):

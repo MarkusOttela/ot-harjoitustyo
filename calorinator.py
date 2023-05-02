@@ -16,10 +16,10 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from src.common.statics               import Program
-from src.database.ingredient_database import IngredientDatabase
-from src.ui.gui                       import GUI
-from src.ui.screens.main_menu         import main_menu
+from src.common.statics                import Program
+from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
+from src.ui.gui                        import GUI
+from src.ui.screens.main_menu          import main_menu
 
 
 def main() -> None:
@@ -32,10 +32,24 @@ def main() -> None:
     """
     print(f'{Program.NAME.value} {Program.VERSION.value}\n')
 
+    # TODO Test code - Remove
+    # import os
+    # try:
+    #     os.remove('user_data/SharedData.sqlite3')
+    # except FileNotFoundError:
+    #     pass
+
     gui           = GUI()
     ingredient_db = IngredientDatabase()
+    recipe_db     = RecipeDatabase()
 
-    main_menu(gui, ingredient_db)
+    # TODO Test code - Remove
+    # from src.diet.ingredient import Ingredient
+    # ingredient_db.insert(Ingredient('Sipuli'))
+    # ingredient_db.insert(Ingredient('Selleri'))
+    # ingredient_db.insert(Ingredient('Porkkana'))
+
+    main_menu(gui, ingredient_db, recipe_db)
 
 
 if __name__ == '__main__':

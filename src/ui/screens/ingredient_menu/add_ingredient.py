@@ -31,7 +31,7 @@ from src.ui.screens.show_message     import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
-    from src.database.ingredient_database import IngredientDatabase
+    from src.database.unencrypted_database import IngredientDatabase
 
 
 def add_ingredient_menu(gui           : 'GUI',
@@ -76,7 +76,7 @@ def add_ingredient_menu(gui           : 'GUI',
         done_button   = Button(menu, closes_menu=True)
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Return', action=return_button.set_pressed)
+        menu.menu.add.button('Cancel', action=return_button.set_pressed)
 
         menu.start()
 
@@ -99,7 +99,7 @@ def add_ingredient_menu(gui           : 'GUI',
             if get_yes(gui, title,
                        f'Ingredient {str(new_ingredient)} already exists. Overwrite(?)',
                        default_str='No'):
-                ingredient_db.replace(new_ingredient)
+                ingredient_db.replace_ingredient(new_ingredient)
                 show_message(gui, title, 'Ingredient has been replaced.')
                 return
 

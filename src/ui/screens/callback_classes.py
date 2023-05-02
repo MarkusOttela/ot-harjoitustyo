@@ -87,3 +87,20 @@ class BooleanSelector:
     def set_value(self, value: bool) -> None:
         """Set the boolean value to the object."""
         self.value = value
+
+
+class MultiSelection:
+    """Dropdown-menu selection callback-object."""
+
+    def __init__(self) -> None:
+        self.sel_list: list = []
+
+    def set_value(self, selection_: Any) -> None:
+        self.sel_list = [enum_ for name, enum_ in selection_[0]]
+
+    def get_value(self) -> list:
+        return self.sel_list
+
+    @property
+    def values(self) -> list:
+        return self.sel_list

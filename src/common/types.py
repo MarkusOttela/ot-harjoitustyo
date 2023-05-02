@@ -21,5 +21,6 @@ from enum import Enum
 
 class DatabaseTypes(Enum):
     """SQL Database types."""
-    TEXT = 'TEXT'
-    REAL = 'REAL'
+    TEXT    = 'TEXT'
+    REAL    = 'REAL'
+    LIST    = 'TEXT'

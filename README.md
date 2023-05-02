@@ -33,10 +33,11 @@ Calorinator supports the user in maintaining their diet by
 * [x] User registration
 * [x] Password login
 * [x] Initial survey
-* [ ] Daily tracking
 * [ ] Meal creation
 * [ ] Mealprep creation
+* [ ] Daily tracking
 * [ ] Statistics
+
 
 ### Latest Release
 

@@ -57,7 +57,7 @@ Changelog
 * Saturday
 * Sunday
 
-## Calendar Week 15
+## Calendar Week 16
 * Monday
   * Fix Cubbli launch issues
   * Add user account creation, login, and related database key derivation with Argon2.
@@ -69,13 +69,24 @@ Changelog
 * Saturday
 * Sunday
 
-## Calendar Week 15
+## Calendar Week 17
 * Monday
   * Work on code quality
 * Tuesday
   * Add initial survey that allows the program now to calculate daily energy requirement and macro-nutrients
   * Add encrypted database for user's private information
   * Add more unit tests
+* Wednesday
+* Thursday
+* Friday
+* Saturday
+* Sunday
+
+## Calendar Week 18
+* Monday
+* Tuesday
+  * Add GUI menus for creating and editing mealprep recipes
+  * Start work on GUI menus for creating and editing instances of mealpreps
 * Wednesday
 * Thursday
 * Friday

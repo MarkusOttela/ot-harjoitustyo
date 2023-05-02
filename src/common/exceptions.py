@@ -39,6 +39,9 @@ class IngredientNotFound(DatabaseException):
 class RecipeNotFound(DatabaseException):
     """Exception raised when the Recipe is not found in the RecipeDatabase."""
 
+class MealprepNotFound(DatabaseException):
+    """Exception raised when the Mealprep is not found in the MealprepDatabase."""
+
 
 class ValidationError(CalorinatorException):
     """Exception raised when a value fails validation"""

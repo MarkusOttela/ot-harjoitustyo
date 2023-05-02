@@ -16,6 +16,8 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
+import ast
+import datetime
 import sqlite3
 
 
@@ -26,6 +28,7 @@ from src.common.validation import validate_params
 from src.common.types      import DatabaseTypes
 
 from src.diet.ingredient import Ingredient, ingredient_metadata
+from src.diet.mealprep   import Mealprep, mealprep_metadata
 from src.diet.recipe     import Recipe, recipe_metadata
 
 
@@ -131,7 +134,7 @@ class IngredientDatabase(UnencryptedDatabase):
             raise IngredientNotFound(f"No ingredient {ingredient.name} in database.")
 
         sql_command  = f'DELETE FROM {self.table_name}'
-        sql_command += f" WHERE {self.db_metadata['name'][0]} == '{ingredient.name}'"
+        sql_command += f" WHERE name == '{ingredient.name}'"
         self.cursor.execute(sql_command)
 
     def replace_ingredient(self, ingredient: Ingredient) -> None:
@@ -154,11 +157,11 @@ class RecipeDatabase(UnencryptedDatabase):
         super().__init__(table_name=DatabaseTableName.RECIPES, db_metadata=recipe_metadata)
 
     def get_list_of_recipe_names(self) -> list:
-        """Get list of recipe n ames."""
+        """Get list of recipe names."""
         return [name for name, author, ser_ingredient_names in self.get_list_of_entries()]
 
     def get_list_of_recipes(self) -> list:
-        """Get list of recipe n ames."""
+        """Get list of recipes."""
         return [self.get_recipe(name) for name in self.get_list_of_recipe_names()]
 
     def get_recipe(self,
@@ -171,11 +174,10 @@ class RecipeDatabase(UnencryptedDatabase):
         sql_command  =  'SELECT '
         sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])
         sql_command += f' FROM {self.table_name}'
-        sql_command += f" WHERE {self.db_metadata['name'][0]} == '{name}'"
+        sql_command += f" WHERE name == '{name}'"
 
         if author:
-            author_col   = 'author'
-            sql_command += f" AND {author_col} == '{author}'"
+            sql_command += f" AND author == '{author}'"
 
         results = self.cursor.execute(sql_command).fetchall()
 
@@ -188,8 +190,8 @@ class RecipeDatabase(UnencryptedDatabase):
                     ingredients = [ingredients]
                 return Recipe(name, author, ingredients)
 
-        manuf_info = f" by '{author}'" if author else ''
-        raise RecipeNotFound(f"Could not find recipe '{name}'{manuf_info}.")
+        author_info = f" by '{author}'" if author else ''
+        raise RecipeNotFound(f"Could not find recipe '{name}'{author_info}.")
 
     def insert_recipe(self, recipe: Recipe) -> None:
         """Insert Recipe into the database."""
@@ -221,10 +223,90 @@ class RecipeDatabase(UnencryptedDatabase):
             raise RecipeNotFound(f"No recipe {recipe.name} in database.")
 
         sql_command  = f'DELETE FROM {self.table_name}'
-        sql_command += f" WHERE {self.db_metadata['name'][0]} == '{recipe.name}'"
+        sql_command += f" WHERE name == '{recipe.name}'"
         self.cursor.execute(sql_command)
 
     def replace_recipe(self, recipe: Recipe) -> None:
         """Replace recipe in database."""
         self.remove_recipe(recipe)
         self.insert_recipe(recipe)
+
+
+class MealprepDatabase(UnencryptedDatabase):
+    """MealprepDatabase database contains a repository of shared mealpreps.
+
+    The database is intended to be public and shareable, thus it is not encrypted.
+
+    While a mealprep is somewhat personal wrt its nutritional content, we assume
+    cases where the same OS account is shared for the application, means the users
+    also share the same fridge content. Thus, one person cooking a meal into the fridge
+    benefits everyone in the household.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(table_name=DatabaseTableName.MEALPREPS, db_metadata=mealprep_metadata)
+
+    def get_list_of_mealprep_names(self) -> list:
+        """Get list of mealprep names."""
+        return [name for name, ingredient_grams in self.get_list_of_entries()]
+
+    def get_list_of_mealpreps(self) -> list:
+        """Get list of mealpreps."""
+        return [self.get_mealprep(name) for name in self.get_list_of_mealprep_names()]
+
+    def get_mealprep(self, name: str) -> Mealprep:
+        """Get Recipe from database by name."""
+        validate_params(self.get_mealprep, locals())
+
+        sql_command  =  'SELECT '
+        sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])
+        sql_command += f' FROM {self.table_name}'
+        sql_command += f" WHERE recipe_name == '{name}'"
+
+        results = self.cursor.execute(sql_command).fetchall()
+
+        if results:
+            print(results[0][0])
+            d = ast.literal_eval(results[0][0])
+            print(d)
+            return Mealprep(name, d, datetime.date.today())
+
+        raise RecipeNotFound(f"Could not find recipe '{name}'.")
+
+    def insert_mealprep(self, mealprep: Mealprep) -> None:
+        """Insert Mealprep into the database."""
+        keys = list(self.db_metadata.keys())
+
+        values = []
+        for key in self.db_metadata:
+            value = getattr(mealprep, key)
+            if type(value) == dict:
+                value = str(value)
+            values.append(value)
+
+        sql_command = f'INSERT INTO {self.table_name} ('
+        sql_command += ', '.join(keys)
+        sql_command += ') VALUES ('
+        sql_command += ', '.join(['?' for _ in range(len(keys))])
+        sql_command += ')'
+
+        self.cursor.execute(sql_command, values)
+        self.cursor.connection.commit()
+
+    def has_mealprep(self, mealprep: Mealprep) -> bool:
+        """Returns True if the mealprep exists in the database."""
+        return any(name == mealprep.recipe_name for name in self.get_list_of_mealprep_names())
+
+    def remove_mealprep(self, mealprep: Mealprep) -> None:
+        """Remove meaplrep from the database."""
+        if not self.has_mealprep(mealprep):
+            raise RecipeNotFound(f"No meaprep {mealprep.recipe_name} in database.")
+
+        sql_command  = f'DELETE FROM {self.table_name}'
+        sql_command += f" WHERE recipe_name == '{mealprep.recipe_name}'"
+        self.cursor.execute(sql_command)
+
+    def replace_mealprep(self, mealprep: Mealprep) -> None:
+        """Replace mealprep in the database."""
+        self.remove_mealprep(mealprep)
+        self.insert_mealprep(mealprep)

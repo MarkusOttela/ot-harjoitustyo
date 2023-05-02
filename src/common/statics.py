@@ -48,6 +48,7 @@ class DatabaseTableName(Enum):
     """Database table names."""
     INGREDIENTS   = 'Ingredients'
     RECIPES       = 'Recipes'
+    MEALPREPS     = 'Mealpreps'
 
 
 class Gender(Enum):

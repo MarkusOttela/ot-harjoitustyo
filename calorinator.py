@@ -17,7 +17,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 from src.common.statics                import Program
-from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
+from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
 from src.ui.gui                        import GUI
 from src.ui.screens.main_menu          import main_menu
 
@@ -38,18 +38,22 @@ def main() -> None:
     #     os.remove('user_data/SharedData.sqlite3')
     # except FileNotFoundError:
     #     pass
+    import os
+    create_ingredients = not os.path.isfile('user_data/SharedData.sqlite3')
 
     gui           = GUI()
     ingredient_db = IngredientDatabase()
     recipe_db     = RecipeDatabase()
+    mealprep_db   = MealprepDatabase()
 
     # TODO Test code - Remove
-    # from src.diet.ingredient import Ingredient
-    # ingredient_db.insert(Ingredient('Sipuli'))
-    # ingredient_db.insert(Ingredient('Selleri'))
-    # ingredient_db.insert(Ingredient('Porkkana'))
+    from src.diet.ingredient import Ingredient
+    if create_ingredients:
+        ingredient_db.insert(Ingredient('Sipuli'))
+        ingredient_db.insert(Ingredient('Selleri'))
+        ingredient_db.insert(Ingredient('Porkkana'))
 
-    main_menu(gui, ingredient_db, recipe_db)
+    main_menu(gui, ingredient_db, recipe_db, mealprep_db)
 
 
 if __name__ == '__main__':

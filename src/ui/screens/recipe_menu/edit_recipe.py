@@ -63,7 +63,7 @@ def edit_recipe(gui           : 'GUI',
                 selected_ingredient_indexes.append(i)
 
     while True:
-        menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
+        menu = GUIMenu(gui, title)
 
         return_button = Button(menu, closes_menu=True)
         done_button   = Button(menu, closes_menu=True)

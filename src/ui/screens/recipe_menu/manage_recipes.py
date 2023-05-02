@@ -29,10 +29,10 @@ if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
 
 
-def manage_recipes(gui           : 'GUI',
-                   ingredient_db : 'IngredientDatabase',
-                   recipe_db     : 'RecipeDatabase'
-                   ) -> None:
+def manage_recipes_menu(gui           : 'GUI',
+                        ingredient_db : 'IngredientDatabase',
+                        recipe_db     : 'RecipeDatabase'
+                        ) -> None:
     """Render the Manage Recipes sub menu."""
     while True:
         menu = GUIMenu(gui, 'Manage Recipes')

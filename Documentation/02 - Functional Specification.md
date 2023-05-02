@@ -68,7 +68,7 @@ The program supports the user in maintaining their diet by
     * The importable information can be inspected
 
 
-**Meal Creation**
+**WIP: Meal Creation**
 
 1. The user can add one-time meal portions where 
    * The ingredients are not known, but where

@@ -34,7 +34,6 @@ def manage_recipes(gui           : 'GUI',
                    recipe_db     : 'RecipeDatabase'
                    ) -> None:
     """Render the Manage Recipes sub menu."""
-    select_recipe_to_edit(gui, ingredient_db, recipe_db)
     while True:
         menu = GUIMenu(gui, 'Manage Recipes')
 

@@ -68,7 +68,7 @@ def add_recipe_menu(gui           : 'GUI',
 
         menu.menu.add.dropselect_multiple(f'Select ingredients: ',
                                           onchange=selected_ingredients.set_value,
-                                          onselect=selected_ingredients.set_value,  # type: ignore
+                                          onreturn=selected_ingredients.set_value,  # type: ignore
                                           items=available_ingredients,  # type: ignore
                                           selection_box_height=len(available_ingredients),
                                           selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value)

@@ -44,7 +44,7 @@ def main_menu(gui           : 'GUI',
               recipe_db     : 'RecipeDatabase'
               ) -> None:
     """Render the Main Menu."""
-    manage_recipes(gui, ingredient_db, recipe_db)
+
     while True:
         try:
             menu = GUIMenu(gui, Program.NAME.value)

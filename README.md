@@ -39,9 +39,10 @@ Calorinator supports the user in maintaining their diet by
 * [ ] Statistics
 
 
-### Latest Release
+### Releases
 
 * [Week 5 Release](https://github.com/MarkusOttela/ot-harjoitustyo/releases/tag/viikko5)
+* [Week 6 Release](https://github.com/MarkusOttela/ot-harjoitustyo/releases/tag/viikko6)
 
 
 ### Stretch goals

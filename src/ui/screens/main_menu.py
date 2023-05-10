@@ -47,26 +47,35 @@ def main_menu(gui           : 'GUI',
               ) -> None:
     """Render the Main Menu."""
 
+    user = None
+
     while True:
         try:
             menu = GUIMenu(gui, Program.NAME.value)
 
             create_user_bt     = Button(menu, closes_menu=True)
             login_bt           = Button(menu, closes_menu=True)
+            logout_bt          = Button(menu, closes_menu=True)
             ingredient_menu_bt = Button(menu, closes_menu=True)
             recipe_menu_bt     = Button(menu, closes_menu=True)
             mealprep_menu_bt   = Button(menu, closes_menu=True)
             exit_bt            = Button(menu, closes_menu=True)
 
-            menu.menu.add.button('Create New User', action=create_user_bt.set_pressed)
+            if user is None:
+                if get_list_of_user_account_names():
+                    menu.menu.add.button('Login Existing User', action=login_bt.set_pressed)
+                menu.menu.add.button('Create New User', action=create_user_bt.set_pressed)
 
-            if get_list_of_user_account_names():
-                menu.menu.add.button('Login Existing User', action=login_bt.set_pressed)
-
+            menu.menu.add.label('')
             menu.menu.add.button('Manage Ingredients', action=ingredient_menu_bt.set_pressed)
             menu.menu.add.button('Manage Recipes',     action=recipe_menu_bt.set_pressed)
             menu.menu.add.button('Manage Mealpreps',   action=mealprep_menu_bt.set_pressed)
-            menu.menu.add.button('Exit',               action=exit_bt.set_pressed)
+            menu.menu.add.label('')
+
+            if user is not None:
+                menu.menu.add.button('Logout', action=logout_bt.set_pressed)
+
+            menu.menu.add.button('Exit', action=exit_bt.set_pressed)
 
             menu.start()
 
@@ -98,6 +107,10 @@ def main_menu(gui           : 'GUI',
                     get_morning_weight(gui, user)
                 user.calculate_daily_macros()
                 print(repr(user))
+
+            if logout_bt.pressed:
+                user = None
+                continue
 
             if exit_bt.pressed:
                 sys.exit()

@@ -18,11 +18,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button
 
-from src.ui.screens.mealprep_menu.create_mealprep         import create_mealprep
-from src.ui.screens.mealprep_menu.select_mealprep_recipe import select_mealprep_recipe
+from src.ui.screens.mealprep_menu.select_mealprep_recipe  import select_mealprep_recipe_to_create
 from src.ui.screens.mealprep_menu.select_mealprep_to_edit import select_mealprep_to_edit
 
 if typing.TYPE_CHECKING:
@@ -50,7 +49,7 @@ def manage_mealpreps_menu(gui           : 'GUI',
         menu.start()
 
         if create_mealprep.pressed:
-            select_mealprep_recipe(gui, ingredient_db, recipe_db, mealprep_db)
+            select_mealprep_recipe_to_create(gui, ingredient_db, recipe_db, mealprep_db)
             continue
 
         if edit_mealprep_button.pressed:

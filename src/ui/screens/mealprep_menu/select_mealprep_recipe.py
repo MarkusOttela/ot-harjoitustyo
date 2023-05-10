@@ -21,20 +21,18 @@ import typing
 from src.ui.gui_menu                              import GUIMenu
 from src.ui.screens.mealprep_menu.create_mealprep import create_mealprep
 from src.ui.screens.show_message                  import show_message
-from src.ui.screens.callback_classes              import Button
-
-from src.ui.screens.recipe_menu.edit_recipe import edit_recipe
+from src.ui.callback_classes                      import Button
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
     from src.ui.gui import GUI
 
 
-def select_mealprep_recipe(gui           : 'GUI',
-                           ingredient_db : 'IngredientDatabase',
-                           recipe_db     : 'RecipeDatabase',
-                           mealprep_db   : 'MealprepDatabase',
-                            ) -> None:
+def select_mealprep_recipe_to_create(gui           : 'GUI',
+                                     ingredient_db : 'IngredientDatabase',
+                                     recipe_db     : 'RecipeDatabase',
+                                     mealprep_db   : 'MealprepDatabase',
+                                     ) -> None:
     """Render the `Select Mealprep Recipe` menu."""
     title = 'Select Mealprep Recipe'
     while True:

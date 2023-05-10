@@ -21,8 +21,8 @@ import typing
 from src.common.exceptions import AbortMenuOperation
 from src.common.validation import validate_positive_float, floats
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button, StringInput
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button, StringInput
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User

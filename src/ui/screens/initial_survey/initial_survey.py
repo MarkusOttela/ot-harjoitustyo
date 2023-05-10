@@ -22,8 +22,8 @@ from src.common.exceptions import AbortMenuOperation
 from src.common.statics    import Gender
 from src.common.validation import date
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User

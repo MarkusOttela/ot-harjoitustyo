@@ -18,11 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions           import AbortMenuOperation
-from src.common.utils                import get_list_of_user_account_names
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import StringInput, Button
-from src.ui.screens.show_message     import show_message
+from src.common.exceptions       import AbortMenuOperation
+from src.common.utils            import get_list_of_user_account_names
+from src.ui.gui_menu             import GUIMenu
+from src.ui.callback_classes     import StringInput, Button
+from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

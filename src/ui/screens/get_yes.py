@@ -18,8 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 from typing import TYPE_CHECKING
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import BooleanSelector
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import BooleanSelector
 
 if TYPE_CHECKING:
     from src.ui.gui import GUI

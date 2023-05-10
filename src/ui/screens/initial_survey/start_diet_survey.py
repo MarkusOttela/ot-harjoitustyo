@@ -23,8 +23,8 @@ from src.common.statics    import FontSize
 
 from src.diet.enums import PhysicalActivityLevel, DietStage
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import DropSelection, Button
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import DropSelection, Button
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User

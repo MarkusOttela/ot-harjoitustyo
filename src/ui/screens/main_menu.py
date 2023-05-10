@@ -23,7 +23,7 @@ from src.common.exceptions             import AbortMenuOperation
 from src.common.statics                import Program
 from src.common.utils                  import get_list_of_user_account_names
 from src.ui.gui_menu                   import GUIMenu
-from src.ui.screens.callback_classes   import Button
+from src.ui.callback_classes           import Button
 from src.ui.screens.get_morning_weight import get_morning_weight
 
 from src.ui.screens.ingredient_menu.manage_ingredients   import manage_ingredients_menu

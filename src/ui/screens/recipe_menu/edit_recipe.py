@@ -22,10 +22,10 @@ from src.common.statics import Color, ColorScheme, FontSize
 
 from src.diet.recipe import Recipe
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button, StringInput, MultiSelection
-from src.ui.screens.get_yes          import get_yes
-from src.ui.screens.show_message     import show_message
+from src.ui.gui_menu             import GUIMenu
+from src.ui.callback_classes     import Button, StringInput, MultiSelection
+from src.ui.screens.get_yes      import get_yes
+from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

@@ -24,10 +24,10 @@ from src.common.validation import floats
 
 from src.diet.ingredient import Ingredient, ingredient_metadata
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button, StringInput
-from src.ui.screens.get_yes          import get_yes
-from src.ui.screens.show_message     import show_message
+from src.ui.gui_menu             import GUIMenu
+from src.ui.callback_classes     import Button, StringInput
+from src.ui.screens.get_yes      import get_yes
+from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

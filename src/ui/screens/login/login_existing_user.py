@@ -25,9 +25,9 @@ from src.common.utils                     import ensure_dir, get_list_of_user_ac
 
 from src.entities.user import User
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import DropSelection, Button, StringInput
-from src.ui.screens.show_message     import show_message
+from src.ui.gui_menu             import GUIMenu
+from src.ui.callback_classes     import DropSelection, Button, StringInput
+from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

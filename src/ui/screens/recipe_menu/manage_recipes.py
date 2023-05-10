@@ -18,8 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button
 
 from src.ui.screens.recipe_menu.add_recipe            import add_recipe_menu
 from src.ui.screens.recipe_menu.select_recipe_to_edit import select_recipe_to_edit

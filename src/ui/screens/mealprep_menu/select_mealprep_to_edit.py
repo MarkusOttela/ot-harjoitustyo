@@ -18,12 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.mealprep_menu.edit_mealprep import edit_mealprep
-from src.ui.screens.show_message     import show_message
-from src.ui.screens.callback_classes import Button
+from src.ui.gui_menu             import GUIMenu
+from src.ui.screens.show_message import show_message
+from src.ui.callback_classes     import Button
 
-from src.ui.screens.recipe_menu.edit_recipe import edit_recipe
+from src.ui.screens.mealprep_menu.edit_mealprep import edit_mealprep
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase, MealprepDatabase

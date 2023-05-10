@@ -18,8 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu                 import GUIMenu
-from src.ui.screens.callback_classes import StringInput
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import StringInput
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

@@ -248,7 +248,7 @@ class MealprepDatabase(UnencryptedDatabase):
 
     def get_list_of_mealprep_names(self) -> list:
         """Get list of mealprep names."""
-        return [name for name, ingredient_grams in self.get_list_of_entries()]
+        return [name for name, total_grams, ingredient_grams in self.get_list_of_entries()]
 
     def get_list_of_mealpreps(self) -> list:
         """Get list of mealpreps."""
@@ -263,13 +263,12 @@ class MealprepDatabase(UnencryptedDatabase):
         sql_command += f' FROM {self.table_name}'
         sql_command += f" WHERE recipe_name == '{name}'"
 
-        results = self.cursor.execute(sql_command).fetchall()
+        result = self.cursor.execute(sql_command).fetchall()[0]
 
-        if results:
-            print(results[0][0])
-            d = ast.literal_eval(results[0][0])
-            print(d)
-            return Mealprep(name, d, datetime.date.today())
+        if result:
+            total_grams      = result[0]
+            ingredient_grams = ast.literal_eval(result[1])
+            return Mealprep(name, total_grams, ingredient_grams, datetime.date.today())
 
         raise RecipeNotFound(f"Could not find recipe '{name}'.")
 

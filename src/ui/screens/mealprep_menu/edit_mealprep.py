@@ -21,7 +21,8 @@ import typing
 from datetime import datetime
 
 from src.common.conversion import convert_input_fields
-from src.common.statics import Color
+from src.common.statics    import Color
+from src.common.validation import floats
 
 from src.diet.mealprep import Mealprep
 
@@ -29,7 +30,7 @@ from src.diet.mealprep import Mealprep
 from src.ui.gui_menu                              import GUIMenu
 from src.ui.callback_classes                      import Button, StringInput
 from src.ui.screens.get_yes                       import get_yes
-from src.ui.screens.mealprep_menu.create_mealprep import add_ingredient_attributes
+from src.ui.screens.mealprep_menu.create_mealprep import add_text_inputs
 from src.ui.screens.show_message                  import show_message
 
 if typing.TYPE_CHECKING:
@@ -51,6 +52,7 @@ def edit_mealprep(gui           : 'GUI',
     failed_conversions : dict = {}
 
     string_inputs = {k: StringInput() for k in keys}
+    total_grams   = StringInput()
 
     while True:
         menu = GUIMenu(gui, title)
@@ -59,7 +61,11 @@ def edit_mealprep(gui           : 'GUI',
         done_button   = Button(menu, closes_menu=True)
         delete_button = Button(menu, closes_menu=True)
 
-        add_ingredient_attributes(menu, keys, string_inputs, failed_conversions, fields)
+        add_text_inputs(menu, keys, string_inputs, failed_conversions, fields)
+        menu.menu.add.text_input(f'Total grams: ',
+                                 onchange=total_grams.set_value,
+                                 default=total_grams.value,
+                                 valid_chars=floats)
 
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)

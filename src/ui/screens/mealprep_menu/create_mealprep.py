@@ -51,16 +51,22 @@ def create_mealprep(gui           : 'GUI',
     failed_conversions : dict = {}
 
     string_inputs = {k: StringInput() for k in keys}
+    total_grams   = StringInput()
 
     while True:
         menu = GUIMenu(gui, title)
 
         menu.menu.add.label('Please specify grams for each mealprep ingredient\n')
-        add_ingredient_attributes(menu, keys, string_inputs, failed_conversions, fields)
+        add_text_inputs(menu, keys, string_inputs, failed_conversions, fields)
+        menu.menu.add.text_input(f'Total grams: ',
+                                 onchange=total_grams.set_value,
+                                 default=total_grams.value,
+                                 valid_chars=floats)
+
+        menu.menu.add.label('\n', font_size=5)
 
         return_button = Button(menu, closes_menu=True)
         done_button   = Button(menu, closes_menu=True)
-        menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
         menu.menu.add.button('Cancel', action=return_button.set_pressed)
 
@@ -71,7 +77,7 @@ def create_mealprep(gui           : 'GUI',
 
         if done_button.pressed:
             success, value_dict = convert_input_fields(string_inputs, keys, fields, field_types)
-            new_mealprep        = Mealprep(recipe.name, value_dict, datetime.datetime.now().date())
+            new_mealprep        = Mealprep(recipe.name, total_grams.value, value_dict, datetime.datetime.now().date())
 
             if not success:
                 failed_conversions = value_dict
@@ -83,19 +89,19 @@ def create_mealprep(gui           : 'GUI',
                 return
 
             if get_yes(gui, title,
-                       f'Mealprep {str(new_mealprep)} already exists. Overwrite(?)',
+                       f'Mealprep {new_mealprep.recipe_name} already exists. Overwrite(?)',
                        default_str='No'):
                 mealprep_db.replace_mealprep(new_mealprep)
                 show_message(gui, title, 'Mealprep has been replaced.')
                 return
 
 
-def add_ingredient_attributes(menu:               GUIMenu,
-                              keys:               list,
-                              string_inputs:      dict,
-                              failed_conversions: dict,
-                              fields:             list) -> None:
-    """Add the ingredient attributes."""
+def add_text_inputs(menu:               GUIMenu,
+                    keys:               list,
+                    string_inputs:      dict,
+                    failed_conversions: dict,
+                    fields:             list) -> None:
+    """Add text inputs on screen. ."""
     for i, k in enumerate(keys):
         warning_color = Color.RED.value
         normal_color  = ColorScheme.FONT_COLOR.value

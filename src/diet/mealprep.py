@@ -49,7 +49,7 @@ class Mealprep:
 
     def __str__(self) -> str:
         """Return string-representation of the Mealprep"""
-        return self.recipe_name
+        return f'{self.recipe_name} ({self.cook_date.strftime(Format.DATETIME_DATE.value)})'
 
     def __repr__(self) -> str:
         """Return string-representation of the Mealprep"""

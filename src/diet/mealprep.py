@@ -33,6 +33,11 @@ class Mealprep:
 
     1) Larger than one portion and thus
     2) Something from which multiple portions can be taken
+
+    The total grams is not tied to the amount of ingredient grams, because the amount of
+    water will vary depending on how much is added, and how much evaporates during the
+    cooking process. Weighing the final mealprep will ensure correct estimation of
+    nutrient density.
     """
 
     def __init__(self,
@@ -48,11 +53,11 @@ class Mealprep:
         self.cook_date        = cook_date
 
     def __str__(self) -> str:
-        """Return string-representation of the Mealprep"""
+        """Return string-representation of the Mealprep."""
         return f'{self.recipe_name} ({self.cook_date.strftime(Format.DATETIME_DATE.value)})'
 
     def __repr__(self) -> str:
-        """Return string-representation of the Mealprep"""
+        """Return repr-representation of the Mealprep."""
         string = (f'<Mealprep-object {id(self)}>\n'
                   f'Cook_date: {self.cook_date.strftime(Format.DATETIME_DATE.value)}\n'
                   f'Grams:     {self.total_grams}\n'

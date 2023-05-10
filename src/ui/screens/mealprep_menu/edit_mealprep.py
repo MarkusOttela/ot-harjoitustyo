@@ -54,6 +54,10 @@ def edit_mealprep(gui           : 'GUI',
     string_inputs = {k: StringInput() for k in keys}
     total_grams   = StringInput()
 
+    for k in string_inputs.keys():
+        string_inputs[k].set_value(orig_mealprep.ingredient_grams[k])
+    total_grams.set_value(str(orig_mealprep.total_grams))
+
     while True:
         menu = GUIMenu(gui, title)
 
@@ -84,7 +88,7 @@ def edit_mealprep(gui           : 'GUI',
 
         if done_button.pressed:
             success, value_dict = convert_input_fields(string_inputs, keys, fields, field_types)
-            new_mealprep        = Mealprep(orig_mealprep.recipe_name, value_dict, datetime.now().date())
+            new_mealprep        = Mealprep(orig_mealprep.recipe_name, total_grams.value, value_dict, datetime.now().date())
             recipe_id_changed   = new_mealprep != orig_mealprep
 
             if not recipe_id_changed:
@@ -101,7 +105,6 @@ def edit_mealprep(gui           : 'GUI',
             if get_yes(gui, title,
                        f'Another mealprep {str(new_mealprep)} already exists. Overwrite(?)',
                        default_str='No'):
-                mealprep_db.remove_mealprep(orig_mealprep)
                 mealprep_db.replace_mealprep(new_mealprep)
                 show_message(gui, title, 'Mealprep has been replaced.')
                 return

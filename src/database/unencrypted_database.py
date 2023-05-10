@@ -268,6 +268,7 @@ class MealprepDatabase(UnencryptedDatabase):
         if result:
             total_grams      = result[0]
             ingredient_grams = ast.literal_eval(result[1])
+            # TODO: FIX DATETIME
             return Mealprep(name, total_grams, ingredient_grams, datetime.date.today())
 
         raise RecipeNotFound(f"Could not find recipe '{name}'.")

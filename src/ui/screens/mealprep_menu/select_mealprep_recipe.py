@@ -46,7 +46,7 @@ def select_mealprep_recipe(gui           : 'GUI',
             show_message(gui, title, 'No recipes yet in database.')
             return
 
-        buttons       = {i.name: Button(menu, closes_menu=True) for i in list_of_recipes}
+        buttons       = {recipe.name: Button(menu, closes_menu=True) for recipe in list_of_recipes}
         cancel_button = Button(menu, closes_menu=True)
 
         for recipe in list_of_recipes:

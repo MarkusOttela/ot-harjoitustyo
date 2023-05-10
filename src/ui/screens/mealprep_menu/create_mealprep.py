@@ -43,7 +43,7 @@ def create_mealprep(gui           : 'GUI',
                     mealprep_db   : MealprepDatabase,
                     recipe        : Recipe
                     ) -> None:
-    """Render the `Add Ingredient` menu."""
+    """Render the `Create New Mealprep` menu."""
     title       = 'Create New Mealprep'
     keys        = list(recipe.ingredients)
     fields      = recipe.ingredients
@@ -86,7 +86,7 @@ def create_mealprep(gui           : 'GUI',
             if get_yes(gui, title,
                        f'Mealprep {str(new_mealprep)} already exists. Overwrite(?)',
                        default_str='No'):
-                mealprep_db.remove_mealprep(new_mealprep)
+                mealprep_db.replace_mealprep(new_mealprep)
                 show_message(gui, title, 'Mealprep has been replaced.')
                 return
 

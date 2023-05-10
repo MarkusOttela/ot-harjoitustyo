@@ -32,8 +32,7 @@ from src.ui.screens.initial_survey.initial_survey        import get_dob_and_gend
 from src.ui.screens.initial_survey.start_diet_survey     import start_diet_survey
 from src.ui.screens.login.create_new_user                import create_new_user
 from src.ui.screens.login.login_existing_user            import login_existing_user
-from src.ui.screens.mealprep_menu.manage_mealpreps import manage_mealpreps_menu
-from src.ui.screens.mealprep_menu.select_mealprep_recipe import select_mealprep_recipe
+from src.ui.screens.mealprep_menu.manage_mealpreps       import manage_mealpreps_menu
 from src.ui.screens.recipe_menu.manage_recipes           import manage_recipes_menu
 
 if typing.TYPE_CHECKING:

@@ -62,5 +62,6 @@ def select_mealprep_to_edit(gui           : 'GUI',
             if button.pressed:
                 edit_mealprep(gui, mealprep_db, mealprep_db.get_mealprep(name))
 
+                # If edit_mealprep deletes the last mealprep edit menu is no longer needed.
                 if not mealprep_db.get_list_of_mealpreps():
                     return

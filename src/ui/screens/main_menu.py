@@ -19,13 +19,14 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import sys
 import typing
 
-from src.common.exceptions             import AbortMenuOperation
-from src.common.statics                import Program
-from src.common.utils                  import get_list_of_user_account_names
-from src.ui.gui_menu                   import GUIMenu
-from src.ui.callback_classes           import Button
-from src.ui.screens.get_morning_weight import get_morning_weight
+from src.common.exceptions import AbortMenuOperation
+from src.common.statics    import Program
+from src.common.utils      import get_list_of_user_account_names
 
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button
+
+from src.ui.screens.get_morning_weight                   import get_morning_weight
 from src.ui.screens.ingredient_menu.manage_ingredients   import manage_ingredients_menu
 from src.ui.screens.initial_survey.get_body_measurements import get_body_measurements
 from src.ui.screens.initial_survey.initial_survey        import get_dob_and_gender
@@ -36,8 +37,8 @@ from src.ui.screens.mealprep_menu.manage_mealpreps       import manage_mealpreps
 from src.ui.screens.recipe_menu.manage_recipes           import manage_recipes_menu
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui                        import GUI
     from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
+    from src.ui.gui import GUI
 
 
 def main_menu(gui           : 'GUI',
@@ -79,18 +80,6 @@ def main_menu(gui           : 'GUI',
 
             menu.start()
 
-            if ingredient_menu_bt.pressed:
-                manage_ingredients_menu(gui, ingredient_db)
-                continue
-
-            if recipe_menu_bt.pressed:
-                manage_recipes_menu(gui, ingredient_db, recipe_db)
-                continue
-
-            if mealprep_menu_bt.pressed:
-                manage_mealpreps_menu(gui, ingredient_db, recipe_db, mealprep_db)
-                continue
-
             if create_user_bt.pressed:
                 user = create_new_user(gui)
                 get_dob_and_gender(gui, user)
@@ -107,6 +96,22 @@ def main_menu(gui           : 'GUI',
                     get_morning_weight(gui, user)
                 user.calculate_daily_macros()
                 print(repr(user))
+
+            # ---
+
+            if ingredient_menu_bt.pressed:
+                manage_ingredients_menu(gui, ingredient_db)
+                continue
+
+            if recipe_menu_bt.pressed:
+                manage_recipes_menu(gui, ingredient_db, recipe_db)
+                continue
+
+            if mealprep_menu_bt.pressed:
+                manage_mealpreps_menu(gui, ingredient_db, recipe_db, mealprep_db)
+                continue
+
+            # ---
 
             if logout_bt.pressed:
                 user = None

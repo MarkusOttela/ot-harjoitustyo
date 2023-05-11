@@ -18,6 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from src.common.exceptions                        import AbortMenuOperation
 from src.ui.gui_menu                              import GUIMenu
 from src.ui.screens.mealprep_menu.create_mealprep import create_mealprep
 from src.ui.screens.show_message                  import show_message
@@ -29,9 +30,9 @@ if typing.TYPE_CHECKING:
 
 
 def select_mealprep_recipe_to_create(gui           : 'GUI',
-                                     ingredient_db : 'IngredientDatabase',
-                                     recipe_db     : 'RecipeDatabase',
                                      mealprep_db   : 'MealprepDatabase',
+                                     recipe_db     : 'RecipeDatabase',
+                                     ingredient_db : 'IngredientDatabase'
                                      ) -> None:
     """Render the `Select Mealprep Recipe` menu."""
     title = 'Select Mealprep Recipe'
@@ -59,4 +60,5 @@ def select_mealprep_recipe_to_create(gui           : 'GUI',
 
         for name, button in buttons.items():
             if button.pressed:
-                create_mealprep(gui, ingredient_db, recipe_db, mealprep_db, recipe_db.get_recipe(name))
+                create_mealprep(gui, ingredient_db, mealprep_db, recipe_db.get_recipe(name))
+                raise AbortMenuOperation('Mealprep created.')

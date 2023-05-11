@@ -18,172 +18,39 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Any
 
-from src.common.validation import validate_params
+from src.common.validation       import validate_params
+from src.diet.nutritional_values import NutritionalValues
 
 
-ingredient_metadata = {
-
-    # General information
-    'name':         ('Name',   str),
-    'manufacturer': ('Manuf.', str),
-
-    # Macronutrients
-    'kcal':          ('KCal',     float),
-    'carbohydrates': ('Carbs',    float),
-    'protein':       ('Protein',  float),
-    'fat':           ('Fat',      float),
-    'satisfied_fat': ('Sat. Fat', float),
-    'fiber':         ('Fiber',    float),
-    'salt':          ('Salt',     float),
-
-    # Micronutrients
-
-    # Omega-3 fatty acids
-    'omega3_dha': ('Ω3 DHA', float),
-    'omega3_epa': ('Ω3 EPA', float),
-
-    # Fat soluble vitamins
-    'vitamin_a': ('Vit. A', float),
-    'vitamin_d': ('Vit. D', float),
-    'vitamin_e': ('Vit. E', float),
-    'vitamin_k': ('Vit. K', float),
-
-    # Water soluble vitamins
-    'vitamin_b1':  ('Vit. B1',  float),
-    'vitamin_b2':  ('Vit. B2',  float),
-    'vitamin_b3':  ('Vit. B3',  float),
-    'vitamin_b5':  ('Vit. B5',  float),
-    'vitamin_b6':  ('Vit. B6',  float),
-    'vitamin_b7':  ('Vit. B7',  float),
-    'vitamin_b9':  ('Vit. B9',  float),
-    'vitamin_b12': ('Vit. B12', float),
-    'vitamin_c':   ('Vit. C',   float),
-
-    # Minerals etc.
-    'calcium':   ('Calcium',   float),
-    'chromium':  ('Chromium',  float),
-    'iodine':    ('Iodine',    float),
-    'potassium': ('Potassium', float),
-    'iron':      ('Iron',      float),
-    'magnesium': ('Magnesium', float),
-    'zinc':      ('Zinc',      float),
-    'caffeine':  ('Caffeine',  float),
-    'creatine':  ('Creatine',  float),
-}
+in_metadata = {
+    'name':            ('Name',              str),
+    'manufacturer':    ('Manuf.',            str),
+    'grams_per_unit':  ('Grams per unit',    float),
+    'fixed_portion_g': ('Fixed portion (g)', float),
+}  # type: dict
 
 
 class Ingredient:  # pylint: disable=too-many-instance-attributes
     """\
     Food ingredient is an object that represents something
     drinks, servings, and mealpreps are cooked from.
-
-    Note: The `pylint: disable=` suppressions here are because Ingredient is more
-          or less a data-class that holds all metadata for the specified ingredient.
     """
 
-    def __init__(self,  # pylint: disable=too-many-arguments, too-many-locals, too-many-statements
-                 name         : str,
-                 manufacturer : str = '',
-
-                 # Energy
-                 kcal : float = 0.0,
-
-                 # Macronutrients
-                 carbohydrates : float = 0.0,
-                 protein       : float = 0.0,
-                 fat           : float = 0.0,
-                 satisfied_fat : float = 0.0,
-                 fiber         : float = 0.0,
-                 salt          : float = 0.0,
-
-                 # Micronutrients
-
-                 # Omega-3 fatty acids
-                 omega3_dha : float = 0.0,
-                 omega3_epa : float = 0.0,
-
-                 # Fat soluble vitamins
-                 vitamin_a : float = 0.0,
-                 vitamin_d : float = 0.0,
-                 vitamin_e : float = 0.0,
-                 vitamin_k : float = 0.0,
-
-                 # Water soluble vitamins
-                 vitamin_b1  : float = 0.0,
-                 vitamin_b2  : float = 0.0,
-                 vitamin_b3  : float = 0.0,
-                 vitamin_b5  : float = 0.0,
-                 vitamin_b6  : float = 0.0,
-                 vitamin_b7  : float = 0.0,
-                 vitamin_b9  : float = 0.0,
-                 vitamin_b12 : float = 0.0,
-                 vitamin_c   : float = 0.0,
-
-                 # Minerals etc.
-                 calcium   : float = 0.0,
-                 chromium  : float = 0.0,
-                 iodine    : float = 0.0,
-                 potassium : float = 0.0,
-                 iron      : float = 0.0,
-                 magnesium : float = 0.0,
-                 zinc      : float = 0.0,
-                 caffeine  : float = 0.0,
-                 creatine  : float = 0.0,
-
+    def __init__(self,
+                 name            : str,
+                 nv_per_g        : NutritionalValues,
+                 manufacturer    : str   = '',
+                 grams_per_unit  : float = 100.0,
+                 fixed_portion_g : int   = 0,
                  ) -> None:
-        """Create new Ingredient.
-
-        Macronutrients are given in grams / 100g.
-        """
+        """Create new Ingredient."""
         validate_params(self.__init__, locals())  # type: ignore
 
-        self.name         = name
-        self.manufacturer = manufacturer
-
-        # Energy
-        self.kcal = kcal
-
-        # Macronutrients
-        self.carbohydrates = carbohydrates
-        self.protein       = protein
-        self.fat           = fat
-        self.satisfied_fat = satisfied_fat
-        self.fiber         = fiber
-        self.salt          = salt
-
-        # Micronutrients
-
-        # Omega-3 fatty acids
-        self.omega3_dha = omega3_dha
-        self.omega3_epa = omega3_epa
-
-        # Fat soluble vitamins
-        self.vitamin_a = vitamin_a
-        self.vitamin_d = vitamin_d
-        self.vitamin_e = vitamin_e
-        self.vitamin_k = vitamin_k
-
-        # Water soluble vitamins
-        self.vitamin_b1  = vitamin_b1
-        self.vitamin_b2  = vitamin_b2
-        self.vitamin_b3  = vitamin_b3
-        self.vitamin_b5  = vitamin_b5
-        self.vitamin_b6  = vitamin_b6
-        self.vitamin_b7  = vitamin_b7
-        self.vitamin_b9  = vitamin_b9
-        self.vitamin_b12 = vitamin_b12
-        self.vitamin_c   = vitamin_c
-
-        # Minerals etc.
-        self.calcium   = calcium
-        self.chromium  = chromium
-        self.iodine    = iodine
-        self.potassium = potassium
-        self.iron      = iron
-        self.magnesium = magnesium
-        self.zinc      = zinc
-        self.caffeine  = caffeine
-        self.creatine  = creatine
+        self.name            = name
+        self.nv_per_g        = nv_per_g
+        self.manufacturer    = manufacturer
+        self.grams_per_unit  = grams_per_unit
+        self.fixed_portion_g = fixed_portion_g
 
     def __eq__(self, other: Any) -> bool:
         """Return True if two Ingredients are equal."""
@@ -201,26 +68,44 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
 
     def __repr__(self) -> str:
         """Format Ingredient attributes."""
-        lines  = [f"<Ingredient-object {id(self)}>"]
-        indent = len(max(self.__dict__.keys(), key=len)) + 1
-        lines.extend([f'    <{k:{indent}}: {v}>' for k, v in self.__dict__.items()])
+        manufacturer = '<None>' if not self.manufacturer else self.manufacturer
+        lines  = [f"<Ingredient-object {id(self)}>",
+                  "General Info",
+                  f"  <Name:         {self.name}>",
+                  f"  <Manufacturer: {manufacturer}>",
+                  'Nutrients: ']
+        nv_lines = repr(self.nv_per_g).split('\n')
+        string  = '\n'.join(lines)
+        string += '\n  '.join(nv_lines)
 
-        # Sub-headers for lines
-        for index, txt in [( 1, 'General Info'),
-                           ( 4, 'Energy'),
-                           ( 6, 'Macronutrients'),
-                           (13, 'Micronutrients')]:
-            lines.insert(index, f'  {txt}')
-        return '\n'.join(lines)
+        return string
 
     @classmethod
     def from_dict(cls, purp_dictionary: dict) -> 'Ingredient':
         """Initialize Ingredient from dictionary."""
-        ingredient = Ingredient(purp_dictionary['name'])
+        if purp_dictionary['fixed_portion_g'] > 0.0:
+            divider = purp_dictionary['fixed_portion_g']
+        else:
+            divider = purp_dictionary['grams_per_unit']
 
-        for key in ingredient.__dict__:
+        parsed_nv = NutritionalValues()
+
+        for key in parsed_nv.__dict__:
             if key not in purp_dictionary.keys():
                 raise KeyError(f"Missing key '{key}'")
-            setattr(ingredient, key, purp_dictionary[key])
+            setattr(parsed_nv, key, purp_dictionary[key])
+
+        parsed_nv = parsed_nv / divider
+
+        try:
+            manufacturer = purp_dictionary['manufacturer']
+        except KeyError:
+            manufacturer = ''
+
+        ingredient = Ingredient(purp_dictionary['name'], parsed_nv, manufacturer)
 
         return ingredient
+
+    def get_nv(self, for_grams: float) -> NutritionalValues:
+        """Return the nutritional values of the ingredient for specified portion of grams."""
+        return self.nv_per_g * for_grams

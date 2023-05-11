@@ -50,7 +50,8 @@ def get_dob_and_gender(gui: 'GUI', user: 'User') -> None:
                                         onchange=user.set_gender,
                                         state_text=(Gender.FEMALE.value, Gender.MALE.value),
                                         state_values=(Gender.FEMALE, Gender.MALE),
-                                        default=user.get_gender() != Gender.MALE.value)
+                                        default=user.get_gender() != Gender.MALE.value,
+                                        **gui.toggle_switch_theme)
 
             menu.menu.add.button('Done', action=menu.menu.disable)
             menu.menu.add.label(f'')

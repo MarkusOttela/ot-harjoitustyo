@@ -45,3 +45,14 @@ class CalContent(Enum):
     KCAL_PER_GRAM_CARB    = 4
     KCAL_PER_GRAM_PROTEIN = 4
     KCAL_PER_GRAM_FAT     = 9
+
+
+class TefMultipliers(Enum):
+    """TEF-multipliers.
+
+    For explanation, see
+        https://en.wikipedia.org/wiki/Specific_dynamic_action
+    """
+    TEF_CARB_EFFICIENCY    = 0.9
+    TEF_PROTEIN_EFFICIENCY = 0.725
+    TEF_FAT_EFFICIENCY     = 0.9

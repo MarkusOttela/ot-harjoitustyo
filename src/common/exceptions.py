@@ -39,6 +39,7 @@ class IngredientNotFound(DatabaseException):
 class RecipeNotFound(DatabaseException):
     """Exception raised when the Recipe is not found in the RecipeDatabase."""
 
+
 class MealprepNotFound(DatabaseException):
     """Exception raised when the Mealprep is not found in the MealprepDatabase."""
 
@@ -61,6 +62,14 @@ class IncorrectPassword(CalorinatorException):
 
 class AbortMenuOperation(CalorinatorException):
     """Exception raised when the user returns to main menu."""
+
+
+class KeyPress(Exception):
+    """Base class for key press exceptions."""
+
+
+class EscPressed(KeyPress):
+    """Exception thrown when Pygame event loop detects Esc key press."""
 
 
 @contextmanager

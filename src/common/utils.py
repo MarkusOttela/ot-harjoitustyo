@@ -45,7 +45,7 @@ def write_bytes(path_to_file: str, data: bytes) -> None:
 
 def get_list_of_user_account_names() -> list:
     """Get list of user account names."""
-    return next(os.walk(Directories.USERDATA.value))[1]
+    return next(os.walk(Directories.USER_DATA.value))[1]
 
 
 def separate_header(bytestring    : bytes,     # Bytestring to slice

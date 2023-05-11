@@ -16,15 +16,15 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-import datetime
+from src.diet.nutritional_values import NutritionalValues
 
-from src.common.statics import Format
 
 mealprep_metadata = {
-    'recipe_name':      ('RecipeName',      str),
+    'recipe_name':      ('RecipeName',      str  ),
     'total_grams':      ('TotalGrams',      float),
-    'ingredient_grams': ('IngredientGrams', list),
-
+    'cook_date':      ('CookDate',        str),
+    'ingredient_grams': ('IngredientGrams', list ),
+    'mealprep_nv':      ('MealprepNV',      str  ),
 }
 
 
@@ -43,25 +43,31 @@ class Mealprep:
     def __init__(self,
                  recipe_name      : str,
                  total_grams      : float,
+                 cook_date        : str,
                  ingredient_grams : dict,
-                 cook_date        : datetime.date
+                 mealprep_nv      : NutritionalValues
                  ) -> None:
         """Create new Mealprep object."""
         self.recipe_name      = recipe_name
         self.total_grams      = total_grams
-        self.ingredient_grams = ingredient_grams
         self.cook_date        = cook_date
+        self.ingredient_grams = ingredient_grams
+        self.mealprep_nv      = mealprep_nv / self.total_grams
 
     def __str__(self) -> str:
         """Return string-representation of the Mealprep."""
-        return f'{self.recipe_name} ({self.cook_date.strftime(Format.DATETIME_DATE.value)})'
+        return f'{self.recipe_name} ({self.cook_date})'
 
     def __repr__(self) -> str:
         """Return repr-representation of the Mealprep."""
         string = (f'<Mealprep-object {id(self)}>\n'
-                  f'Cook_date: {self.cook_date.strftime(Format.DATETIME_DATE.value)}\n'
+                  f'Cook_date: {self.cook_date}\n'
                   f'Grams:     {self.total_grams}\n'
                   'Ingredients:')
         for ingredient, grams in self.ingredient_grams.items():
             string += f'  {ingredient}: {grams}g'
         return string
+
+    def get_nv(self, for_grams: float) -> NutritionalValues:
+        """Get the nutritional values of the mealprep for portion grams."""
+        return self.mealprep_nv * for_grams

@@ -48,8 +48,8 @@ class TestEncryptedDatabase(unittest.TestCase):
         db = EncryptedDatabase(self.uc)
         db.store_db(b'test_data')
 
-        self.assertTrue(os.path.isdir(f'{Directories.USERDATA.value}/test/'))
-        self.assertTrue(os.path.isfile(f'{Directories.USERDATA.value}/test/{DatabaseFileName.USER_DATABASE.value}.db'))
+        self.assertTrue(os.path.isdir(f'{Directories.USER_DATA.value}/test/'))
+        self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/{DatabaseFileName.USER_DATABASE.value}.db'))
 
     def test_loading_data_works(self):
         test_data = b'test_data'

@@ -18,6 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 from src.common.statics                import Program
 from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
+from src.diet.nutritional_values       import NutritionalValues
 from src.ui.gui                        import GUI
 from src.ui.screens.main_menu          import main_menu
 
@@ -49,9 +50,8 @@ def main() -> None:
     # TODO Test code - Remove
     from src.diet.ingredient import Ingredient
     if create_ingredients:
-        ingredient_db.insert(Ingredient('Sipuli'))
-        ingredient_db.insert(Ingredient('Selleri'))
-        ingredient_db.insert(Ingredient('Porkkana'))
+        for name in ['Sipuli', 'Selleri', 'Porkkana', 'Pasta', 'Maito']:
+            ingredient_db.insert(Ingredient(name, NutritionalValues.mock()))
 
     main_menu(gui, ingredient_db, recipe_db, mealprep_db)
 

@@ -23,15 +23,16 @@ from enum     import Enum, unique
 
 from src.common.conversion                import Conversion
 from src.common.security.user_credentials import UserCredentials
+from src.common.statics                   import Gender, Format
 from src.common.utils                     import get_today_str
 
 from src.database.encrypted_database import EncryptedDatabase
 
-from src.common.statics import Gender, Format
-
-from src.diet.bmr   import calculate_bmr
-from src.diet.enums import PhysicalActivityLevel, DietStage, CalContent
-from src.diet.coef  import get_pal_multiplier, get_calorie_deficit_multiplier
+from src.diet.bmr                import calculate_bmr
+from src.diet.enums              import PhysicalActivityLevel, DietStage, CalContent
+from src.diet.coef               import get_pal_multiplier, get_calorie_deficit_multiplier
+from src.diet.nutritional_values import NutritionalValues
+from src.diet.meal               import Meal
 
 
 @unique
@@ -44,6 +45,7 @@ class DBKeys(Enum):
     INIT_WEIGHT_KG = 'init_weight_kg'
     PAL            = 'pal'
     WEIGHT_LOG     = 'weight_log'
+    MEAL_LOG       = 'meal_log'
 
 
 class User:  # pylint: disable=too-many-instance-attributes, too-many-public-methods
@@ -69,6 +71,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
 
         self.daily_macro_goals : dict = {}
         self._weight_log       : dict = {}
+        self._meal_log         : dict = {}
 
         self.database = EncryptedDatabase(self.credentials)
 
@@ -98,6 +101,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                            DBKeys.INIT_WEIGHT_KG.value: self._init_weight_kg,
                            DBKeys.PAL.value:            self._pal.value,
                            DBKeys.WEIGHT_LOG.value:     json.dumps(self._weight_log),
+                           DBKeys.MEAL_LOG.value:       json.dumps(self._meal_log),
                            }).encode()
 
     def store_db(self) -> None:
@@ -105,7 +109,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self.database.store_db(self.serialize())
 
     def load_db(self) -> None:
-        """Load user's data"""
+        """Load user's private data from their encrypted database."""
         serialized_data = self.database.load_db()
         json_db         = json.loads(serialized_data)
 
@@ -113,9 +117,11 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self._birthday       = json_db[DBKeys.BIRTHDAY.value]
         self._height_cm      = json_db[DBKeys.HEIGHT_CM.value]
         self._init_weight_kg = json_db[DBKeys.INIT_WEIGHT_KG.value]
-        self._gender         = Gender(               json_db[DBKeys.GENDER.value])
+
+        self._gender         = Gender(json_db[DBKeys.GENDER.value])
         self._pal            = PhysicalActivityLevel(json_db[DBKeys.PAL.value])
         self._weight_log     = json.loads(json_db[DBKeys.WEIGHT_LOG.value])
+        self._meal_log       = json.loads(json_db[DBKeys.MEAL_LOG.value])
 
     # Setters
     # -------
@@ -149,9 +155,23 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self._diet_stage = diet_stage
         self.store_db()
 
-    def set_todays_weight(self, weight_kg: float) -> None:
-        """Set the day's weight."""
+    def set_morning_weight(self, weight_kg: float) -> None:
+        """Set the morning weight for the day."""
         self._weight_log[get_today_str()] = weight_kg
+        self.store_db()
+
+    def add_meal(self, meal: 'Meal') -> None:
+        """Add meal to the meal log."""
+        if not get_today_str() in self._meal_log.keys():
+            self._meal_log[get_today_str()] = []
+        self._meal_log[get_today_str()].append(meal.serialize())
+        self.store_db()
+
+    def delete_meal(self, meal_to_delete: 'Meal') -> None:
+        """Delete meal from the meal log."""
+        if not get_today_str() in self._meal_log.keys():
+            return
+        self._meal_log[get_today_str()].remove(meal_to_delete.serialize())
         self.store_db()
 
     # Dynamically generated values
@@ -180,11 +200,36 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
 
         self.daily_macro_goals = {'Energy'  : kcal_goal,
                                   'Carbs'   : carbs_goal_g,
-                                  'Fat'     : fat_goal_g,
-                                  'Protein' : protein_goal_g}
+                                  'Protein' : protein_goal_g,
+                                  'Fat'     : fat_goal_g}
+
+    def get_todays_nv_goals(self) -> NutritionalValues:
+        """Returns the daily nutritional goals as a NutritionalValues object."""
+        nv_goals = NutritionalValues()
+        nv_goals.kcal            = self.daily_macro_goals['Energy']
+        nv_goals.carbohydrates_g = self.daily_macro_goals['Carbs']
+        nv_goals.protein_g       = self.daily_macro_goals['Protein']
+        nv_goals.fat_g           = self.daily_macro_goals['Fat']
+        return nv_goals
 
     # Getters
     # -------
+
+    def get_todays_meals(self) -> list:
+        """Return the list of meals for the day."""
+        try:
+            return [Meal.from_serialized_string(s) for s in self._meal_log[get_today_str()]]
+        except KeyError:
+            return []
+
+    def get_todays_weight(self) -> float:
+        """Get today's weight."""
+        return self._weight_log[get_today_str()]
+
+    def get_username(self) -> str:
+        """Get the user's username."""
+        return self.credentials.get_username()
+
     def get_gender(self) -> 'Gender':
         """Get the user's gender."""
         return self._gender
@@ -202,10 +247,6 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
     def get_height(self) -> float:
         """Get the user's height in centimeters."""
         return self._height_cm
-
-    def get_todays_weight(self) -> float:
-        """Get today's weight."""
-        return self._weight_log[get_today_str()]
 
     def get_initial_weight(self) -> float:
         """Get the user's initial weight in kilograms."""

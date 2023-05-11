@@ -30,9 +30,9 @@ if typing.TYPE_CHECKING:
 
 
 def manage_mealpreps_menu(gui           : 'GUI',
-                          ingredient_db : 'IngredientDatabase',
+                          mealprep_db   : 'MealprepDatabase',
                           recipe_db     : 'RecipeDatabase',
-                          mealprep_db   : 'MealprepDatabase'
+                          ingredient_db : 'IngredientDatabase',
                           ) -> None:
     """Render the Manage Mealprep sub menu."""
     while True:
@@ -49,11 +49,11 @@ def manage_mealpreps_menu(gui           : 'GUI',
         menu.start()
 
         if create_mealprep.pressed:
-            select_mealprep_recipe_to_create(gui, ingredient_db, recipe_db, mealprep_db)
+            select_mealprep_recipe_to_create(gui, mealprep_db, recipe_db, ingredient_db)
             continue
 
         if edit_mealprep_button.pressed:
-            select_mealprep_to_edit(gui, ingredient_db, recipe_db, mealprep_db)
+            select_mealprep_to_edit(gui, mealprep_db, ingredient_db)
             continue
 
         if return_button.pressed:

@@ -35,19 +35,18 @@ if typing.TYPE_CHECKING:
 
 def login_existing_user(gui: 'GUI') -> User:
     """Login with existing user account"""
-    ensure_dir(Directories.USERDATA.value)
-
-    accounts  = get_list_of_user_account_names()
-    sel_items = [(a, a) for a in accounts]
-
     title = 'Login existing user'
 
-    user_name_ds = DropSelection()
-    default_un   = None
+    ensure_dir(Directories.USER_DATA.value)
+
+    accounts      = get_list_of_user_account_names()
+    sel_items     = [(a, a) for a in accounts]
+    user_name_ds  = DropSelection()
+    default_uname = None
 
     # If there's only one user, automatically select it from the drop-down list.
     if len(accounts) == 1:
-        default_un = 0
+        default_uname = 0
         user_name_ds.set_value(None, accounts[0])
 
     while True:
@@ -59,8 +58,9 @@ def login_existing_user(gui: 'GUI') -> User:
         menu.menu.add.dropselect('Select User Account',
                                  onreturn=user_name_ds.set_value,
                                  items=sel_items,  # type: ignore
-                                 default=default_un,
-                                 selection_box_width=280)
+                                 default=default_uname,
+                                 selection_box_width=280,
+                                 **gui.drop_selection_theme)
 
         menu.menu.add.text_input(f'Password: ', onchange=password.set_value, password=True)
         menu.menu.add.button('Done', action=menu.menu.disable)
@@ -76,7 +76,7 @@ def login_existing_user(gui: 'GUI') -> User:
             show_message(gui, title, 'Error: No account selected')
             continue
 
-        default_un = accounts.index(user_name_ds.value)
+        default_uname = accounts.index(user_name_ds.value)
 
         try:
             user_credentials = UserCredentials.from_password(user_name_ds.value, password.value)

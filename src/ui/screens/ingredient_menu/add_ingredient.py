@@ -19,10 +19,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.conversion import convert_input_fields
-from src.common.statics    import Color, ColorScheme
+from src.common.statics    import Color, ColorScheme, FontSize
 from src.common.validation import floats
 
-from src.diet.ingredient import Ingredient, ingredient_metadata
+from src.diet.ingredient         import Ingredient, in_metadata
+from src.diet.nutritional_values import nv_metadata
 
 from src.ui.gui_menu             import GUIMenu
 from src.ui.callback_classes     import Button, StringInput
@@ -30,66 +31,58 @@ from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui import GUI
     from src.database.unencrypted_database import IngredientDatabase
+    from src.ui.gui import GUI
 
 
 def add_ingredient_menu(gui           : 'GUI',
                         ingredient_db : 'IngredientDatabase'
                         ) -> None:
     """Render the `Add Ingredient` menu."""
-    title       = 'Add Ingredient'
-    keys        = list(ingredient_metadata.keys())
-    fields      = [ingredient_metadata[k][0] for k in keys]
-    field_types = [ingredient_metadata[k][1] for k in keys]
+    title              = 'Add Ingredient'
+    failed_conversions = {}  # type: dict
 
-    failed_conversions : dict = {}
+    joined_metadata = dict()
+    joined_metadata.update(in_metadata)
+    joined_metadata.update(nv_metadata)
+
+    keys = list(in_metadata.keys()) + list(nv_metadata.keys())
 
     string_inputs = {k: StringInput() for k in keys}
 
-    # Testing code TODO: Remove
-    debug = True
-    if debug:
-        string_inputs['name'].value         = 'Mansikkahillo'
-        string_inputs['manufacturer'].value = 'Atria'
-
-        attr_list = ['kcal',
-                     'carbohydrates', 'protein', 'fat', 'satisfied_fat',
-                     'fiber', 'salt',
-                     'omega3_dha', 'omega3_epa',
-                     'vitamin_a', 'vitamin_d', 'vitamin_e', 'vitamin_k',
-                     'vitamin_b1', 'vitamin_b2', 'vitamin_b3', 'vitamin_b5',
-                     'vitamin_b6', 'vitamin_b7', 'vitamin_b9', 'vitamin_b12',
-                     'vitamin_c',
-                     'calcium', 'chromium', 'iodine', 'potassium', 'iron', 'magnesium', 'zinc',
-                     'caffeine', 'creatine']
-
-        for attr in attr_list:
-            string_inputs[attr].value = '1.0'
+    # Prefill less commonly used fields with zeroes
+    excluded = ['kcal', 'carbohydrates_g', 'protein_g', 'fat_g',
+                'satisfied_fat_g', 'fiber_g', 'salt_g']
+    for k in string_inputs.keys():
+        if k in nv_metadata.keys() and k not in excluded:
+            string_inputs[k].value = '0.0'
+    string_inputs['grams_per_unit'].value  = '100.0'
+    string_inputs['fixed_portion_g'].value = '0.0'
 
     while True:
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
 
-        add_ingredient_attributes(menu, keys, string_inputs, failed_conversions, fields)
+        add_ingredient_attributes(menu, joined_metadata, string_inputs, failed_conversions)
 
         return_button = Button(menu, closes_menu=True)
         done_button   = Button(menu, closes_menu=True)
+
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
         menu.menu.add.button('Cancel', action=return_button.set_pressed)
-
         menu.start()
 
         if return_button.pressed:
             return
 
         if done_button.pressed:
-            success, value_dict = convert_input_fields(string_inputs, keys, fields, field_types)
-            new_ingredient      = Ingredient.from_dict(value_dict)
+            success, value_dict = convert_input_fields(string_inputs, joined_metadata)
 
             if not success:
                 failed_conversions = value_dict
                 continue
+
+            new_ingredient = Ingredient.from_dict(value_dict)
 
             if not ingredient_db.has_ingredient(new_ingredient):
                 ingredient_db.insert(new_ingredient)
@@ -104,26 +97,27 @@ def add_ingredient_menu(gui           : 'GUI',
                 return
 
 
-def add_ingredient_attributes(menu:               GUIMenu,
-                              keys:               list,
-                              string_inputs:      dict,
-                              failed_conversions: dict,
-                              fields:             list) -> None:
+def add_ingredient_attributes(menu               : GUIMenu,
+                              metadata           : dict,
+                              string_inputs      : dict,
+                              failed_conversions : dict,
+                              ) -> None:
     """Add the ingredient attributes."""
-    for i, k in enumerate(keys):
-
-        if i in [2, 3, 9, 11, 15, 23, 24]:
+    for i, k in enumerate(list(metadata.keys())):
+        if i in [4, 11, 13, 17, 26]:
             menu.menu.add.label('\n', font_size=5)  # Spacing
 
         warning_color = Color.RED.value
         normal_color  = ColorScheme.FONT_COLOR.value
 
-        valid_chars = None if ingredient_metadata[k][1] == str else floats
+        valid_chars = None if metadata[k][1] == str else floats
         font_color  = warning_color if k in failed_conversions else normal_color
-        menu.menu.add.text_input(f'{fields[i]}: ',
+        units       = f' ({metadata[k][2]})' if len(metadata[k]) == 4 else ''
+        menu.menu.add.text_input(f'{metadata[k][0]}{units}: ',
                                  onchange=string_inputs[k].set_value,
                                  default=string_inputs[k].value,
                                  valid_chars=valid_chars,
                                  maxchar=19,
-                                 font_color=font_color)
+                                 font_color=font_color,
+                                 font_size=FontSize.FONT_SIZE_SMALL.value)
     failed_conversions.clear()

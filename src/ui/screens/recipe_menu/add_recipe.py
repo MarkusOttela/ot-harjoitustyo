@@ -18,23 +18,28 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from typing import Optional
+
 from src.common.statics import ColorScheme, FontSize
 
-from src.diet.recipe import Recipe
+from src.diet.recipe   import Recipe
+from src.entities.user import User
 
-from src.ui.gui_menu             import GUIMenu
-from src.ui.callback_classes     import Button, StringInput, MultiSelection
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button, StringInput, MultiSelection
+
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui import GUI
     from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
+    from src.ui.gui import GUI
 
 
 def add_recipe_menu(gui           : 'GUI',
-                    ingredient_db : 'IngredientDatabase',
-                    recipe_db     : 'RecipeDatabase'
+                    user          : Optional['User'],
+                    recipe_db     : 'RecipeDatabase',
+                    ingredient_db: 'IngredientDatabase'
                     ) -> None:
     """Render the `Add Recipe` menu."""
     title = 'Add Recipe'
@@ -44,10 +49,14 @@ def add_recipe_menu(gui           : 'GUI',
 
     name   = StringInput()
     author = StringInput()
-    selected_ingredients = MultiSelection()
 
-    name.set_value('Ragu')
-    author.set_value('Maku')
+    selected_ingredients    = MultiSelection()
+    selected_accompaniments = MultiSelection()
+
+    name.set_value('Ragu')  # TODO: remove
+
+    if user is not None:
+        author.set_value(user.get_username())
 
     while True:
         menu          = GUIMenu(gui, title)
@@ -71,7 +80,16 @@ def add_recipe_menu(gui           : 'GUI',
                                           onreturn=selected_ingredients.set_value,  # type: ignore
                                           items=available_ingredients,  # type: ignore
                                           selection_box_height=len(available_ingredients),
-                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value)
+                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                          **gui.drop_multi_selection_theme)
+
+        menu.menu.add.dropselect_multiple(f'Select accompaniments: ',
+                                          onchange=selected_accompaniments.set_value,
+                                          onreturn=selected_accompaniments.set_value,  # type: ignore
+                                          items=available_ingredients,  # type: ignore
+                                          selection_box_height=len(available_ingredients),
+                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                          **gui.drop_multi_selection_theme)
 
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
@@ -83,7 +101,9 @@ def add_recipe_menu(gui           : 'GUI',
             return
 
         if done_button.pressed:
-            new_recipe = Recipe(name.value, author.value, selected_ingredients.values)
+            new_recipe = Recipe(name.value, author.value,
+                                selected_ingredients.values,
+                                selected_accompaniments.values)
 
             if not recipe_db.has_recipe(new_recipe):
                 recipe_db.insert_recipe(new_recipe)

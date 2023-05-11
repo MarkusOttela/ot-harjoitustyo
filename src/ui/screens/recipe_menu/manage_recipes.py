@@ -18,22 +18,31 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from typing import Optional
+
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button
 
 from src.ui.screens.recipe_menu.add_recipe            import add_recipe_menu
 from src.ui.screens.recipe_menu.select_recipe_to_edit import select_recipe_to_edit
+from src.ui.screens.show_message                      import show_message
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui import GUI
     from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
+    from src.entities.user import User
+    from src.ui.gui        import GUI
 
 
 def manage_recipes_menu(gui           : 'GUI',
-                        ingredient_db : 'IngredientDatabase',
-                        recipe_db     : 'RecipeDatabase'
+                        user          : Optional['User'],
+                        recipe_db     : 'RecipeDatabase',
+                        ingredient_db : 'IngredientDatabase'
                         ) -> None:
     """Render the Manage Recipes sub menu."""
+    if not ingredient_db.has_ingredients():
+        show_message(gui, 'Error', 'No ingredients have been created yet.')
+        return
+
     while True:
         menu = GUIMenu(gui, 'Manage Recipes')
 
@@ -48,11 +57,11 @@ def manage_recipes_menu(gui           : 'GUI',
         menu.start()
 
         if add_recipe_button.pressed:
-            add_recipe_menu(gui, ingredient_db, recipe_db)
+            add_recipe_menu(gui, user, recipe_db, ingredient_db)
             continue
 
         if edit_recipe_button.pressed:
-            select_recipe_to_edit(gui, ingredient_db, recipe_db)
+            select_recipe_to_edit(gui, recipe_db, ingredient_db)
             continue
 
         if return_button.pressed:

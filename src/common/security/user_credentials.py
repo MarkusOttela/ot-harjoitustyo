@@ -38,7 +38,7 @@ class UserCredentials:
         self.__name           : str   = name
         self.__salt           : bytes = salt
         self.__database_key   : bytes = database_key
-        self.__userdata_dir   : str   = f'{Directories.USERDATA.value}/{self.__name}'
+        self.__userdata_dir   : str   = f'{Directories.USER_DATA.value}/{self.__name}'
         self.__credentials_db : str   = f'{self.__userdata_dir}/credentials.db'
 
         self.store_credentials()
@@ -67,7 +67,7 @@ class UserCredentials:
     @staticmethod
     def from_password(name: str, password: str) -> 'UserCredentials':
         """Initialize User from name and password."""
-        userdata_dir   = f'{Directories.USERDATA.value}/{name}'
+        userdata_dir   = f'{Directories.USER_DATA.value}/{name}'
         credentials_db = f'{userdata_dir}/credentials.db'
 
         with open(credentials_db, 'rb') as f_ptr:

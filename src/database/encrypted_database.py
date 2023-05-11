@@ -31,7 +31,7 @@ class EncryptedDatabase:
     def __init__(self, credentials: 'UserCredentials') -> None:
         """Create new EncryptedDatabase object."""
         self.credentials = credentials
-        self.path_to_db  = (f'{Directories.USERDATA.value}'
+        self.path_to_db  = (f'{Directories.USER_DATA.value}'
                             f'/{self.credentials.get_username()}'
                             f'/{DatabaseFileName.USER_DATABASE.value}.db')
 

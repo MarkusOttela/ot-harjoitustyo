@@ -22,8 +22,9 @@ from src.common.statics import Color, ColorScheme, FontSize
 
 from src.diet.recipe import Recipe
 
-from src.ui.gui_menu             import GUIMenu
-from src.ui.callback_classes     import Button, StringInput, MultiSelection
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button, StringInput, MultiSelection
+
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
 
@@ -33,9 +34,9 @@ if typing.TYPE_CHECKING:
 
 
 def edit_recipe(gui           : 'GUI',
-                ingredient_db : 'IngredientDatabase',
-                recipe_db     : 'RecipeDatabase',
                 orig_recipe   : Recipe,
+                recipe_db     : 'RecipeDatabase',
+                ingredient_db : 'IngredientDatabase',
                 ) -> None:
     """Render the `Edit Recipe` menu."""
     title = 'Edit Recipe'
@@ -49,18 +50,33 @@ def edit_recipe(gui           : 'GUI',
     author = StringInput()
     author.set_value(orig_recipe.author)
 
-    selected_ingredients          = MultiSelection()
-    selected_ingredients.sel_list = orig_recipe.ingredients
+    selected_ingredients    = MultiSelection()
+    selected_accompaniments = MultiSelection()
 
-    if not orig_recipe.ingredients:
+    selected_ingredients.sel_list    = orig_recipe.ingredient_names
+    selected_accompaniments.sel_list = orig_recipe.accompaniment_names
+
+    # Find indexes of previously selected ingredients
+    if not orig_recipe.ingredient_names:
         selected_ingredient_indexes = None
     else:
         selected_ingredient_indexes = []
 
         for i, tuple_ in enumerate(available_ingredients):
             ing_name, ingredient = tuple_
-            if ingredient.name in orig_recipe.ingredients:
+            if ingredient.name in orig_recipe.ingredient_names:
                 selected_ingredient_indexes.append(i)
+
+    # Find indexes of previously selected accompaniments
+    if not orig_recipe.accompaniment_names:
+        selected_accompaniment_indexes = None
+    else:
+        selected_accompaniment_indexes = []
+
+        for i, tuple_ in enumerate(available_ingredients):
+            ing_name, ingredient = tuple_
+            if ingredient.name in orig_recipe.accompaniment_names:
+                selected_accompaniment_indexes.append(i)
 
     while True:
         menu = GUIMenu(gui, title)
@@ -88,6 +104,16 @@ def edit_recipe(gui           : 'GUI',
                                           default=selected_ingredient_indexes,
                                           selection_box_height=len(available_ingredients),
                                           selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                          **gui.drop_multi_selection_theme
+                                          )
+        menu.menu.add.dropselect_multiple(f'Select accompaniments: ',
+                                          onchange=selected_accompaniments.set_value,
+                                          onreturn=selected_accompaniments.set_value,
+                                          items=available_ingredients,  # type: ignore
+                                          default=selected_accompaniment_indexes,
+                                          selection_box_height=len(available_ingredients),
+                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                          **gui.drop_multi_selection_theme
                                           )
 
         menu.menu.add.label('\n', font_size=5)
@@ -106,7 +132,9 @@ def edit_recipe(gui           : 'GUI',
                 return
 
         if done_button.pressed:
-            new_recipe        = Recipe(name.value, author.value, selected_ingredients.values)
+            new_recipe = Recipe(name.value, author.value,
+                                selected_ingredients.values, selected_accompaniments.values)
+
             recipe_id_changed = new_recipe != orig_recipe
 
             if not recipe_id_changed:

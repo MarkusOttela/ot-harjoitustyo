@@ -30,8 +30,8 @@ if typing.TYPE_CHECKING:
 
 
 def select_recipe_to_edit(gui           : 'GUI',
-                          ingredient_db : 'IngredientDatabase',
                           recipe_db     : 'RecipeDatabase',
+                          ingredient_db : 'IngredientDatabase'
                           ) -> None:
     """Render the `Select Recipe to Edit` menu."""
     title = 'Select Recipe to Edit'
@@ -59,7 +59,7 @@ def select_recipe_to_edit(gui           : 'GUI',
 
         for name, button in buttons.items():
             if button.pressed:
-                edit_recipe(gui, ingredient_db, recipe_db, recipe_db.get_recipe(name))
+                edit_recipe(gui, recipe_db.get_recipe(name), recipe_db, ingredient_db)
 
                 # edit_recipe might delete the last Recipe before it returns
                 if not recipe_db.get_list_of_recipes():

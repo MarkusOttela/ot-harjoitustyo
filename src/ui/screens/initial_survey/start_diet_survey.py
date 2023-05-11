@@ -50,14 +50,16 @@ def start_diet_survey(gui: 'GUI', user: 'User') -> None:
                                      items=pal_options,  # type: ignore
                                      selection_box_height=len(pal_options),
                                      selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
-                                     selection_box_width=300)
+                                     selection_box_width=300,
+                                     **gui.drop_selection_theme)
 
             menu.menu.add.dropselect(f'Diet stage: ',
                                      onchange=diet_stage_ds.set_value,
                                      items=diet_stage_options,  # type: ignore
                                      selection_box_height=len(diet_stage_options),
                                      selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
-                                     selection_box_width=300)
+                                     selection_box_width=300,
+                                     **gui.drop_selection_theme)
 
             menu.menu.add.button('Done', action=menu.menu.disable)
 

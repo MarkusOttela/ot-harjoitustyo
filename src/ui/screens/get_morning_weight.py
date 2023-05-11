@@ -23,8 +23,8 @@ from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import StringInput
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui        import GUI
     from src.entities.user import User
+    from src.ui.gui        import GUI
 
 
 def get_morning_weight(gui: 'GUI', user: 'User') -> None:
@@ -58,7 +58,7 @@ def get_morning_weight(gui: 'GUI', user: 'User') -> None:
 
             weight_kg = validate_positive_float(weight.value)
 
-            user.set_todays_weight(weight_kg)
+            user.set_morning_weight(weight_kg)
             return
 
         except ValueError as e:

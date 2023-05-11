@@ -18,10 +18,12 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Any
 
+
 recipe_metadata = {
-    'name':        ('Name',        str),
-    'author':      ('Author',      str),
-    'ingredients': ('Ingredients', list),
+    'name':                ('Name',                str),
+    'author':              ('Author',              str),
+    'ingredient_names':    ('IngredientNames',    list),
+    'accompaniment_names': ('AccompanimentNames', list),
 }
 
 
@@ -29,14 +31,16 @@ class Recipe:
     """Recipe contains metadata about a recipe and its ingredients."""
 
     def __init__(self,
-                 name        : str,
-                 author      : str,
-                 ingredients : list,
+                 name                : str,
+                 author              : str,
+                 ingredient_names    : list,
+                 accompaniment_names : list,
                  ) -> None:
         """Create new Recipe object."""
-        self.name        = name
-        self.author      = author
-        self.ingredients = ingredients
+        self.name                = name
+        self.author              = author
+        self.ingredient_names    = ingredient_names
+        self.accompaniment_names = accompaniment_names
 
     def __eq__(self, other: Any) -> bool:
         """Return True if two Recipes are equal."""
@@ -58,6 +62,6 @@ class Recipe:
                  f'  <name>       : {self.name}',
                  f'  <author>     : {self.author}',
                  '  <ingredients>:']
-        for ingredient in self.ingredients:
+        for ingredient in self.ingredient_names:
             lines.append(f'    {ingredient.name}')
         return '\n'.join(lines)

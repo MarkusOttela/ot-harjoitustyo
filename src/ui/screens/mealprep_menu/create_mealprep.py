@@ -15,17 +15,19 @@ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
+
 import datetime
 import typing
 
 from src.common.conversion import convert_input_fields
-from src.common.statics    import Color, ColorScheme
+from src.common.statics    import Color, ColorScheme, Format
 from src.common.validation import floats
 
-from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase, RecipeDatabase
+from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase
 
-from src.diet.mealprep import Mealprep
-from src.diet.recipe   import Recipe
+from src.diet.mealprep           import Mealprep
+from src.diet.nutritional_values import NutritionalValues
+from src.diet.recipe             import Recipe
 
 from src.ui.gui_menu             import GUIMenu
 from src.ui.callback_classes     import Button, StringInput
@@ -38,30 +40,23 @@ if typing.TYPE_CHECKING:
 
 def create_mealprep(gui           : 'GUI',
                     ingredient_db : IngredientDatabase,
-                    recipe_db     : RecipeDatabase,
                     mealprep_db   : MealprepDatabase,
                     recipe        : Recipe
                     ) -> None:
     """Render the `Create New Mealprep` menu."""
-    title       = 'Create New Mealprep'
-    keys        = list(recipe.ingredients)
-    fields      = recipe.ingredients
-    field_types = [float for _ in range(len(keys))]
+    title    = 'Create New Mealprep'
+    keys     = list(recipe.ingredient_names) + ['Total Weight']
+    metadata = {k: (k, float) for k in keys}
 
-    failed_conversions : dict = {}
+    failed_conversions = {}  # type: dict
 
     string_inputs = {k: StringInput() for k in keys}
-    total_grams   = StringInput()
 
     while True:
         menu = GUIMenu(gui, title)
 
         menu.menu.add.label('Please specify grams for each mealprep ingredient\n')
-        add_text_inputs(menu, keys, string_inputs, failed_conversions, fields)
-        menu.menu.add.text_input(f'Total grams: ',
-                                 onchange=total_grams.set_value,
-                                 default=total_grams.value,
-                                 valid_chars=floats)
+        add_ingredient_gram_inputs(menu, metadata, string_inputs, failed_conversions)
 
         menu.menu.add.label('\n', font_size=5)
 
@@ -76,11 +71,22 @@ def create_mealprep(gui           : 'GUI',
             return
 
         if done_button.pressed:
-            success, value_dict = convert_input_fields(string_inputs, keys, fields, field_types)
-            new_mealprep        = Mealprep(recipe.name, total_grams.value, value_dict, datetime.datetime.now().date())
+            success, weight_dict = convert_input_fields(string_inputs, metadata)
+            total_grams          = weight_dict['Total Weight']
+            weight_dict.pop('Total Weight')
+
+            mealprep_nv = NutritionalValues()
+
+            for ingredient_name in recipe.ingredient_names:
+                ingredient   = ingredient_db.get_ingredient(ingredient_name)
+                in_nv        = ingredient.get_nv(for_grams=weight_dict[ingredient_name])
+                mealprep_nv += in_nv
+
+            cook_date    = datetime.datetime.now().date().strftime(Format.DATETIME_DATE.value)
+            new_mealprep = Mealprep(recipe.name, total_grams, cook_date, weight_dict, mealprep_nv)
 
             if not success:
-                failed_conversions = value_dict
+                failed_conversions = weight_dict
                 continue
 
             if not mealprep_db.has_mealprep(new_mealprep):
@@ -96,19 +102,19 @@ def create_mealprep(gui           : 'GUI',
                 return
 
 
-def add_text_inputs(menu:               GUIMenu,
-                    keys:               list,
-                    string_inputs:      dict,
-                    failed_conversions: dict,
-                    fields:             list) -> None:
-    """Add text inputs on screen. ."""
-    for i, k in enumerate(keys):
+def add_ingredient_gram_inputs(menu               : GUIMenu,
+                               metadata           : dict,
+                               string_inputs      : dict,
+                               failed_conversions : dict,
+                               ) -> None:
+    """Add text inputs on screen."""
+    for i, k in enumerate(list(metadata.keys())):
         warning_color = Color.RED.value
         normal_color  = ColorScheme.FONT_COLOR.value
 
-        valid_chars = floats
+        valid_chars = None if metadata[k][1] == str else floats
         font_color  = warning_color if k in failed_conversions else normal_color
-        menu.menu.add.text_input(f'{fields[i]}: ',
+        menu.menu.add.text_input(f'{metadata[k][0]} (g): ',
                                  onchange=string_inputs[k].set_value,
                                  default=string_inputs[k].value,
                                  valid_chars=valid_chars,

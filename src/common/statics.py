@@ -22,7 +22,7 @@ from enum import Enum
 class Program(Enum):
     """Program information and global settings."""
     NAME       = 'Calorinator'
-    VERSION    = '0.23.04'
+    VERSION    = '0.23.05'
     RESOLUTION = (1600, 900)
     FPS        = 60
 
@@ -35,7 +35,7 @@ class AssetFiles(Enum):
 
 class Directories(Enum):
     """Program directories"""
-    USERDATA = 'user_data'
+    USER_DATA = 'user_data'
 
 
 class DatabaseFileName(Enum):
@@ -46,9 +46,9 @@ class DatabaseFileName(Enum):
 
 class DatabaseTableName(Enum):
     """Database table names."""
-    INGREDIENTS   = 'Ingredients'
-    RECIPES       = 'Recipes'
-    MEALPREPS     = 'Mealpreps'
+    INGREDIENTS = 'Ingredients'
+    RECIPES     = 'Recipes'
+    MEALPREPS   = 'Mealpreps'
 
 
 class Gender(Enum):
@@ -59,7 +59,8 @@ class Gender(Enum):
 
 class Format(Enum):
     """String formats."""
-    DATETIME_DATE = '%d/%m/%Y'
+    DATETIME_DATE   = '%d/%m/%Y'
+    DATETIME_TSTAMP = '%d/%m/%Y-%H:%M:%S'
 
 
 class Color(Enum):

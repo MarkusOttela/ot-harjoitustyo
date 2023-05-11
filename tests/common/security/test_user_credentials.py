@@ -59,12 +59,12 @@ DB key hash: 8546602cc0544b1c731d76d776b44b12a1c85afd199e53d153645d493c1b4de3c47
 
     def test_store_credentials_creates_file(self):
         self.uc.store_credentials()
-        self.assertTrue(os.path.isdir(f'{Directories.USERDATA.value}/test'))
-        self.assertTrue(os.path.isfile(f'{Directories.USERDATA.value}/test/credentials.db'))
+        self.assertTrue(os.path.isdir(f'{Directories.USER_DATA.value}/test'))
+        self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/credentials.db'))
 
     def test_loading_credentials_with_password(self):
         self.uc.store_credentials()
-        self.assertTrue(os.path.isfile(f'{Directories.USERDATA.value}/test/credentials.db'))
+        self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/credentials.db'))
         with mock.patch('multiprocessing.cpu_count', return_value=1):
             uc = UserCredentials.from_password('test', self.test_password)
         self.assertEqual(self.uc.get_key_hash(), uc.get_key_hash())

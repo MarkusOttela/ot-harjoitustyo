@@ -60,24 +60,24 @@ def str_to_int(key              : str,
 
 
 def convert_input_fields(string_inputs : dict,
-                         keys          : list,
-                         fields        : list,
-                         field_types   : list
+                         metadata      : dict
                          ) -> tuple:
-    """Convert input fields of `Add Ingredient` menu to correct data types."""
+    """Convert StringInput dictionary values to correct data types."""
     converted_values   : dict = {}
     failed_conversions : dict = {}
     converted_value    : Any
 
-    for key, name, field_type in zip(keys, fields, field_types):
+    for key in string_inputs.keys():
         try:
             string_value = string_inputs[key].value
+            field_name   = metadata[key][0]
+            field_type   = metadata[key][1]
 
             if field_type == int:
-                converted_value = str_to_int(name, string_value)
+                converted_value = str_to_int(field_name, string_value)
 
             elif field_type == float:
-                converted_value = str_to_float(name, string_value)
+                converted_value = str_to_float(field_name, string_value)
 
             elif field_type == str:
                 converted_value = string_value

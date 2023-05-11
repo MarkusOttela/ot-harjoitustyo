@@ -45,7 +45,8 @@ def get_yes(gui:         'GUI',
                                 onchange=bool_selection.set_value,
                                 state_text=(answer_yes, answer_no),
                                 default=not default_bool,
-                                state_values=(True, False))
+                                state_values=(True, False),
+                                **gui.toggle_switch_theme)
 
     menu.menu.add.button('Done', action=menu.menu.disable)
 

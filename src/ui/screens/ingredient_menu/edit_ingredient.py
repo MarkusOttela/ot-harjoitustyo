@@ -21,18 +21,19 @@ import typing
 from src.common.conversion import convert_input_fields
 from src.common.statics    import Color
 
-from src.diet.ingredient import ingredient_metadata, Ingredient
+from src.diet.ingredient         import in_metadata, Ingredient
+from src.diet.nutritional_values import nv_metadata
 
-from src.ui.gui_menu                 import GUIMenu
+from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
-from src.ui.screens.get_yes          import get_yes
-from src.ui.screens.show_message     import show_message
 
+from src.ui.screens.get_yes                        import get_yes
+from src.ui.screens.show_message                   import show_message
 from src.ui.screens.ingredient_menu.add_ingredient import add_ingredient_attributes
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui import GUI
     from src.database.unencrypted_database import IngredientDatabase
+    from src.ui.gui import GUI
 
 
 def edit_ingredient(gui             : 'GUI',
@@ -43,19 +44,30 @@ def edit_ingredient(gui             : 'GUI',
     title              = 'Edit Ingredient'
     failed_conversions = {}  # type: dict
 
+    joined_metadata = dict()
+    joined_metadata.update(in_metadata)
+    joined_metadata.update(nv_metadata)
+
+    keys = list(in_metadata.keys()) + list(nv_metadata.keys())
+
+    string_inputs = {k: StringInput() for k in keys}
+
+    gram_multiplier = orig_ingredient.grams_per_unit
+    if orig_ingredient.fixed_portion_g:
+        gram_multiplier = orig_ingredient.fixed_portion_g
+
+    # Prefill fields with earlier values
+    for k in string_inputs.keys():
+        if k in in_metadata.keys():
+            string_inputs[k].value = getattr(orig_ingredient, k)
+        else:
+            value = getattr(orig_ingredient.nv_per_g, k)
+            string_inputs[k].value = value * gram_multiplier
+
     while True:
-        keys        = list(ingredient_metadata.keys())
-        fields      = [ingredient_metadata[k][0] for k in keys]  # type: list
-        field_types = [ingredient_metadata[k][1] for k in keys]  # type: list
-
-        string_inputs = {k: StringInput() for k in keys}  # type: dict
-
-        for k in string_inputs.keys():
-            string_inputs[k].set_value(getattr(orig_ingredient, k))
-
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
 
-        add_ingredient_attributes(menu, keys, string_inputs, failed_conversions, fields)
+        add_ingredient_attributes(menu, joined_metadata, string_inputs, failed_conversions)
 
         return_button = Button(menu, closes_menu=True)
         done_button   = Button(menu, closes_menu=True)
@@ -77,13 +89,26 @@ def edit_ingredient(gui             : 'GUI',
                 return
 
         if done_button.pressed:
-            success, value_dict   = convert_input_fields(string_inputs, keys, fields, field_types)
-            new_ingredient        = Ingredient.from_dict(value_dict)
-            ingredient_id_changed = new_ingredient != orig_ingredient
+            success, value_dict = convert_input_fields(string_inputs, joined_metadata)
 
             if not success:
                 failed_conversions = value_dict
                 continue
+
+            new_ingredient        = Ingredient.from_dict(value_dict)
+            ingredient_id_changed = new_ingredient != orig_ingredient
+
+            if orig_ingredient.grams_per_unit != string_inputs['grams_per_unit'].value:
+                multiplier = orig_ingredient.grams_per_unit / value_dict['grams_per_unit']
+                if multiplier > 1:
+                    adjective  = 'larger'
+                else:
+                    adjective  = 'smaller'
+                    multiplier = 1 / multiplier
+
+                if not get_yes(gui, 'Warning: Grams Per Unit has been changed.',
+                               f'Change all values to {multiplier} times {adjective}?', 'No'):
+                    continue
 
             if not ingredient_id_changed:
                 ingredient_db.replace_ingredient(new_ingredient)
@@ -91,8 +116,7 @@ def edit_ingredient(gui             : 'GUI',
                 return
 
             if not ingredient_db.has_ingredient(new_ingredient):
-                ingredient_db.remove_ingredient(orig_ingredient)
-                ingredient_db.insert(new_ingredient)
+                ingredient_db.replace_ingredient(new_ingredient)
                 show_message(gui, title, 'Ingredient has been renamed and updated.')
                 return
 

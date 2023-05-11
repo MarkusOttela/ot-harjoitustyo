@@ -17,9 +17,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 import ast
-import datetime
 import sqlite3
 
+from collections import ChainMap
+from typing      import Any
 
 from src.common.exceptions import IngredientNotFound, RecipeNotFound
 from src.common.statics    import DatabaseFileName, Directories, DatabaseTableName
@@ -27,9 +28,10 @@ from src.common.utils      import ensure_dir
 from src.common.validation import validate_params
 from src.common.types      import DatabaseTypes
 
-from src.diet.ingredient import Ingredient, ingredient_metadata
-from src.diet.mealprep   import Mealprep, mealprep_metadata
-from src.diet.recipe     import Recipe, recipe_metadata
+from src.diet.ingredient         import Ingredient, in_metadata
+from src.diet.mealprep           import Mealprep, mealprep_metadata
+from src.diet.nutritional_values import nv_metadata, NutritionalValues
+from src.diet.recipe             import Recipe, recipe_metadata
 
 
 column_type_dict : dict = {
@@ -47,10 +49,10 @@ class UnencryptedDatabase:
 
     def __init__(self, table_name: DatabaseTableName, db_metadata : dict) -> None:
         """Create new UnencryptedDatabase object."""
-        ensure_dir(Directories.USERDATA.value)
+        ensure_dir(Directories.USER_DATA.value)
         self.table_name  = table_name.value
         self.db_metadata = db_metadata
-        self.connection  = sqlite3.connect(f'{Directories.USERDATA.value}'
+        self.connection  = sqlite3.connect(f'{Directories.USER_DATA.value}'
                                            f'/{DatabaseFileName.SHARED_DATABASE.value}.sqlite3')
         self.cursor      = self.connection.cursor()
         self.connection.isolation_level = None
@@ -70,19 +72,18 @@ class UnencryptedDatabase:
 
         self.cursor.execute(sql_command)
 
-    def insert(self, ingredient: Ingredient) -> None:
-        """Insert Ingredient into the database."""
-
-        ingredient_keys   = list(ingredient_metadata.keys())
-        ingredient_values = [getattr(ingredient, key) for key in ingredient_keys]
+    def insert(self, obj: Any) -> None:
+        """Insert object into the database."""
+        keys   = list(self.db_metadata.keys())
+        values = [getattr(obj, key) for key in keys]
 
         sql_command = f'INSERT INTO {self.table_name} ('
-        sql_command += ', '.join(ingredient_keys)
+        sql_command += ', '.join(keys)
         sql_command += ') VALUES ('
-        sql_command += ', '.join(['?' for _ in range(len(ingredient_keys))])
+        sql_command += ', '.join(['?' for _ in range(len(keys))])
         sql_command += ')'
 
-        self.cursor.execute(sql_command, ingredient_values)
+        self.cursor.execute(sql_command, values)
         self.cursor.connection.commit()
 
     def get_list_of_entries(self) -> list:
@@ -96,13 +97,40 @@ class UnencryptedDatabase:
 
 
 class IngredientDatabase(UnencryptedDatabase):
+    """\
+    IngredientDatabase contains the data including name,
+    manufacturer, and nutritional values of each ingredient.
+    """
 
     def __init__(self) -> None:
-        super().__init__(table_name=DatabaseTableName.INGREDIENTS, db_metadata=ingredient_metadata)
+        super().__init__(table_name=DatabaseTableName.INGREDIENTS,
+                         db_metadata=dict(ChainMap(nv_metadata, in_metadata)))
+
+    def insert(self, obj: Ingredient) -> None:
+        """Insert Ingredient into the database."""
+        in_keys   = list(in_metadata.keys())
+        nv_keys   = list(nv_metadata.keys())
+        in_values = [getattr(obj, key)          for key in in_keys]
+        nv_values = [getattr(obj.nv_per_g, key) for key in nv_keys]
+
+        sql_command = f'INSERT INTO {self.table_name} ('
+        sql_command += ', '.join(in_keys + nv_keys)
+        sql_command += ') VALUES ('
+        sql_command += ', '.join(['?' for _ in range(len(in_keys + nv_keys))])
+        sql_command += ')'
+
+        self.cursor.execute(sql_command, in_values + nv_values)
+        self.cursor.connection.commit()
+
+    def get_list_of_ingredient_names(self) -> list:
+        """Get list of ingredient names."""
+        sql_command = f'SELECT Name FROM {self.table_name}'
+        results     = [r[0] for r in self.cursor.execute(sql_command).fetchall()]
+        return results
 
     def get_list_of_ingredients(self) -> list:
-        """Get list of ingredients."""
-        return [Ingredient(*data) for data in self.get_list_of_entries()]
+        """Get list of ingredients in the database."""
+        return [self.get_ingredient(name) for name in self.get_list_of_ingredient_names()]
 
     def get_ingredient(self,
                        name         : str,
@@ -110,9 +138,10 @@ class IngredientDatabase(UnencryptedDatabase):
                        ) -> Ingredient:
         """Get Ingredient from database by name (and manufacturer)."""
         validate_params(self.get_ingredient, locals())
+        keys = list(self.db_metadata.keys())[1:]
 
         sql_command  =  'SELECT '
-        sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])
+        sql_command +=  ', '.join(keys)
         sql_command += f' FROM {self.table_name}'
         sql_command += f" WHERE {self.db_metadata['name'][0]} == '{name}'"
 
@@ -120,13 +149,18 @@ class IngredientDatabase(UnencryptedDatabase):
             manuf_col    = 'manufacturer'
             sql_command += f" AND {manuf_col} == '{manufacturer}'"
 
-        results = self.cursor.execute(sql_command).fetchall()
+        result = self.cursor.execute(sql_command).fetchall()[0]
 
-        if results:
-            return Ingredient(name, *results[0])
+        if not result:
+            manuf_info = f" by '{manufacturer}'" if manufacturer else ''
+            raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
 
-        manuf_info = f" by '{manufacturer}'" if manufacturer else ''
-        raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
+        ingredient = Ingredient(name, NutritionalValues(*result[3:]),
+                                manufacturer=result[0],
+                                grams_per_unit=result[1],
+                                fixed_portion_g=result[2])
+
+        return ingredient
 
     def remove_ingredient(self, ingredient: Ingredient) -> None:
         """Remove ingredient from database."""
@@ -143,8 +177,12 @@ class IngredientDatabase(UnencryptedDatabase):
         self.insert(ingredient)
 
     def has_ingredient(self, ingredient: Ingredient) -> bool:
-        """Returns True if ingredient exists in the database."""
-        return any(i == ingredient for i in self.get_list_of_ingredients())
+        """Returns True if the ingredient exists in the database."""
+        return ingredient.name in self.get_list_of_ingredient_names()
+
+    def has_ingredients(self) -> bool:
+        """Return True if database contains at least one ingredient."""
+        return any(self.get_list_of_ingredient_names())
 
 
 class RecipeDatabase(UnencryptedDatabase):
@@ -158,7 +196,7 @@ class RecipeDatabase(UnencryptedDatabase):
 
     def get_list_of_recipe_names(self) -> list:
         """Get list of recipe names."""
-        return [name for name, author, ser_ingredient_names in self.get_list_of_entries()]
+        return [name for name, *_ in self.get_list_of_entries()]
 
     def get_list_of_recipes(self) -> list:
         """Get list of recipes."""
@@ -183,12 +221,12 @@ class RecipeDatabase(UnencryptedDatabase):
 
         if results:
             for result in results:
-                author, ingredients = result
-                if '\x1f' in ingredients:
-                    ingredients = ingredients.split('\x1f')
-                else:
-                    ingredients = [ingredients]
-                return Recipe(name, author, ingredients)
+                author, in_names, ac_names = result
+
+                in_names = in_names.split('\x1f') if '\x1f' in in_names else [in_names]
+                ac_names = ac_names.split('\x1f') if '\x1f' in ac_names else [ac_names]
+
+                return Recipe(name, author, in_names, ac_names)
 
         author_info = f" by '{author}'" if author else ''
         raise RecipeNotFound(f"Could not find recipe '{name}'{author_info}.")
@@ -248,7 +286,7 @@ class MealprepDatabase(UnencryptedDatabase):
 
     def get_list_of_mealprep_names(self) -> list:
         """Get list of mealprep names."""
-        return [name for name, total_grams, ingredient_grams in self.get_list_of_entries()]
+        return [name for name, *_ in self.get_list_of_entries()]
 
     def get_list_of_mealpreps(self) -> list:
         """Get list of mealpreps."""
@@ -267,9 +305,10 @@ class MealprepDatabase(UnencryptedDatabase):
 
         if result:
             total_grams      = result[0]
-            ingredient_grams = ast.literal_eval(result[1])
-            # TODO: FIX DATETIME
-            return Mealprep(name, total_grams, ingredient_grams, datetime.date.today())
+            cook_date        = result[1]
+            ingredient_grams = ast.literal_eval(result[2])
+            mealprep_nv      = NutritionalValues.from_serialized(result[3])
+            return Mealprep(name, total_grams, cook_date, ingredient_grams, mealprep_nv)
 
         raise RecipeNotFound(f"Could not find recipe '{name}'.")
 
@@ -280,8 +319,10 @@ class MealprepDatabase(UnencryptedDatabase):
         values = []
         for key in self.db_metadata:
             value = getattr(mealprep, key)
-            if type(value) == dict:
+            if isinstance(value, dict):
                 value = str(value)
+            elif isinstance(value, NutritionalValues):
+                value = value.serialize()
             values.append(value)
 
         sql_command = f'INSERT INTO {self.table_name} ('

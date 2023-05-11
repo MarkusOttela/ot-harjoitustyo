@@ -18,24 +18,27 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu             import GUIMenu
-from src.ui.screens.show_message import show_message
-from src.ui.callback_classes     import Button
-
-from src.ui.screens.mealprep_menu.edit_mealprep import edit_mealprep
+from src.common.exceptions import AbortMenuOperation
+from src.ui.gui_menu                  import GUIMenu
+from src.ui.screens.log_meal.log_meal import log_meal
+from src.ui.screens.show_message      import show_message
+from src.ui.callback_classes          import Button
 
 if typing.TYPE_CHECKING:
-    from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase
-    from src.ui.gui import GUI
+    from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase, RecipeDatabase
+    from src.entities.user import User
+    from src.ui.gui        import GUI
 
 
-def select_mealprep_to_edit(gui           : 'GUI',
-                            mealprep_db   : 'MealprepDatabase',
-                            ingredient_db : 'IngredientDatabase'
-                            ) -> None:
-    """Render the `Select Mealprep to Edit` menu."""
-    title = 'Select Mealprep to Edit'
+def select_meal_to_log(gui           : 'GUI',
+                       user          : 'User',
+                       mealprep_db   : 'MealprepDatabase',
+                       recipe_db     : 'RecipeDatabase',
+                       ingredient_db : 'IngredientDatabase',
 
+                       ) -> None:
+    """Render the `Select Meal` menu."""
+    title = 'Select Meal'
     while True:
         menu = GUIMenu(gui, title)
 
@@ -59,10 +62,10 @@ def select_mealprep_to_edit(gui           : 'GUI',
         if cancel_button.pressed:
             return
 
-        for name, button in buttons.items():
-            if button.pressed:
-                edit_mealprep(gui, mealprep_db, ingredient_db, mealprep_db.get_mealprep(name))
+        for mealprep_name, button in buttons.items():
 
-                # If edit_mealprep deletes the last mealprep edit menu is no longer needed.
-                if not mealprep_db.get_list_of_mealpreps():
-                    return
+            if button.pressed:
+                mealprep = mealprep_db.get_mealprep(mealprep_name)
+                log_meal(gui, user, mealprep, recipe_db, ingredient_db)
+
+                raise AbortMenuOperation('Meal added')

@@ -75,7 +75,6 @@ def start_diet_survey(gui: 'GUI', user: 'User') -> None:
             if not diet_stage_ds.value:
                 raise ValueError("Please select one option from each drop-down menu.")
 
-            # TODO: Fix type issues
             user.set_pal(PhysicalActivityLevel(pal_ds.value))  # type: ignore
             user.set_diet_stage(diet_stage_ds.value)           # type: ignore
             return

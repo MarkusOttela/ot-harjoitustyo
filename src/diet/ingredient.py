@@ -71,8 +71,8 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
         manufacturer = '<None>' if not self.manufacturer else self.manufacturer
         lines  = [f"<Ingredient-object {id(self)}>",
                   "General Info",
-                  f"  <Name:         {self.name}>",
-                  f"  <Manufacturer: {manufacturer}>",
+                  f"  Name:         {self.name}",
+                  f"  Manufacturer: {manufacturer}",
                   'Nutrients: ']
         nv_lines = repr(self.nv_per_g).split('\n')
         string  = '\n'.join(lines)

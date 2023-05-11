@@ -41,16 +41,15 @@ def edit_ingredient(gui             : 'GUI',
                     orig_ingredient : Ingredient,
                     ) -> None:
     """Render the `Edit Ingredient` menu."""
-    title              = 'Edit Ingredient'
-    failed_conversions = {}  # type: dict
+    title = 'Edit Ingredient'
 
     joined_metadata = dict()
     joined_metadata.update(in_metadata)
     joined_metadata.update(nv_metadata)
 
-    keys = list(in_metadata.keys()) + list(nv_metadata.keys())
-
-    string_inputs = {k: StringInput() for k in keys}
+    failed_conversions = {}  # type: dict
+    keys               = list(in_metadata.keys()) + list(nv_metadata.keys())
+    string_inputs      = {k: StringInput() for k in keys}
 
     gram_multiplier = orig_ingredient.grams_per_unit
     if orig_ingredient.fixed_portion_g:

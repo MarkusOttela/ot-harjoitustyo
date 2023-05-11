@@ -22,7 +22,7 @@ from src.diet.nutritional_values import NutritionalValues
 mealprep_metadata = {
     'recipe_name':      ('RecipeName',      str  ),
     'total_grams':      ('TotalGrams',      float),
-    'cook_date':      ('CookDate',        str),
+    'cook_date':        ('CookDate',        str  ),
     'ingredient_grams': ('IngredientGrams', list ),
     'mealprep_nv':      ('MealprepNV',      str  ),
 }

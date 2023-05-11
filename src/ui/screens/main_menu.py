@@ -104,7 +104,6 @@ def main_menu(gui           : 'GUI',
                 get_dob_and_gender(gui, user)
                 get_body_measurements(gui, user)
                 start_diet_survey(gui, user)
-                user.calculate_daily_macros()
 
             if login_bt.pressed:
                 user = login_existing_user(gui)
@@ -112,7 +111,6 @@ def main_menu(gui           : 'GUI',
 
                 if not user.has_weight_entry_for_the_day():
                     get_morning_weight(gui, user)
-                user.calculate_daily_macros()
 
             # ---
 

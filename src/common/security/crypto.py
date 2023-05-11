@@ -35,7 +35,7 @@ from src.common.utils      import separate_header
 class CryptoLiterals(Enum):
     """Cryptographic variables.
 
-    # TODO: Replace memory cost with 512*1024
+    TODO: Replace memory cost with 512*1024
     """
     BLAKE2_DIGEST_LENGTH   = 64
     SALT_LENGTH            = 32
@@ -52,7 +52,6 @@ class CryptoLiterals(Enum):
 
 def derive_database_key(password: str, salt: Optional[bytes] = None) -> tuple:
     """Derive encryption key from password and salt."""
-
     if salt is None:
         salt = os.getrandom(CryptoLiterals.SALT_LENGTH.value, flags=0)
 
@@ -89,7 +88,7 @@ def auth_and_decrypt(nonce_ct_tag    : bytes,       # Nonce + ciphertext + tag
                      key             : bytes,       # 32-byte symmetric key
                      file_name       : str   = '',  # Name of database.
                      associated_data : bytes = b''  # Associated data
-                     ) -> bytes:                   # Plaintext
+                     ) -> bytes:                    # Plaintext
     """Authenticate and decrypt XChaCha20-Poly1305 ciphertext.
 
     The Poly1305 tag is checked using constant time `sodium_memcmp`:

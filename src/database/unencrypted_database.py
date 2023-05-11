@@ -20,18 +20,25 @@ import ast
 import sqlite3
 
 from collections import ChainMap
+from enum        import Enum
 from typing      import Any
 
 from src.common.exceptions import IngredientNotFound, RecipeNotFound
 from src.common.statics    import DatabaseFileName, Directories, DatabaseTableName
 from src.common.utils      import ensure_dir
 from src.common.validation import validate_params
-from src.common.types      import DatabaseTypes
 
 from src.diet.ingredient         import Ingredient, in_metadata
 from src.diet.mealprep           import Mealprep, mealprep_metadata
 from src.diet.nutritional_values import nv_metadata, NutritionalValues
 from src.diet.recipe             import Recipe, recipe_metadata
+
+
+class DatabaseTypes(Enum):
+    """SQL Database types."""
+    TEXT = 'TEXT'
+    REAL = 'REAL'
+    LIST = 'TEXT'
 
 
 column_type_dict : dict = {

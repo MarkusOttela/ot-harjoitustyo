@@ -23,6 +23,7 @@ import pygame
 from src.common.exceptions import EscPressed, KeyPress
 
 from src.diet.enums              import CalContent
+from src.diet.formulae           import calculate_nv_goal
 from src.diet.nutritional_values import NutritionalValues
 
 from src.entities.user import User
@@ -41,7 +42,7 @@ def align_float(float_list: list) -> list:
             for s, d in zip(float_strings, decimal_points)]
 
 
-def get_meal_lines(user: 'User', recipe_db: 'RecipeDatabase'):
+def get_meal_lines(user: 'User', recipe_db: 'RecipeDatabase') -> tuple:
     """Get meal lines."""
     total_consumed_kcal      = 0.0
     total_consumed_carbs_g   = 0.0
@@ -115,7 +116,8 @@ def get_meal_lines(user: 'User', recipe_db: 'RecipeDatabase'):
 
         c3w = max(c3w, len(max(recipe_names, key=len)))
 
-        lines.extend([f'{f1:<{c1w}}  {f2:<{c2w}}  {f3:<{c3w}}  {f4:>{c4w}}  {f5:>{c5w}}  {f6:>{c6w}}  {f7:>{c7w}}  {f8:>{c8w}}'
+        lines.extend([f'{f1:<{c1w}}  {f2:<{c2w}}  {f3:<{c3w}}  {f4:>{c4w}}  '
+                      f'{f5:>{c5w}}  {f6:>{c6w}}  {f7:>{c7w}}  {f8:>{c8w}}'
                       for f1, f2, f3, f4, f5, f6, f7, f8 in zip(c1, c2, c3, c4s, c5s, c6s, c7s, c8s)])
 
     return lines, total_consumed_kcal, total_consumed_carbs_g
@@ -123,10 +125,12 @@ def get_meal_lines(user: 'User', recipe_db: 'RecipeDatabase'):
 
 def get_daily_macro_lines(user: 'User', total_burned_carbs_g: float) -> list:
     """Get daily macro lines."""
-    diet_kcal_goal   = user.get_todays_nv_goals().kcal
-    diet_carb_g_goal = user.get_todays_nv_goals().carbohydrates_g
-    diet_prot_g_goal = user.get_todays_nv_goals().protein_g
-    diet_fat_g_goal  = user.get_todays_nv_goals().fat_g
+    nv_goals = calculate_nv_goal(user)
+
+    diet_kcal_goal   = nv_goals.kcal
+    diet_carb_g_goal = nv_goals.carbohydrates_g
+    diet_prot_g_goal = nv_goals.protein_g
+    diet_fat_g_goal  = nv_goals.fat_g
 
     todays_consumed_nv = NutritionalValues()
     for meal in user.get_todays_meals():
@@ -160,37 +164,24 @@ def get_daily_macro_lines(user: 'User', total_burned_carbs_g: float) -> list:
     c4 = ['kcal', 'g', 'g', 'g', 'g']
 
     c5 = align_float([(consumed / goal * 100.0) for consumed,
-                      goal in [(total_consumed_kcal,
-                                kcal_goal ),
-                               (total_consumed_carbs_g,
-                                carb_goal_g ),
-                               (total_consumed_protein_g,
-                                diet_prot_g_goal),
-                               (total_consumed_fat_g,
-                                diet_fat_g_goal )] ])
+                      goal in [(total_consumed_kcal,      kcal_goal       ),
+                               (total_consumed_carbs_g,   carb_goal_g     ),
+                               (total_consumed_protein_g, diet_prot_g_goal),
+                               (total_consumed_fat_g,     diet_fat_g_goal )] ])
 
     # Column widths
     c1w, c2w, c3w, c4w = [max(len(v) for v in column) for column in [c1, c2, c3, c4]]
 
-    lines = [
-        f'          {f1:{c1w}} {f2:{c2w}} / {f3:{c3w}} {f4:{c4w}} ({f5}% of daily goal) {"!" if float(f5) > 100.0 else ""}' for f1,
-        f2,
-        f3,
-        f4,
-        f5 in zip(
-            c1,
-            c2,
-            c3,
-            c4,
-            c5)]
+    lines = [f'          {f1:{c1w}} {f2:{c2w}} / {f3:{c3w}} {f4:{c4w}} ({f5}% of daily goal) '
+             f'{"!" if float(f5) > 100.0 else ""}'
+             for f1, f2, f3, f4, f5 in zip(c1, c2, c3, c4, c5)]
 
     return ['', 'Macros:'] + lines
 
 
-def get_calorie_balance(user: 'User'):
+def get_calorie_balance(user: 'User') -> list:
     """Get daily calorie balance."""
-
-    ng = user.get_todays_nv_goals()
+    nv_goals = calculate_nv_goal(user)
 
     # Eaten NVs
     todays_consumed_nv = NutritionalValues()
@@ -202,9 +193,9 @@ def get_calorie_balance(user: 'User'):
     consumed_carbs_g = todays_consumed_nv.carbohydrates_g
     consumed_fats_g  = todays_consumed_nv.fat_g
 
-    bmr_kcal    = ng.kcal
-    bmr_carbs_g = ng.carbohydrates_g
-    bmr_fat_g   = ng.fat_g
+    bmr_kcal    = nv_goals.kcal
+    bmr_carbs_g = nv_goals.carbohydrates_g
+    bmr_fat_g   = nv_goals.fat_g
     bmr_total_g = bmr_carbs_g + bmr_fat_g
 
     total_burned_g   = bmr_total_g
@@ -253,12 +244,14 @@ def get_calorie_balance(user: 'User'):
     lines = ['', 'Daily calorie balance:']
 
     lines += [
-        f'         {f0} {f1:{c1w}} {f2:{c2w}} {f3:{c3w}} kcal           {f2}  {f11:4}g  ({f4:{c4w}} {f5:{c5w}}{f6:{c6w}}  {f7:{c7w}} {f8:{c8w}}{f9:{c9w}}) {f10}'
+        f'         {f0} {f1:{c1w}} {f2:{c2w}} {f3:{c3w}} kcal'
+        f'           {f2}  {f11:4}g  ({f4:{c4w}} {f5:{c5w}}{f6:{c6w}}  {f7:{c7w}} {f8:{c8w}}{f9:{c9w}}) {f10}'
         for f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11 in zip(c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11)]
 
     lines += [f'{19 * " " + 14 * "─" + 2 * " " + 18 * "─" + 2 * " " + 11 * "─" + 2 * " " + 11 * "─"}',
               f'                   = {kcal_change_aligned} kcal  D weight = {weight_change_dir}{weight_change_g:.1f}g'
-              f'  (C {carb_change_dir} {abs(carb_total_change_g):.1f}g  F {fat_change_dir} {abs(fat_total_change_g):.1f}g) ({current_weight}kg -> {weight_tomorrow:.1f}kg)']
+              f'  (C {carb_change_dir} {abs(carb_total_change_g):.1f}g  F {fat_change_dir} '
+              f'{abs(fat_total_change_g):.1f}g) ({current_weight}kg -> {weight_tomorrow:.1f}kg)']
 
     return lines
 

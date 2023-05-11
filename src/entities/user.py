@@ -28,11 +28,8 @@ from src.common.utils                     import get_today_str
 
 from src.database.encrypted_database import EncryptedDatabase
 
-from src.diet.bmr                import calculate_bmr
-from src.diet.enums              import PhysicalActivityLevel, DietStage, CalContent
-from src.diet.coef               import get_pal_multiplier, get_calorie_deficit_multiplier
-from src.diet.nutritional_values import NutritionalValues
-from src.diet.meal               import Meal
+from src.diet.enums import PhysicalActivityLevel, DietStage
+from src.diet.meal  import Meal
 
 
 @unique
@@ -174,44 +171,6 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self._meal_log[get_today_str()].remove(meal_to_delete.serialize())
         self.store_db()
 
-    # Dynamically generated values
-    def calculate_bmr(self, weight_kg: float) -> None:
-        """Calculate the user's basal metabolic rate."""
-        self._bmr = calculate_bmr(self._gender, weight_kg, self._height_cm, self.get_age())
-
-    def calculate_daily_macros(self) -> None:
-        """Calculate the daily macro goals for the user.
-
-        Protein goal: avg. form https://youtu.be/l7jIU_73ZaM?t=403
-        """
-        self.calculate_bmr(self.get_todays_weight())
-
-        theoretical_maintenance_kcal = get_pal_multiplier(self._pal) * self._bmr
-        calorie_deficit_multiplier   = get_calorie_deficit_multiplier(self._diet_stage)
-
-        kcal_goal = calorie_deficit_multiplier * theoretical_maintenance_kcal
-
-        protein_goal_g    = 1.9  * self.get_todays_weight()
-        protein_goal_kcal = protein_goal_g * CalContent.KCAL_PER_GRAM_PROTEIN.value
-        fat_goal_kcal     = 0.25 * kcal_goal
-        fat_goal_g        = fat_goal_kcal / CalContent.KCAL_PER_GRAM_FAT.value
-        carbs_goal_kcal   = kcal_goal - protein_goal_kcal - fat_goal_kcal
-        carbs_goal_g      = carbs_goal_kcal / CalContent.KCAL_PER_GRAM_CARB.value
-
-        self.daily_macro_goals = {'Energy'  : kcal_goal,
-                                  'Carbs'   : carbs_goal_g,
-                                  'Protein' : protein_goal_g,
-                                  'Fat'     : fat_goal_g}
-
-    def get_todays_nv_goals(self) -> NutritionalValues:
-        """Returns the daily nutritional goals as a NutritionalValues object."""
-        nv_goals = NutritionalValues()
-        nv_goals.kcal            = self.daily_macro_goals['Energy']
-        nv_goals.carbohydrates_g = self.daily_macro_goals['Carbs']
-        nv_goals.protein_g       = self.daily_macro_goals['Protein']
-        nv_goals.fat_g           = self.daily_macro_goals['Fat']
-        return nv_goals
-
     # Getters
     # -------
 
@@ -251,6 +210,10 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
     def get_initial_weight(self) -> float:
         """Get the user's initial weight in kilograms."""
         return self._init_weight_kg
+
+    def get_diet_stage(self) -> 'DietStage':
+        """Get the diet stage of the user."""
+        return self._diet_stage
 
     def get_pal(self) -> 'PhysicalActivityLevel':
         """Get the user's Physical Activity Level (PAL)."""

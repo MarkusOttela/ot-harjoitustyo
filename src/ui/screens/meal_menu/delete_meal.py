@@ -39,7 +39,7 @@ def delete_meal(gui: 'GUI', user: 'User') -> None:
         return
 
     while True:
-        menu = GUIMenu(gui, title)
+        menu    = GUIMenu(gui, title)
         buttons = {f'{meal.name} ({meal.eat_time})': (Button(menu, closes_menu=True), meal)
                    for meal in list_of_todays_meals}
 

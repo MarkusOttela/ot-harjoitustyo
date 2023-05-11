@@ -74,15 +74,16 @@ nv_metadata = {
 
 
 class NutritionalValues:  # pylint: disable=too-many-instance-attributes
-    """NutritionalValues is a data-class that contains the nutritional values of an object such as
+    """\
+    NutritionalValues is a data-class that contains the nutritional values of an object such as
         * An ingredient
         * A fixed item such as a supplement pill
-        * A MealPrep constructed from ingredients
+        * A Mealprep constructed from ingredients
         * A Serving taken from a MealPrep
         * Total daily consumption
         * Daily consumption goals
 
-        Note: The `pylint: disable=` suppressions here are because NutritionalValues is more
+    Note: The `pylint: disable=` suppressions here are because NutritionalValues is more
           or less a data-class that holds all nutritional metadata for the specified ingredient.
     """
 
@@ -130,7 +131,7 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
                  magnesium_mg : float = 0.0,
                  zinc_mg      : float = 0.0,
                  caffeine_mg  : float = 0.0,
-                 creatine_g  : float = 0.0,
+                 creatine_g   : float = 0.0,
                  ) -> None:
         """Create new NutritionalValues object."""
 
@@ -188,7 +189,7 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
         # Sub-headers for lines
         for index, txt in [( 1, 'Energy (per 1 g of ingredient)'),
                            ( 3, 'Macronutrients (per 1g of ingredient)'),
-                           (10,  'Micronutrients (per 1g of ingredient)')]:
+                           (10, 'Micronutrients (per 1g of ingredient)')]:
             lines.insert(index, f'  {txt}')
         return '\n'.join(lines)
 

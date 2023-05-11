@@ -40,15 +40,14 @@ def add_ingredient_menu(gui           : 'GUI',
                         ) -> None:
     """Render the `Add Ingredient` menu."""
     title              = 'Add Ingredient'
-    failed_conversions = {}  # type: dict
 
     joined_metadata = dict()
     joined_metadata.update(in_metadata)
     joined_metadata.update(nv_metadata)
 
-    keys = list(in_metadata.keys()) + list(nv_metadata.keys())
-
-    string_inputs = {k: StringInput() for k in keys}
+    failed_conversions = {}  # type: dict
+    keys               = list(in_metadata.keys()) + list(nv_metadata.keys())
+    string_inputs      = {k: StringInput() for k in keys}
 
     # Prefill less commonly used fields with zeroes
     excluded = ['kcal', 'carbohydrates_g', 'protein_g', 'fat_g',

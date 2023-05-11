@@ -70,6 +70,10 @@ class Meal:
         """Returns the total weight of the meal (main recipe plus accompaniments)."""
         return self.mp_grams + sum(self.accompaniment_grams.values())
 
+    def get_nv(self) -> NutritionalValues:
+        """Get the nutritional values of the meal."""
+        return self.meal_nv
+
     def serialize(self) -> str:
         """Return the serialized version of the object."""
         return str({'name':                self.name,
@@ -78,10 +82,6 @@ class Meal:
                     'accompaniment_grams': str(self.accompaniment_grams),
                     'meal_nv':             self.meal_nv.serialize()
                     })
-
-    def get_nv(self) -> NutritionalValues:
-        """Get the nutritional values of the meal."""
-        return self.meal_nv
 
     @classmethod
     def from_serialized_string(cls, serialized_string: str) -> 'Meal':

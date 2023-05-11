@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from typing import Any, Optional
+from typing import Any
 
 if typing.TYPE_CHECKING:
     from src.ui.gui_menu import GUIMenu
@@ -61,19 +61,6 @@ class DropSelection:
 
     def set_value(self, _: Any, value: Any) -> None:
         """Set value to the string input field."""
-        self.value = value
-
-
-class UserInput:
-    """User input callback-object."""
-
-    def __init__(self) -> None:
-        """Create new UserInput object."""
-        self.value:   Optional[str] = None
-        self.default: Optional[str] = None
-
-    def set_value(self, value: str) -> None:
-        """Set value to the user input field."""
         self.value = value
 
 

@@ -47,11 +47,9 @@ def log_meal(gui           : 'GUI',
     recipe = recipe_db.get_recipe(mealprep.recipe_name)
     keys   = [mealprep.recipe_name] + recipe.accompaniment_names
 
-    metadata = {k: (k, float) for k in keys}
-
-    failed_conversions : dict = {}
-
-    string_inputs = {k: StringInput() for k in keys}
+    metadata           = {k: (k, float) for k in keys}
+    failed_conversions = {}  # type: dict
+    string_inputs      = {k: StringInput() for k in keys}
 
     for k in string_inputs.keys():
         string_inputs[k].set_value(k)
@@ -79,7 +77,8 @@ def log_meal(gui           : 'GUI',
             meal_nv  = mealprep.get_nv(for_grams=mp_grams)
 
             for ac_name in recipe.accompaniment_names:
-                ac_nv = ingredient_db.get_ingredient(ac_name).get_nv(for_grams=weight_dict[ac_name])
+                ac_nv    = ingredient_db.get_ingredient(
+                    ac_name).get_nv(for_grams=weight_dict[ac_name])
                 meal_nv += ac_nv
 
             eat_tstamp = datetime.now().strftime(Format.DATETIME_TSTAMP.value)

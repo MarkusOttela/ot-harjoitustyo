@@ -73,6 +73,7 @@ class GUI:
 
     @property
     def drop_multi_selection_theme(self) -> dict:
+        """Drop-selection theme for multiple choice boxes.."""
         return dict(selection_box_bgcolor=Color.MGREY.value,
 
                     selection_option_border_color=Color.BLACK.value,
@@ -95,6 +96,7 @@ class GUI:
 
     @property
     def drop_selection_theme(self) -> dict:
+        """Dreop-selection theme."""
         return dict(selection_box_bgcolor=Color.MGREY.value,
 
                     selection_option_border_color=Color.BLACK.value,
@@ -114,6 +116,7 @@ class GUI:
 
     @property
     def toggle_switch_theme(self) -> dict:
+        """Toggle switch theme."""
         return dict(font_color=Color.LGREY.value,
                     border_color=Color.LGREY.value,
                     switch_border_color=Color.LGREY.value,

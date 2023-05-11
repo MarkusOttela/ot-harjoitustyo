@@ -19,6 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.exceptions import AbortMenuOperation
+
 from src.ui.gui_menu                  import GUIMenu
 from src.ui.screens.log_meal.log_meal import log_meal
 from src.ui.screens.show_message      import show_message

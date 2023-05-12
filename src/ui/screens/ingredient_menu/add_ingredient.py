@@ -50,7 +50,7 @@ def add_ingredient_menu(gui           : 'GUI',
     string_inputs      = {k: StringInput() for k in keys}
 
     # Prefill less commonly used fields with zeroes
-    excluded = ['kcal', 'carbohydrates_g', 'protein_g', 'fat_g',
+    excluded = ['kcal', 'carbohydrates_g', 'sugar_g', 'protein_g', 'fat_g',
                 'satisfied_fat_g', 'fiber_g', 'salt_g']
     for k in string_inputs.keys():
         if k in nv_metadata.keys() and k not in excluded:

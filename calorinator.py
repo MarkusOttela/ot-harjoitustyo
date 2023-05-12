@@ -16,11 +16,13 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from src.common.statics                import Program
-from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
-from src.diet.nutritional_values       import NutritionalValues
-from src.ui.gui                        import GUI
-from src.ui.screens.main_menu          import main_menu
+from src.common.statics import Program
+
+from src.database.default_ingredient_database import default_ingredients
+from src.database.unencrypted_database        import IngredientDatabase, MealprepDatabase, RecipeDatabase
+from src.ui.gui                               import GUI
+from src.ui.screens.get_yes                   import get_yes
+from src.ui.screens.main_menu                 import main_menu
 
 
 def main() -> None:
@@ -33,25 +35,16 @@ def main() -> None:
     """
     print(f'{Program.NAME.value} {Program.VERSION.value}\n')
 
-    # TODO Test code - Remove
-    # import os
-    # try:
-    #     os.remove('user_data/SharedData.sqlite3')
-    # except FileNotFoundError:
-    #     pass
-    import os
-    create_ingredients = not os.path.isfile('user_data/SharedData.sqlite3')
-
     gui           = GUI()
     ingredient_db = IngredientDatabase()
+
+    if not ingredient_db.get_list_of_ingredients():
+        if get_yes(gui, 'Welcome', 'Ingredient database is empty. Add default ingredients?', 'No'):
+            for ingredient in default_ingredients:
+                ingredient_db.insert(ingredient)
+
     recipe_db     = RecipeDatabase()
     mealprep_db   = MealprepDatabase()
-
-    # TODO Test code - Remove
-    from src.diet.ingredient import Ingredient
-    if create_ingredients:
-        for name in ['Sipuli', 'Selleri', 'Porkkana', 'Pasta', 'Maito']:
-            ingredient_db.insert(Ingredient(name, NutritionalValues.mock()))
 
     main_menu(gui, ingredient_db, recipe_db, mealprep_db)
 

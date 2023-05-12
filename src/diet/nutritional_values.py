@@ -30,6 +30,7 @@ nv_metadata = {
     # key             GUI name    db format  unit    multiplier_to_grams
     'kcal':            ('KCal',     float,     'g',    1),
     'carbohydrates_g': ('Carbs',    float,     'g',    1),
+    'sugar_g':         ('Sugar',    float,     'g',    1),
     'protein_g':       ('Protein',  float,     'g',    1),
     'fat_g':           ('Fat',      float,     'g',    1),
     'satisfied_fat_g': ('Sat. Fat', float,     'g',    1),
@@ -93,6 +94,7 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
 
                  # Macronutrients
                  carbohydrates_g : float = 0.0,
+                 sugar_g         : float = 0.0,
                  protein_g       : float = 0.0,
                  fat_g           : float = 0.0,
                  satisfied_fat_g : float = 0.0,
@@ -140,6 +142,7 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
 
         # Macronutrients
         self.carbohydrates_g = carbohydrates_g
+        self.sugar_g         = sugar_g
         self.protein_g       = protein_g
         self.fat_g           = fat_g
         self.satisfied_fat_g = satisfied_fat_g
@@ -278,43 +281,3 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
         for key, value, in dict_.items():
             setattr(new_nv, key, value)
         return new_nv
-
-    @classmethod
-    def mock(cls) -> 'NutritionalValues':
-        """Mock the object content.
-
-        Creates content for nv per 100 grams, so that when passed
-        to the Ingredient constructor in main(), the Ingredient
-        object will split it to nv per 1 gram.
-
-        TODO: Remove from production.
-        """
-        mock_nv = NutritionalValues()
-
-        for key, value in nv_metadata.items():
-
-            if key in ['kcal']:
-                integer_value = 3500
-
-            elif key in ['carbohydrates_g', 'protein_g', 'fat_g']:
-                integer_value = 30
-
-            elif key in ['satisfied_fat_g']:
-                integer_value = 15
-
-            elif key in ['fiber_g', 'salt_g', 'creatine_g']:
-                integer_value = 3
-
-            elif value[2] == 'mg':
-                integer_value = 30
-
-            elif value[2] == 'ug':
-                integer_value = 30
-
-            else:
-                print(f'ERROR {key=}')
-                sys.exit(1)
-
-            setattr(mock_nv, key, integer_value / 100.0)
-
-        return mock_nv

@@ -53,8 +53,6 @@ def add_mealprep_recipe(gui           : 'GUI',
     selected_ingredients    = MultiSelection()
     selected_accompaniments = MultiSelection()
 
-    name.set_value('Ragu')  # TODO: remove
-
     if user is not None:
         author.set_value(user.get_username())
 

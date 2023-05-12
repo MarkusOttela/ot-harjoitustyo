@@ -52,8 +52,6 @@ def add_recipe(gui           : 'GUI',
 
     selected_ingredients = MultiSelection()
 
-    name.set_value('Ragu')  # TODO: remove
-
     if user is not None:
         author.set_value(user.get_username())
 

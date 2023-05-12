@@ -44,7 +44,7 @@ def log_single_meal(gui           : 'GUI',
                     ) -> None:
     """Render the `Log Single Meal` menu."""
     title = 'Log Single Meal'
-    keys  = [recipe.name]
+    keys  = recipe.ingredient_names
 
     metadata           = {k: (k, float) for k in keys}
     failed_conversions = {}  # type: dict
@@ -72,14 +72,15 @@ def log_single_meal(gui           : 'GUI',
         if done_button.pressed:
             success, weight_dict = convert_input_fields(string_inputs, metadata)
 
-            meal_nv  = NutritionalValues()
+            meal_nv    = NutritionalValues()
+            meal_grams = 0.0
+
             for in_name in recipe.ingredient_names:
-                in_nv    = ingredient_db.get_ingredient(
-                    in_name).get_nv(for_grams=weight_dict[in_name])
-                meal_nv += in_nv
+                in_nv       = ingredient_db.get_ingredient(in_name).get_nv(for_grams=weight_dict[in_name])
+                meal_nv    += in_nv
+                meal_grams += weight_dict[in_name]
 
             eat_tstamp = datetime.now().strftime(Format.DATETIME_TSTAMP.value)
-            meal_grams = weight_dict[recipe.name]
             meal       = Meal(recipe.name, eat_tstamp, meal_grams, meal_nv, accompaniment_grams={})
 
             user.add_meal(meal)

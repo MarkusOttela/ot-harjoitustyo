@@ -42,6 +42,7 @@ def main() -> None:
         if get_yes(gui, 'Welcome', 'Ingredient database is empty. Add default ingredients?', 'No'):
             default_ingredients.sort(key=lambda i: i.name)
             for ingredient in default_ingredients:
+                ingredient.nv_per_g /= 100.0
                 ingredient_db.insert(ingredient)
 
     recipe_db     = RecipeDatabase()

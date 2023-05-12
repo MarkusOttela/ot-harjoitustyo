@@ -5,8 +5,8 @@ Functional Specification
 
 The program supports the user in maintaining their diet by
   1. Tracking their meals, and by counting the nutritional values of each meal
-  2. Informing them about the daily consumption in relation to their goal values
-  3. Creating statistics about food and nutrient consumption, and progress of the diet
+  2. Informing them about the daily consumption
+  3. Creating statistics about progress of the diet
 
 
 ## 1.1 Users
@@ -14,6 +14,8 @@ The program supports the user in maintaining their diet by
 #### Normal users
   * The program has one or more `normal users`
   * The users are able to control their own information completely
+  * The users are able to control shared information completely
+
 
 #### Privileged users
   * The program does not have `privileged user` accounts
@@ -21,8 +23,9 @@ The program supports the user in maintaining their diet by
 
 ## 1.2.0 General Functionality
 
-**Before login**
+**DONE: Before login**
   * User can log in, or register a new account
+  * User can edit public ingredient, recipe and mealprep databases
 
 
 **DONE: User registration**
@@ -32,7 +35,7 @@ The program supports the user in maintaining their diet by
 
 **DONE: Initial Survey**
   * The user enters their
-    * Date of Birth
+    * Date of birth
     * Initial weight, height
     * Diet details
     * The system then calculates
@@ -46,17 +49,19 @@ The program supports the user in maintaining their diet by
   * The user is greeted with the main menu
 
 
-**The Main Menu** (indent for submenu options)
+**DONE: The Main Menu** (indent for submenu options)
   * Daily progress
     * Listing of consumed meals and their macros
     * Daily macro goals
   * Statistics
-    * Calories for the day
-  * Management
-    * Ingredient database
+    * Weight progress
+  * Shared databases: Creation and editing of
+    * Mealprep cooking
     * Single-portion recipes
     * Mealprep recipes
-  * Exit
+    * Ingredient database
+* Logout button
+* Exit
     * Exits the program
 
 
@@ -64,44 +69,37 @@ The program supports the user in maintaining their diet by
   * The system comes with pre-generated initial ingredient database
   * The user can add ingredients to their own database
   * The user can export their ingredient database (users can create content)
-  * The user can import ingredient databases created by other users
-    * The importable information can be inspected
+  * The user can user ingredients created by other local users
 
 
-**WIP: Meal Creation**
+**DONE: Meal Creation**
 
-1. The user can add one-time meal portions where 
-   * The ingredients are not known, but where
-    * The nutritional values are known (and defined during adding the meal)
-
+1. ~~The user can add one-time meal portions where~~ 
+   * ~~The ingredient weight is not known, but where~~
+   * ~~The nutritional values are known (and defined during adding the meal)~~
 
 2. The user can create recipes (templates) that use one or more ingredients in the ingredient database
    * The user can create single portions from these templates by specifying grams of each ingredient used
-   * The user can add custom accompaniments for the created meal (define ingredient and grams)
+    * The program will calculate average nutritional values for the mealprep
+   * ~~The user can add custom accompaniments for the created meal (define ingredient and grams)~~
+
+3. The user can create a mealprep recipe that use one or more ingredients and one or more accompaniments
+   * The user can create an instance of the mealprep recipe by defining grams of each ingredient
+       * The program will calculate average nutritional values for the mealprep
+   * The user can create meals where the user lists the grams of mealprep and each accompaniment
+     * The program will calculate average nutritional values for the mealprep
 
 
-3. The user can create a mealprep recipe that use one or more ingredients
-   * The user can create a dish (an instance of the mealprep recipe by defining ingredients and their grams)
-       * The program will calculate average nutritional values for each ingredient
-   * The user can create meals where the mealprep dish (usually sauce) is paired with 
-       * Common accompaniments (define grams)
-       * Optionally, custom one-time accompaniments (define ingredient and grams)
-
-
-**Automatic services**
+**Done: Automatic services**
   * The system prompts the user to enter their daily morning weight
-  * The system prompts the user to enter skin fold and circumference information periodically (weekly or monthly)
+  * ~~The system prompts the user to enter skin fold and circumference information periodically (weekly or monthly)~~
 
-
-**Statistics**
-  * The user can view
-    * Daily micro- and macro nutrients vs personal nutrition goals and daily recommended intake
-    * Diet progress graphs
+**Done: Statistics**
+  * The user can view diet progress graph (IMPLEMENTED: weight)
 
 
 ## 1.2.1 Feature ideas
 
-* Exercise input menu
 * API for importing exercises (that burn calories in addition to BMR) from e.g. Strava
 * Web server and simple UI for entering information remotely
 * Encrypted progress photo database

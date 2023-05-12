@@ -361,9 +361,9 @@ class MealprepDatabase(UnencryptedDatabase):
         return any(name == mealprep.recipe_name for name in self.get_list_of_mealprep_names())
 
     def remove_mealprep(self, mealprep: Mealprep) -> None:
-        """Remove meaplrep from the database."""
+        """Remove mealprep from the database."""
         if not self.has_mealprep(mealprep):
-            raise RecipeNotFound(f"No meaprep {mealprep.recipe_name} in database.")
+            raise RecipeNotFound(f"No mealprep {mealprep.recipe_name} in database.")
 
         sql_command  = f'DELETE FROM {self.table_name}'
         sql_command += f" WHERE recipe_name == '{mealprep.recipe_name}'"

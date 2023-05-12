@@ -32,7 +32,7 @@ default_ingredients = [
     Ingredient('Fat-free Milk',          NutritionalValues(kcal=33.8,  carbohydrates_g=4.9,  sugar_g=4.9,  protein_g=3.1,  fat_g=0.1,  satisfied_fat_g=0.1,  fiber_g=0.0, salt_g=0.01,
                                                            vitamin_b2_mg=0.2, vitamin_b12_ug=0.4, vitamin_d_ug=1.0, calcium_mg=120.0),                                                  manufacturer='Arla-Ingman', ),
     Ingredient('Butter',                 NutritionalValues(kcal=720.0, carbohydrates_g=1.0,  sugar_g=1.0,  protein_g=1.0,  fat_g=80.0, satisfied_fat_g=54.0, fiber_g=0.0, salt_g=1.5),  manufacturer='Arla-Ingman'),
-    Ingredient('Cellery',                NutritionalValues(kcal=12.7,  carbohydrates_g=1.1,  sugar_g=1.1,  protein_g=1.1,  fat_g=0.2,  satisfied_fat_g=0.1,  fiber_g=1.0, salt_g=0.3),  manufacturer=''),
+    Ingredient('Celery',                 NutritionalValues(kcal=12.7,  carbohydrates_g=1.1,  sugar_g=1.1,  protein_g=1.1,  fat_g=0.2,  satisfied_fat_g=0.1,  fiber_g=1.0, salt_g=0.3),  manufacturer=''),
     Ingredient('Carrot',                 NutritionalValues(kcal=32.7,  carbohydrates_g=5.6,  sugar_g=5.4,  protein_g=0.6,  fat_g=0.2,  satisfied_fat_g=0.0,  fiber_g=2.6, salt_g=0.1),  manufacturer=''),
     Ingredient('Yellow onion',           NutritionalValues(kcal=29.4,  carbohydrates_g=4.8,  sugar_g=4.8,  protein_g=1.3,  fat_g=0.1,  satisfied_fat_g=0.0,  fiber_g=1.7, salt_g=0.0),  manufacturer=''),
     Ingredient('Minced pork/cow (23%)',  NutritionalValues(kcal=275.0, carbohydrates_g=0.0,  sugar_g=0.0,  protein_g=17.0, fat_g=23.0, satisfied_fat_g=11.0, fiber_g=0.0, salt_g=0.15), manufacturer='Kotimaista'),

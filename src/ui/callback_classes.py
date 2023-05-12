@@ -83,11 +83,10 @@ class MultiSelection:
         self.sel_list: list = []
 
     def set_value(self, selection_: Any) -> None:
+        """Set the selection values to the object."""
         self.sel_list = [enum_ for name, enum_ in selection_[0]]
-
-    def get_value(self) -> list:
-        return self.sel_list
 
     @property
     def values(self) -> list:
+        """Get the values."""
         return self.sel_list

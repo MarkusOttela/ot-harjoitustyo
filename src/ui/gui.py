@@ -96,7 +96,7 @@ class GUI:
 
     @property
     def drop_selection_theme(self) -> dict:
-        """Dreop-selection theme."""
+        """Drop-selection theme."""
         return dict(selection_box_bgcolor=Color.MGREY.value,
 
                     selection_option_border_color=Color.BLACK.value,

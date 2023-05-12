@@ -17,7 +17,6 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 import ast
-import sys
 
 from typing import Union
 

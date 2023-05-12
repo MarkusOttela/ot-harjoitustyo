@@ -16,16 +16,13 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-import typing
-
 from src.diet.ingredient         import Ingredient
 from src.diet.nutritional_values import NutritionalValues
 
-if typing.TYPE_CHECKING:
-    pass
+# pylint: skip-file
+# Lines are left long to improve readability
 
-
-default_ingredients = list(sorted([
+default_ingredients = [
     Ingredient('Blueberry',              NutritionalValues(kcal=64.7,  carbohydrates_g=10.2, sugar_g=8.4,  protein_g=0.8, fat_g=1.1, fiber_g=3.3,           salt_g=0.0 ),              manufacturer=''),
     Ingredient('Margarin',               NutritionalValues(kcal=515.0, carbohydrates_g=0.3,  sugar_g=0.3,  protein_g=0.2, fat_g=57.0, satisfied_fat_g=19.0, salt_g=0.98),              manufacturer='Arla-Ingman'),
     Ingredient('Rye Oatmeal',            NutritionalValues(kcal=369.0, carbohydrates_g=65.2, sugar_g=1.1,  protein_g=8.9, fat_g=1.6, satisfied_fat_g=0.2,  fiber_g=14.0, salt_g=0.01), manufacturer='Raisio'),
@@ -43,4 +40,6 @@ default_ingredients = list(sorted([
     Ingredient('Tomato pyre' ,           NutritionalValues(kcal=145.0, carbohydrates_g=25.8, sugar_g=17.0, protein_g=5.9,  fat_g=0.7,  satisfied_fat_g=0.0,  fiber_g=0.0, salt_g=1.0),  manufacturer='Freshona'),
     Ingredient('Parmesan',               NutritionalValues(kcal=402.0, carbohydrates_g=0.0,  sugar_g=0.0,  protein_g=32.0, fat_g=30.0, satisfied_fat_g=20.0, fiber_g=0.0, salt_g=1.6),  manufacturer='Lovilio'),
     Ingredient('Pasta (full-grain)',     NutritionalValues(kcal=348.0, carbohydrates_g=65.8, sugar_g=2.8,  protein_g=14.0, fat_g=1.9,  satisfied_fat_g=0.4,  fiber_g=6.2, salt_g=0.01), manufacturer='Rummo'),
-]))
+]
+
+sorted_ingredients = default_ingredients.sort(key=lambda i: i.name)

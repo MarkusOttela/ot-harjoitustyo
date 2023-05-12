@@ -46,10 +46,11 @@ class TestUserCredentials(unittest.TestCase):
         cleanup(self.unit_test_dir)
 
     def test_repr(self):
-        self.assertEqual(repr(self.uc), """\
-Username:    test
-Salt:        73616c7473616c7473616c7473616c7473616c7473616c7473616c7473616c74
-DB key hash: 8546602cc0544b1c731d76d776b44b12a1c85afd199e53d153645d493c1b4de3c474a954634756085a58cd351a21d215187bf885a7212e143805637359344c4f""")
+        self.assertEqual(repr(self.uc), f"""\
+<UserCredentials-object {id(self.uc)}>
+  User Name:   test
+  Salt:        73616c7473616c7473616c7473616c7473616c7473616c7473616c7473616c74
+  DB key hash: 8546602cc0544b1c731d76d776b44b12a1c85afd199e53d153645d493c1b4de3c474a954634756085a58cd351a21d215187bf885a7212e143805637359344c4f""")
 
     def test_get_username_returns_username(self):
         self.assertEqual(self.uc.get_username(), 'test')

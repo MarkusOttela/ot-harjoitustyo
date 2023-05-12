@@ -72,11 +72,6 @@ class EscPressed(KeyPress):
     """Exception thrown when Pygame event loop detects Esc key press."""
 
 
-class InsufficientDataError(Exception):
-    """Exception raised when there's insufficient data available."""
-    pass
-
-
 @contextmanager
 def ignored(*exceptions: Any) -> Iterator:
     """Ignore an exception."""

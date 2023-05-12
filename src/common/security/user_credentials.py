@@ -45,7 +45,7 @@ class UserCredentials:
 
     def __repr__(self) -> str:
         """Format UserCredentials attributes."""
-        return f"<UserCredentials-object {id(self)}>" \
+        return f"<UserCredentials-object {id(self)}>\n" \
                f"  User Name:   {self.__user_name}\n" \
                f"  Salt:        {self.__salt.hex()}\n" \
                f"  DB key hash: {self.get_key_hash().hex()}"

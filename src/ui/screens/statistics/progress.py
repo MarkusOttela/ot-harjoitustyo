@@ -21,19 +21,19 @@ import typing
 from datetime import datetime
 
 # noinspection PyPackageRequirements
-import pylab  # The module is included in the matplotlib dependency which is in requirements
+import pylab  # type: ignore
 import pygame
 
-import matplotlib
-import matplotlib.backends.backend_agg as agg
-import matplotlib.pyplot               as plt
-import numpy                           as np
+import matplotlib  # type: ignore
+import matplotlib.backends.backend_agg as agg  # type: ignore
+import matplotlib.pyplot               as plt  # type: ignore
+import numpy                           as np   # type: ignore
 
-from src.common.exceptions import EscPressed, InsufficientDataError
+from src.common.exceptions import EscPressed
 from src.common.statics    import Format, Program
 
 if typing.TYPE_CHECKING:
-    from matplotlib.figure import Figure
+    from matplotlib.figure import Figure  # type: ignore
     from src.ui.gui        import GUI
 
 
@@ -45,9 +45,6 @@ light_grey = '#B4B4B4'
 def draw_graph(measurement_log: dict) -> pygame.Surface:
     """Draw graph for measurement log."""
     figure = init_figure()
-
-    if not measurement_log:
-        raise InsufficientDataError('Error: Not enough data to draw graph')
 
     dt_log = {}
     for date_string, value in measurement_log.items():
@@ -67,7 +64,9 @@ def draw_graph(measurement_log: dict) -> pygame.Surface:
         days         = [-1]              + days
         measurements = [measurements[0]] + measurements
 
-    plt.plot(days, measurements, linestyle='', color=light_grey, marker='+', label='')  # Scatter plot
+    plt.plot(days, measurements,
+             linestyle='', color=light_grey,
+             marker='+', label='')  # Scatter plot
     plt.plot(days, measurements, linestyle='-', linewidth=1)
 
     x_min = -1

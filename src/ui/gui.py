@@ -21,7 +21,7 @@ import sys
 import pygame
 
 from src.common.exceptions import EscPressed
-from src.common.statics    import Program, ColorScheme, AssetFiles, Color
+from src.common.enums      import Program, ColorScheme, AssetFiles, Color
 
 
 class GUI:

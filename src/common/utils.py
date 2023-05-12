@@ -21,7 +21,7 @@ import os
 from datetime import datetime
 
 from src.common.exceptions import ignored
-from src.common.statics    import Directories, Format
+from src.common.enums      import Directories, Format
 
 
 def ensure_dir(directory: str) -> None:
@@ -48,9 +48,9 @@ def get_list_of_user_account_names() -> list:
     return next(os.walk(Directories.USER_DATA.value))[1]
 
 
-def separate_header(bytestring    : bytes,     # Bytestring to slice
-                    header_length : int        # Number of header bytes to separate
-                    ) -> tuple:                # Header and payload
+def separate_header(bytestring    : bytes,
+                    header_length : int
+                    ) -> tuple:
     """Separate `header_length` first bytes from a bytestring."""
     return bytestring[:header_length], bytestring[header_length:]
 

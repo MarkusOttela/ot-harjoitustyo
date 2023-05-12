@@ -20,26 +20,16 @@ import ast
 import sqlite3
 
 from collections import ChainMap
-from enum        import Enum
 from typing      import Any
 
 from src.common.exceptions import IngredientNotFound, RecipeNotFound
-from src.common.statics    import DatabaseFileName, Directories, DatabaseTableName
+from src.common.enums      import DatabaseFileName, Directories, DatabaseTableName, DatabaseTypes
 from src.common.utils      import ensure_dir
-from src.common.validation import validate_params
 
-from src.diet.ingredient         import Ingredient, in_metadata
-from src.diet.mealprep           import Mealprep, mealprep_metadata
-from src.diet.nutritional_values import nv_metadata, NutritionalValues
-from src.diet.recipe             import Recipe, recipe_metadata
-
-
-class DatabaseTypes(Enum):
-    """SQL Database types."""
-    TEXT = 'TEXT'
-    REAL = 'REAL'
-    LIST = 'TEXT'
-
+from src.entities.ingredient         import Ingredient, in_metadata
+from src.entities.mealprep           import Mealprep, mealprep_metadata
+from src.entities.nutritional_values import nv_metadata, NutritionalValues
+from src.entities.recipe             import Recipe, recipe_metadata
 
 column_type_dict : dict = {
     str   : DatabaseTypes.TEXT.value,
@@ -55,7 +45,10 @@ class UnencryptedDatabase:
     The database is intended to be public and shareable, thus it is not encrypted.
     """
 
-    def __init__(self, table_name: DatabaseTableName, db_metadata : dict) -> None:
+    def __init__(self, 
+                 table_name  : DatabaseTableName,
+                 db_metadata : dict
+                 ) -> None:
         """Create new UnencryptedDatabase object."""
         ensure_dir(Directories.USER_DATA.value)
         self.table_name  = table_name.value
@@ -88,7 +81,7 @@ class UnencryptedDatabase:
         sql_command = f'INSERT INTO {self.table_name} ('
         sql_command += ', '.join(keys)
         sql_command += ') VALUES ('
-        sql_command += ', '.join(['?' for _ in range(len(keys))])
+        sql_command += ', '.join(len(keys)*['?'])
         sql_command += ')'
 
         self.cursor.execute(sql_command, values)
@@ -106,11 +99,12 @@ class UnencryptedDatabase:
 
 class IngredientDatabase(UnencryptedDatabase):
     """\
-    IngredientDatabase contains the data including name,
-    manufacturer, and nutritional values of each ingredient.
+    IngredientDatabase contains the data including name
+    and nutritional values of each ingredient.
     """
 
     def __init__(self) -> None:
+        """Create new IngredientDatabase."""
         super().__init__(table_name=DatabaseTableName.INGREDIENTS,
                          db_metadata=dict(ChainMap(nv_metadata, in_metadata)))
 
@@ -120,11 +114,12 @@ class IngredientDatabase(UnencryptedDatabase):
         nv_keys   = list(nv_metadata.keys())
         in_values = [getattr(obj, key)          for key in in_keys]
         nv_values = [getattr(obj.nv_per_g, key) for key in nv_keys]
+        no_values = len(in_keys + nv_keys)
 
         sql_command = f'INSERT INTO {self.table_name} ('
         sql_command += ', '.join(in_keys + nv_keys)
         sql_command += ') VALUES ('
-        sql_command += ', '.join(['?' for _ in range(len(in_keys + nv_keys))])
+        sql_command += ', '.join(no_values*['?'])
         sql_command += ')'
 
         self.cursor.execute(sql_command, in_values + nv_values)
@@ -142,10 +137,8 @@ class IngredientDatabase(UnencryptedDatabase):
 
     def get_ingredient(self,
                        name         : str,
-                       manufacturer : str = ''
                        ) -> Ingredient:
-        """Get Ingredient from database by name (and manufacturer)."""
-        validate_params(self.get_ingredient, locals())
+        """Get Ingredient from database by name."""
         keys = list(self.db_metadata.keys())[1:]
 
         sql_command  =  'SELECT '
@@ -153,20 +146,14 @@ class IngredientDatabase(UnencryptedDatabase):
         sql_command += f' FROM {self.table_name}'
         sql_command += f" WHERE {self.db_metadata['name'][0]} == '{name}'"
 
-        if manufacturer:
-            manuf_col    = 'manufacturer'
-            sql_command += f" AND {manuf_col} == '{manufacturer}'"
-
         result = self.cursor.execute(sql_command).fetchall()[0]
 
         if not result:
-            manuf_info = f" by '{manufacturer}'" if manufacturer else ''
-            raise IngredientNotFound(f"Could not find ingredient '{name}'{manuf_info}.")
+            raise IngredientNotFound(f"Could not find ingredient '{name}'.")
 
-        ingredient = Ingredient(name, NutritionalValues(*result[3:]),
-                                manufacturer=result[0],
-                                grams_per_unit=result[1],
-                                fixed_portion_g=result[2])
+        ingredient = Ingredient(name, NutritionalValues(*result[2:]),
+                                grams_per_unit=result[0],
+                                fixed_portion_g=result[1])
 
         return ingredient
 
@@ -184,9 +171,12 @@ class IngredientDatabase(UnencryptedDatabase):
         self.remove_ingredient(ingredient)
         self.insert(ingredient)
 
-    def has_ingredient(self, ingredient: Ingredient) -> bool:
+    def has_ingredient(self, purp_ingredient: Ingredient) -> bool:
         """Returns True if the ingredient exists in the database."""
-        return ingredient.name in self.get_list_of_ingredient_names()
+        for ingredient in self.get_list_of_ingredients():
+            if purp_ingredient == ingredient:
+                return True
+        return False
 
     def has_ingredients(self) -> bool:
         """Return True if database contains at least one ingredient."""
@@ -199,7 +189,8 @@ class RecipeDatabase(UnencryptedDatabase):
     The database is intended to be public and shareable, thus it is not encrypted.
     """
 
-    def __init__(self) -> None:
+    def __init__(self) -> None:        
+        """Create new RecipeDatabase."""
         super().__init__(table_name=DatabaseTableName.RECIPES, db_metadata=recipe_metadata)
 
     def get_list_of_recipe_names(self) -> list:
@@ -225,8 +216,6 @@ class RecipeDatabase(UnencryptedDatabase):
                    author : str = ''
                    ) -> Recipe:
         """Get Recipe from database by name (and author)."""
-        validate_params(self.get_recipe, locals())
-
         sql_command  =  'SELECT '
         sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])
         sql_command += f' FROM {self.table_name}'
@@ -256,8 +245,10 @@ class RecipeDatabase(UnencryptedDatabase):
         keys = list(self.db_metadata.keys())
 
         values = []
+        print(recipe)
         for key, metadata in self.db_metadata.items():
             value = getattr(recipe, key)
+            print(f'{value=}')
             if metadata[1] == list:
                 value = '\x1f'.join([v.name for v in value]) if value else 'None'
             if metadata[1] == bool:
@@ -304,6 +295,7 @@ class MealprepDatabase(UnencryptedDatabase):
     """
 
     def __init__(self) -> None:
+        """Create new MealprepDatabase."""
         super().__init__(table_name=DatabaseTableName.MEALPREPS, db_metadata=mealprep_metadata)
 
     def get_list_of_mealprep_names(self) -> list:
@@ -316,7 +308,6 @@ class MealprepDatabase(UnencryptedDatabase):
 
     def get_mealprep(self, name: str) -> Mealprep:
         """Get Recipe from database by name."""
-        validate_params(self.get_mealprep, locals())
 
         sql_command  =  'SELECT '
         sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])

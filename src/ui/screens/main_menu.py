@@ -20,25 +20,23 @@ import sys
 import typing
 
 from src.common.exceptions import AbortMenuOperation
-from src.common.statics    import Program
+from src.common.enums      import Program
 from src.common.utils      import get_list_of_user_account_names
+from src.entities.user     import User
 
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button
+from src.ui.screens.account_management.enter_existing_credentials import enter_existing_credentials
 
-from src.ui.screens.get_morning_weight                   import get_morning_weight
-from src.ui.screens.ingredient_menu.manage_ingredients   import manage_ingredients_menu
-from src.ui.screens.initial_survey.get_body_measurements import get_body_measurements
-from src.ui.screens.initial_survey.initial_survey        import get_dob_and_gender
-from src.ui.screens.initial_survey.start_diet_survey     import start_diet_survey
-from src.ui.screens.log_meal.select_meal_to_log          import select_meal_to_log
-from src.ui.screens.login.create_new_user                import create_new_user
-from src.ui.screens.login.login_existing_user            import login_existing_user
-from src.ui.screens.meal_menu.delete_meal                import delete_meal
-from src.ui.screens.mealprep_menu.manage_mealpreps       import manage_mealpreps_menu
-from src.ui.screens.recipe_menu.manage_recipes           import manage_recipes_menu
-from src.ui.screens.statistics.daily_overview            import show_daily_overview
-from src.ui.screens.statistics.progress                  import show_weight_progress
+from src.ui.screens.get_morning_weight                     import get_morning_weight
+from src.ui.screens.ingredient_menu.manage_ingredients     import manage_ingredients_menu
+from src.ui.screens.log_meal.select_meal_to_log            import select_meal_to_log
+from src.ui.screens.account_management.register_new_user   import register_new_user
+from src.ui.screens.meal_menu.delete_meal                  import delete_meal
+from src.ui.screens.mealprep_menu.manage_mealpreps         import manage_mealpreps_menu
+from src.ui.screens.recipe_menu.manage_recipes             import manage_recipes_menu
+from src.ui.screens.statistics.daily_overview              import show_daily_overview
+from src.ui.screens.statistics.progress                    import show_weight_progress
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
@@ -79,7 +77,7 @@ def main_menu(gui           : 'GUI',
 
             if user is not None:
                 menu.menu.add.label('\n')
-                menu.menu.add.label(f'Welcome back {user.get_username()}')
+                menu.menu.add.label(f'Welcome back {user.name}')
                 menu.menu.add.label('\n')
                 menu.menu.add.button('Log Meal',       action=log_meal_bt.set_pressed)
                 menu.menu.add.button('Daily Overview', action=daily_overview_bt.set_pressed)
@@ -103,14 +101,10 @@ def main_menu(gui           : 'GUI',
             # ---
 
             if create_user_bt.pressed:
-                user = create_new_user(gui)
-                get_dob_and_gender(gui, user)
-                get_body_measurements(gui, user)
-                start_diet_survey(gui, user)
+                user = register_new_user(gui)
 
             if login_bt.pressed:
-                user = login_existing_user(gui)
-                user.load_db()
+                user = User.from_database(enter_existing_credentials(gui))
 
                 if not user.has_weight_entry_for_the_day():
                     get_morning_weight(gui, user)

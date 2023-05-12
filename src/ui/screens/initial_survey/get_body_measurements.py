@@ -25,11 +25,10 @@ from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
 
 if typing.TYPE_CHECKING:
-    from src.entities.user import User
-    from src.ui.gui        import GUI
+    from src.ui.gui import GUI
 
 
-def get_body_measurements(gui: 'GUI', user: 'User') -> None:
+def get_body_measurements(gui: 'GUI') -> tuple:
     """Get initial body measurements (weight and height) from the user."""
     error_message = ''
 
@@ -81,14 +80,11 @@ def get_body_measurements(gui: 'GUI', user: 'User') -> None:
             if return_bt.pressed:
                 raise AbortMenuOperation
 
-            # Validate and add body
+            # Validate and add body measurements
             weight_f = validate_positive_float(weight.value)
             height_f = validate_positive_float(height.value)
 
-            user.set_height(height_f)
-            user.set_init_weight(weight_f)
-            user.set_morning_weight(weight_f)
-            return
+            return weight_f, height_f
 
         except ValueError as e:
             error_message = e.args[0]

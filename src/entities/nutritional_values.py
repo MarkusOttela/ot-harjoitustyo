@@ -20,13 +20,12 @@ import ast
 
 from typing import Union
 
-from src.diet.enums import CalContent, TefMultipliers
-
+from src.common.enums import CalContent, TefMultipliers
 
 nv_metadata = {
 
     # Macronutrients
-    # key             GUI name    db format  unit    multiplier_to_grams
+    # key             GUI name    db format  unit      multiplier_to_grams
     'kcal':            ('KCal',     float,     'g',    1),
     'carbohydrates_g': ('Carbs',    float,     'g',    1),
     'sugar_g':         ('Sugar',    float,     'g',    1),

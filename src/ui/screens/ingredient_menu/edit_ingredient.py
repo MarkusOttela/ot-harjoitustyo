@@ -19,10 +19,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.conversion import convert_input_fields
-from src.common.statics    import Color
+from src.common.enums      import Color
 
-from src.diet.ingredient         import in_metadata, Ingredient
-from src.diet.nutritional_values import nv_metadata
+from src.entities.ingredient         import in_metadata, Ingredient
+from src.entities.nutritional_values import nv_metadata
 
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
@@ -60,8 +60,7 @@ def edit_ingredient(gui             : 'GUI',
         if k in in_metadata.keys():
             string_inputs[k].value = getattr(orig_ingredient, k)
         else:
-            value = getattr(orig_ingredient.nv_per_g, k)
-            string_inputs[k].value = value * gram_multiplier
+            string_inputs[k].value = getattr(orig_ingredient.nv_per_g, k) * gram_multiplier
 
     while True:
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
@@ -76,6 +75,7 @@ def edit_ingredient(gui             : 'GUI',
         menu.menu.add.button('Done',   action=done_button.set_pressed)
         menu.menu.add.button('Delete', action=delete_button.set_pressed, font_color=Color.RED.value)
         menu.menu.add.button('Return', action=return_button.set_pressed)
+
         menu.start()
 
         if return_button.pressed:
@@ -88,6 +88,10 @@ def edit_ingredient(gui             : 'GUI',
                 return
 
         if done_button.pressed:
+            if not string_inputs['name'].value:
+                failed_conversions['name'] = ''
+                continue
+
             success, value_dict = convert_input_fields(string_inputs, joined_metadata)
 
             if not success:
@@ -115,8 +119,8 @@ def edit_ingredient(gui             : 'GUI',
                 return
 
             if not ingredient_db.has_ingredient(new_ingredient):
-                ingredient_db.replace_ingredient(new_ingredient)
-                show_message(gui, title, 'Ingredient has been renamed and updated.')
+                ingredient_db.insert(new_ingredient)
+                show_message(gui, title, 'New ingredient has been added.')
                 return
 
             if get_yes(gui, title,

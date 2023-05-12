@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import ast
 
-from src.diet.nutritional_values import NutritionalValues
+from src.entities.nutritional_values import NutritionalValues
 
 
 class Meal:
@@ -57,12 +57,12 @@ class Meal:
 
     @property
     def eat_date(self) -> str:
-        """Return the date when the meal was eaten"""
+        """Return the date when the meal was eaten."""
         return self.eat_tstamp.split('-')[0]
 
     @property
     def eat_time(self) -> str:
-        """Return the time of day when the meal was eaten"""
+        """Return the time of day when the meal was eaten."""
         return self.eat_tstamp.split('-')[1]
 
     @property

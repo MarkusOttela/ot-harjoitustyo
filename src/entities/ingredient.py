@@ -18,13 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Any
 
-from src.common.validation       import validate_params
-from src.diet.nutritional_values import NutritionalValues
+from src.entities.nutritional_values import NutritionalValues
 
 
 in_metadata = {
     'name':            ('Name',              str),
-    'manufacturer':    ('Manuf.',            str),
     'grams_per_unit':  ('Grams per unit',    float),
     'fixed_portion_g': ('Fixed portion (g)', float),
 }  # type: dict
@@ -39,16 +37,12 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
     def __init__(self,
                  name            : str,
                  nv_per_g        : NutritionalValues,
-                 manufacturer    : str   = '',
                  grams_per_unit  : float = 100.0,
                  fixed_portion_g : int   = 0,
                  ) -> None:
         """Create new Ingredient."""
-        validate_params(self.__init__, locals())  # type: ignore
-
         self.name            = name
         self.nv_per_g        = nv_per_g
-        self.manufacturer    = manufacturer
         self.grams_per_unit  = grams_per_unit
         self.fixed_portion_g = fixed_portion_g
 
@@ -56,7 +50,7 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
         """Return True if two Ingredients are equal."""
         if not isinstance(other, Ingredient):
             return False
-        return self.name == other.name and self.manufacturer == other.manufacturer
+        return self.name == other.name
 
     def __ne__(self, other: Any) -> bool:
         """Return True if two Ingredients are not equal."""
@@ -64,15 +58,13 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
 
     def __str__(self) -> str:
         """Identifying version of the Ingredient."""
-        return f'{self.name} ({self.manufacturer})'
+        return f'{self.name}'
 
     def __repr__(self) -> str:
         """Format Ingredient attributes."""
-        manufacturer = '<None>' if not self.manufacturer else self.manufacturer
         lines  = [f"<Ingredient-object {id(self)}>",
                   "General Info",
                   f"  Name:         {self.name}",
-                  f"  Manufacturer: {manufacturer}",
                   'Nutrients: ']
         nv_lines = repr(self.nv_per_g).split('\n')
         string  = '\n'.join(lines)
@@ -95,14 +87,8 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
                 raise KeyError(f"Missing key '{key}'")
             setattr(parsed_nv, key, purp_dictionary[key])
 
-        parsed_nv = parsed_nv / divider
-
-        try:
-            manufacturer = purp_dictionary['manufacturer']
-        except KeyError:
-            manufacturer = ''
-
-        ingredient = Ingredient(purp_dictionary['name'], parsed_nv, manufacturer)
+        parsed_nv  = parsed_nv / divider
+        ingredient = Ingredient(purp_dictionary['name'], parsed_nv)
 
         return ingredient
 

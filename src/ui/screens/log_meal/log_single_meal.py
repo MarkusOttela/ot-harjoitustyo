@@ -20,12 +20,14 @@ import typing
 
 from datetime import datetime
 
-from src.common.conversion             import convert_input_fields
-from src.common.statics                import Format
+from src.common.conversion import convert_input_fields
+from src.common.enums      import Format
+
 from src.database.unencrypted_database import IngredientDatabase
-from src.diet.meal                     import Meal
-from src.diet.nutritional_values       import NutritionalValues
-from src.diet.recipe                   import Recipe
+
+from src.entities.meal               import Meal
+from src.entities.nutritional_values import NutritionalValues
+from src.entities.recipe             import Recipe
 
 from src.ui.gui_menu                              import GUIMenu
 from src.ui.callback_classes                      import Button, StringInput

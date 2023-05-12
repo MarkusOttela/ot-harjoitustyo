@@ -29,8 +29,8 @@ import matplotlib.backends.backend_agg as agg  # type: ignore
 import matplotlib.pyplot               as plt  # type: ignore
 import numpy                           as np   # type: ignore
 
+from src.common.enums      import Format, Program
 from src.common.exceptions import EscPressed
-from src.common.statics    import Format, Program
 
 if typing.TYPE_CHECKING:
     from matplotlib.figure import Figure  # type: ignore

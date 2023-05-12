@@ -25,8 +25,8 @@ from src.ui.screens.ingredient_menu.add_ingredient            import add_ingredi
 from src.ui.screens.ingredient_menu.select_ingredient_to_edit import select_ingredient_to_edit
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui import GUI
     from src.database.unencrypted_database import IngredientDatabase
+    from src.ui.gui import GUI
 
 
 def manage_ingredients_menu(gui           : 'GUI',

@@ -18,12 +18,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions                import IncorrectPassword, AbortMenuOperation
-from src.common.security.user_credentials import UserCredentials
-from src.common.statics                   import Directories
-from src.common.utils                     import ensure_dir, get_list_of_user_account_names
-
-from src.entities.user import User
+from src.common.exceptions         import IncorrectPassword, AbortMenuOperation
+from src.entities.user_credentials import UserCredentials
+from src.common.enums              import Directories
+from src.common.utils              import ensure_dir, get_list_of_user_account_names
 
 from src.ui.gui_menu             import GUIMenu
 from src.ui.callback_classes     import DropSelection, Button, StringInput
@@ -33,7 +31,7 @@ if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
 
 
-def login_existing_user(gui: 'GUI') -> User:
+def enter_existing_credentials(gui: 'GUI') -> UserCredentials:
     """Login with existing user account"""
     title = 'Login existing user'
 
@@ -84,4 +82,4 @@ def login_existing_user(gui: 'GUI') -> User:
             show_message(gui, title, f"Error: {f}")
             continue
 
-        return User(user_credentials)
+        return user_credentials

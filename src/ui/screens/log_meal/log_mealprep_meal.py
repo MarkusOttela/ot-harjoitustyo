@@ -20,11 +20,13 @@ import typing
 
 from datetime import datetime
 
-from src.common.conversion             import convert_input_fields
-from src.common.statics                import Format
+from src.common.conversion import convert_input_fields
+from src.common.enums      import Format
+
 from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
-from src.diet.meal                     import Meal
-from src.diet.mealprep                 import Mealprep
+
+from src.entities.meal     import Meal
+from src.entities.mealprep import Mealprep
 
 from src.ui.gui_menu                              import GUIMenu
 from src.ui.callback_classes                      import Button, StringInput
@@ -43,7 +45,9 @@ def log_mealprep_meal(gui           : 'GUI',
                       mealprep      : Mealprep
                       ) -> None:
     """Render the `Log Mealprep Meal` menu."""
-    title  = 'Log Mealprep Meal'
+    title         = 'Log Mealprep Meal'
+    error_message = ''
+
     recipe = recipe_db.get_recipe(mealprep.recipe_name)
     keys   = [mealprep.recipe_name] + recipe.accompaniment_names
 
@@ -65,6 +69,8 @@ def log_mealprep_meal(gui           : 'GUI',
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
         menu.menu.add.button('Return', action=return_button.set_pressed)
+
+        menu.show_error_message(error_message)
         menu.start()
 
         if return_button.pressed:

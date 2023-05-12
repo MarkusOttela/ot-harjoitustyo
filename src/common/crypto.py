@@ -40,7 +40,7 @@ class CryptoLiterals(Enum):
     BLAKE2_DIGEST_LENGTH   = 64
     SALT_LENGTH            = 32
 
-    # Password login / key derivation
+    # Password account_management / key derivation
     ARGON2_TIME_COST      = 20
     ARGON2_MEMORY_COST    = 1000
 
@@ -50,7 +50,9 @@ class CryptoLiterals(Enum):
     POLY1305_TAG_LENGTH    = 16
 
 
-def derive_database_key(password: str, salt: Optional[bytes] = None) -> tuple:
+def derive_database_key(password : str,
+                        salt     : Optional[bytes] = None
+                        ) -> tuple:
     """Derive encryption key from password and salt."""
     if salt is None:
         salt = os.getrandom(CryptoLiterals.SALT_LENGTH.value, flags=0)
@@ -65,10 +67,10 @@ def derive_database_key(password: str, salt: Optional[bytes] = None) -> tuple:
     return salt, key
 
 
-def encrypt_and_sign(plaintext       : bytes,       # Plaintext to encrypt
-                     key             : bytes,       # 32-byte symmetric key
-                     associated_data : bytes = b''  # Associated data
-                     ) -> bytes:                    # Nonce + ciphertext + tag
+def encrypt_and_sign(plaintext       : bytes,
+                     key             : bytes,
+                     associated_data : bytes = b''
+                     ) -> bytes:
     """Encrypt plaintext with XChaCha20-Poly1305 (IETF variant)."""
     if len(key) != CryptoLiterals.SYMMETRIC_KEY_LENGTH.value:
         raise SecurityException(f"Invalid key length ({len(key)} bytes).")
@@ -84,11 +86,11 @@ def encrypt_and_sign(plaintext       : bytes,       # Plaintext to encrypt
     return nonce + ct_tag
 
 
-def auth_and_decrypt(nonce_ct_tag    : bytes,       # Nonce + ciphertext + tag
-                     key             : bytes,       # 32-byte symmetric key
-                     file_name       : str   = '',  # Name of database.
-                     associated_data : bytes = b''  # Associated data
-                     ) -> bytes:                    # Plaintext
+def auth_and_decrypt(nonce_ct_tag    : bytes,
+                     key             : bytes,
+                     file_name       : str   = '',
+                     associated_data : bytes = b''
+                     ) -> bytes:
     """Authenticate and decrypt XChaCha20-Poly1305 ciphertext.
 
     The Poly1305 tag is checked using constant time `sodium_memcmp`:

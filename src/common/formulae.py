@@ -18,10 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.statics          import Gender
-from src.diet.coef               import get_pal_multiplier, get_calorie_deficit_multiplier
-from src.diet.enums              import CalContent
-from src.diet.nutritional_values import NutritionalValues
+from src.common.enums               import Gender, CalContent, PhysicalActivityLevel, DietStage
+from src.entities.nutritional_values import NutritionalValues
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User
@@ -55,13 +53,13 @@ def calculate_nv_goal(user: 'User') -> NutritionalValues:
 
     Protein goal: avg. form https://youtu.be/l7jIU_73ZaM?t=403
     """
-    bmr = calculate_bmr(user.get_gender(),
+    bmr = calculate_bmr(user.gender,
                         user.get_todays_weight(),
-                        user.get_height(),
+                        user.height_cm,
                         user.get_age())
 
-    theoretical_maintenance_kcal = get_pal_multiplier(user.get_pal()) * bmr
-    calorie_deficit_multiplier   = get_calorie_deficit_multiplier(user.get_diet_stage())
+    theoretical_maintenance_kcal = get_pal_multiplier(user.pal) * bmr
+    calorie_deficit_multiplier   = get_calorie_deficit_multiplier(user.diet_stage)
 
     macro_goals_nv = NutritionalValues()
 
@@ -82,3 +80,37 @@ def calculate_nv_goal(user: 'User') -> NutritionalValues:
     macro_goals_nv.carbohydrates_g = carbs_goal_g
 
     return macro_goals_nv
+
+
+def get_pal_multiplier(activity_level: PhysicalActivityLevel) -> float:
+    """Get the physical activity level (PAL) multiplier.
+
+    Source:
+        https://en.wikipedia.org/wiki/Physical_activity_level
+        http://www.fao.org/3/y5686e/y5686e07.htm
+
+    Multiplier  LIFESTYLE           EXAMPLE
+    --------------------------------------------------------------------------------------
+    1.40-1.54   Sedentary           Office worker getting little or no exercise
+    1.55-1.69   Lightly Active      Office worker who takes their pet for a walk most days
+    1.70-1.99   Moderately Active   Construction worker / Walking job
+    2.00-2.40   Vigorously active   Non-mechanized agricultural worker
+    """
+    multiplier_d = {PhysicalActivityLevel.SEDENTARY         : 1.2,
+                    PhysicalActivityLevel.LIGHTLY_ACTIVE    : 1.375,
+                    PhysicalActivityLevel.MODERATELY_ACTIVE : 1.555,
+                    PhysicalActivityLevel.HIGHLY_ACTIVE     : 1.725}
+
+    return multiplier_d[activity_level]
+
+
+def get_calorie_deficit_multiplier(diet_stage: 'DietStage') -> float:
+    """Determine the calorie deficit multiplier."""
+    multiplier_d = {
+        DietStage.DIET:                   0.8,
+        DietStage.MUSCLE_MASS_GROWTH:     0.9,
+        DietStage.BODY_BUILDING:          1.1,
+        DietStage.SHREDDED_BODY_BUILDING: 1.0,
+    }
+
+    return multiplier_d[diet_stage]

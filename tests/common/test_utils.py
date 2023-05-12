@@ -20,7 +20,7 @@ import os
 import unittest
 
 from src.common.exceptions import ignored
-from src.common.utils import ensure_dir
+from src.common.utils      import ensure_dir
 
 
 class TestEnsureDir(unittest.TestCase):

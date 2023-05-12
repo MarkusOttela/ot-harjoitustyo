@@ -20,10 +20,10 @@ import typing
 
 from typing import Optional
 
-from src.common.statics import ColorScheme, FontSize
+from src.common.enums import ColorScheme, FontSize
 
-from src.diet.recipe   import Recipe
-from src.entities.user import User
+from src.entities.recipe import Recipe
+from src.entities.user   import User
 
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput, MultiSelection
@@ -42,7 +42,8 @@ def add_recipe(gui           : 'GUI',
                ingredient_db : 'IngredientDatabase'
                ) -> None:
     """Render the `Add Recipe` menu."""
-    title = 'Add Recipe'
+    title         = 'Add Recipe'
+    error_message = ''
 
     available_ingredients = [(ingredient.name, ingredient)
                              for ingredient in ingredient_db.get_list_of_ingredients()]
@@ -53,56 +54,69 @@ def add_recipe(gui           : 'GUI',
     selected_ingredients = MultiSelection()
 
     if user is not None:
-        author.set_value(user.get_username())
+        author.set_value(user.name)
 
     while True:
-        menu          = GUIMenu(gui, title)
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
+        try:
+            menu          = GUIMenu(gui, title)
+            return_button = Button(menu, closes_menu=True)
+            done_button   = Button(menu, closes_menu=True)
 
-        menu.menu.add.text_input(f'Name: ',
-                                 onchange=name.set_value,
-                                 default=name.value,
-                                 maxchar=19,
-                                 font_color=ColorScheme.FONT_COLOR.value)
+            menu.menu.add.text_input(f'Name: ',
+                                     onchange=name.set_value,
+                                     default=name.value,
+                                     maxchar=19,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
-        menu.menu.add.text_input(f'Author: ',
-                                 onchange=author.set_value,
-                                 default=author.value,
-                                 maxchar=19,
-                                 font_color=ColorScheme.FONT_COLOR.value)
+            menu.menu.add.text_input(f'Author: ',
+                                     onchange=author.set_value,
+                                     default=author.value,
+                                     maxchar=19,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
-        menu.menu.add.dropselect_multiple(f'Select ingredients: ',
-                                          onchange=selected_ingredients.set_value,
-                                          onreturn=selected_ingredients.set_value,  # type: ignore
-                                          items=available_ingredients,  # type: ignore
-                                          selection_box_height=len(available_ingredients),
-                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
-                                          **gui.drop_multi_selection_theme)
+            menu.menu.add.dropselect_multiple(f'Select ingredients: ',
+                                              onchange=selected_ingredients.set_value,
+                                              onreturn=selected_ingredients.set_value,  # type: ignore
+                                              items=available_ingredients,  # type: ignore
+                                              selection_box_height=len(available_ingredients),
+                                              selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                              **gui.drop_multi_selection_theme)
 
-        menu.menu.add.label('\n', font_size=5)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Return', action=return_button.set_pressed)
+            menu.menu.add.label('\n', font_size=5)
+            menu.menu.add.button('Done',   action=done_button.set_pressed)
+            menu.menu.add.button('Return', action=return_button.set_pressed)
 
-        menu.start()
+            menu.show_error_message(error_message)
+            menu.start()
 
-        if return_button.pressed:
-            return
-
-        if done_button.pressed:
-            new_recipe = Recipe(name.value, author.value,
-                                selected_ingredients.values,
-                                accompaniment_names=[],
-                                is_mealprep=False)
-
-            if not recipe_db.has_recipe(new_recipe):
-                recipe_db.insert_recipe(new_recipe)
-                show_message(gui, title, 'Recipe has been added.')
+            if return_button.pressed:
                 return
 
-            if get_yes(gui, title,
-                       f'Recipe {str(new_recipe)} already exists. Overwrite(?)',
-                       default_str='No'):
-                recipe_db.replace_recipe(new_recipe)
-                show_message(gui, title, 'Recipe has been replaced.')
-                return
+            if done_button.pressed:
+
+                if name.value == '':
+                    raise ValueError(f'Please a name for the recipe')
+
+                if not selected_ingredients.values:
+                    raise ValueError(f'Please add at last one ingredient')
+
+                new_recipe = Recipe(name.value, author.value,
+                                    selected_ingredients.values,
+                                    accompaniment_names=[],
+                                    is_mealprep=False)
+
+                if not recipe_db.has_recipe(new_recipe):
+                    recipe_db.insert_recipe(new_recipe)
+                    show_message(gui, title, 'Recipe has been added.')
+                    return
+
+                if get_yes(gui, title,
+                           f'Recipe {str(new_recipe)} already exists. Overwrite(?)',
+                           default_str='No'):
+                    recipe_db.replace_recipe(new_recipe)
+                    show_message(gui, title, 'Recipe has been replaced.')
+                    return
+
+        except ValueError as e:
+            error_message = e.args[0]
+            continue

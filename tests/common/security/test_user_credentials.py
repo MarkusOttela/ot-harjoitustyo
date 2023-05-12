@@ -20,11 +20,13 @@ import hashlib
 import os
 import typing
 import unittest
+
 from unittest import mock
 
-from src.common.security.crypto           import derive_database_key
-from src.common.security.user_credentials import UserCredentials
-from src.common.statics                   import Directories
+from src.common.crypto import derive_database_key
+from src.common.enums  import Directories
+
+from src.entities.user_credentials import UserCredentials
 
 from tests.utils import cd_unit_test, cleanup
 

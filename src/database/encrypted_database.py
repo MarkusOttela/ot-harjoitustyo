@@ -18,11 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.statics import DatabaseFileName, Directories
-from src.common.utils   import write_bytes
+from src.common.enums import DatabaseFileName, Directories
+from src.common.utils import write_bytes
 
 if typing.TYPE_CHECKING:
-    from src.common.security.user_credentials import UserCredentials
+    from src.entities.user_credentials import UserCredentials
 
 
 class EncryptedDatabase:
@@ -36,7 +36,7 @@ class EncryptedDatabase:
                             f'/{DatabaseFileName.USER_DATABASE.value}.db')
 
     def store_db(self, data: bytes) -> None:
-        """Store the data into encrypted database"""
+        """Store the data into encrypted database."""
         ciphertext = self.credentials.encrypt(data)
         write_bytes(self.path_to_db, ciphertext)
 

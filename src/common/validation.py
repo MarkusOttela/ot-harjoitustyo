@@ -16,9 +16,7 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-import inspect
-
-from typing import Any, Callable, Optional
+from typing import Any, Optional
 
 from src.common.exceptions import ValidationError
 
@@ -43,7 +41,7 @@ def validate_str(key           : str,
                  ) -> None:
     """Validate a value is a string."""
     validate_type('key', key, str)
-    validate_type(key,   value, str)
+    validate_type(key, value, str)
 
     if not empty_allowed and value == '':
         raise ValidationError(f"Expected string '{key}' to contain chars but it was empty.")
@@ -105,23 +103,3 @@ def validate_bool(key   : str,
     """Validate a value is a boolean."""
     validate_str('key', key, empty_allowed=False)
     validate_type(key, value, bool)
-
-
-def validate_params(func   : Callable[[Any], Any],
-                    locals_: dict,
-                    ) -> None:
-    """Validate parameters given to a function."""
-    arg_names   = inspect.getfullargspec(func).args
-    arg_names  += inspect.getfullargspec(func).kwonlyargs
-    annotations = inspect.getfullargspec(func).annotations
-
-    for arg_name in arg_names:
-
-        if arg_name == 'self':  # Ignore self
-            continue
-
-        expected_type  = annotations[arg_name]
-        arg_value      = locals_[arg_name]
-
-        if expected_type == bool:
-            validate_bool(arg_name, arg_value)

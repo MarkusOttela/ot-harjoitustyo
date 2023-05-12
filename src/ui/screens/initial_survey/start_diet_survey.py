@@ -19,19 +19,16 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.exceptions import AbortMenuOperation
-from src.common.statics    import FontSize
-
-from src.diet.enums import PhysicalActivityLevel, DietStage
+from src.common.enums      import FontSize, PhysicalActivityLevel, DietStage
 
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import DropSelection, Button
 
 if typing.TYPE_CHECKING:
-    from src.entities.user import User
-    from src.ui.gui        import GUI
+    from src.ui.gui import GUI
 
 
-def start_diet_survey(gui: 'GUI', user: 'User') -> None:
+def start_diet_survey(gui: 'GUI') -> tuple:
     """Start initial diet survey."""
     pal_options        = [(member.value, member) for member in PhysicalActivityLevel]
     diet_stage_options = [(member.value, member) for member in DietStage]
@@ -75,9 +72,7 @@ def start_diet_survey(gui: 'GUI', user: 'User') -> None:
             if not diet_stage_ds.value:
                 raise ValueError("Please select one option from each drop-down menu.")
 
-            user.set_pal(PhysicalActivityLevel(pal_ds.value))  # type: ignore
-            user.set_diet_stage(diet_stage_ds.value)           # type: ignore
-            return
+            return pal_ds.value, diet_stage_ds.value
 
         except ValueError as e:
             error_message = e.args[0]

@@ -22,9 +22,9 @@ import pygame
 
 from src.common.exceptions import EscPressed, KeyPress
 
-from src.diet.enums              import CalContent
-from src.diet.formulae           import calculate_nv_goal
-from src.diet.nutritional_values import NutritionalValues
+from src.common.enums                import CalContent
+from src.common.formulae             import calculate_nv_goal
+from src.entities.nutritional_values import NutritionalValues
 
 from src.entities.user import User
 from src.ui.gui        import GUI

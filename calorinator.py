@@ -16,7 +16,7 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from src.common.statics import Program
+from src.common.enums import Program
 
 from src.database.default_ingredient_database import default_ingredients
 from src.database.unencrypted_database        import IngredientDatabase, MealprepDatabase, RecipeDatabase

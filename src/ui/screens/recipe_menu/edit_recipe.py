@@ -18,9 +18,9 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.statics import Color, ColorScheme, FontSize
+from src.common.enums import Color, ColorScheme, FontSize
 
-from src.diet.recipe import Recipe
+from src.entities.recipe import Recipe
 
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput, MultiSelection
@@ -39,7 +39,8 @@ def edit_recipe(gui           : 'GUI',
                 ingredient_db : 'IngredientDatabase',
                 ) -> None:
     """Render the `Edit Recipe` menu."""
-    title = 'Edit Recipe'
+    title         = 'Edit Recipe'
+    error_message = ''
 
     available_ingredients = [(ingredient.name, ingredient)
                              for ingredient in ingredient_db.get_list_of_ingredients()]
@@ -64,7 +65,7 @@ def edit_recipe(gui           : 'GUI',
 
         for i, tuple_ in enumerate(available_ingredients):
             ing_name, ingredient = tuple_
-            if ingredient.name in orig_recipe.ingredient_names:
+            if ing_name in selected_ingredients.sel_list:
                 selected_ingredient_indexes.append(i)
 
     # Find indexes of previously selected accompaniments
@@ -75,87 +76,97 @@ def edit_recipe(gui           : 'GUI',
 
         for i, tuple_ in enumerate(available_ingredients):
             ing_name, ingredient = tuple_
-            if ingredient.name in orig_recipe.accompaniment_names:
+            if ing_name in selected_accompaniments.sel_list:
                 selected_accompaniment_indexes.append(i)
 
     while True:
-        menu = GUIMenu(gui, title)
+        try:
 
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
-        delete_button = Button(menu, closes_menu=True)
+            menu = GUIMenu(gui, title)
 
-        menu.menu.add.text_input(f'Name: ',
-                                 onchange=name.set_value,
-                                 default=name.value,
-                                 maxchar=19,
-                                 font_color=ColorScheme.FONT_COLOR.value)
+            return_button = Button(menu, closes_menu=True)
+            done_button   = Button(menu, closes_menu=True)
+            delete_button = Button(menu, closes_menu=True)
 
-        menu.menu.add.text_input(f'Author: ',
-                                 onchange=author.set_value,
-                                 default=author.value,
-                                 maxchar=19,
-                                 font_color=ColorScheme.FONT_COLOR.value)
+            menu.menu.add.text_input(f'Name: ',
+                                     onchange=name.set_value,
+                                     default=name.value,
+                                     maxchar=19,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
-        menu.menu.add.dropselect_multiple(f'Select ingredients: ',
-                                          onchange=selected_ingredients.set_value,
-                                          onreturn=selected_ingredients.set_value,
-                                          items=available_ingredients,  # type: ignore
-                                          default=selected_ingredient_indexes,
-                                          selection_box_height=len(available_ingredients),
-                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
-                                          **gui.drop_multi_selection_theme
-                                          )
+            menu.menu.add.text_input(f'Author: ',
+                                     onchange=author.set_value,
+                                     default=author.value,
+                                     maxchar=19,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
-        if orig_recipe.is_mealprep:
-            menu.menu.add.dropselect_multiple(f'Select accompaniments: ',
-                                              onchange=selected_accompaniments.set_value,
-                                              onreturn=selected_accompaniments.set_value,
+            menu.menu.add.dropselect_multiple(f'Select ingredients: ',
+                                              onchange=selected_ingredients.set_value,
+                                              onreturn=selected_ingredients.set_value,
                                               items=available_ingredients,  # type: ignore
-                                              default=selected_accompaniment_indexes,
+                                              default=selected_ingredient_indexes,
                                               selection_box_height=len(available_ingredients),
                                               selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
                                               **gui.drop_multi_selection_theme
                                               )
 
-        menu.menu.add.label('\n', font_size=5)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Delete', action=delete_button.set_pressed, font_color=Color.RED.value)
-        menu.menu.add.button('Return', action=return_button.set_pressed)
-        menu.start()
+            if orig_recipe.is_mealprep:
+                menu.menu.add.dropselect_multiple(f'Select accompaniments: ',
+                                                  onchange=selected_accompaniments.set_value,
+                                                  onreturn=selected_accompaniments.set_value,
+                                                  items=available_ingredients,  # type: ignore
+                                                  default=selected_accompaniment_indexes,
+                                                  selection_box_height=len(available_ingredients),
+                                                  selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                                  **gui.drop_multi_selection_theme
+                                                  )
 
-        if return_button.pressed:
-            return
+            menu.menu.add.label('\n', font_size=5)
+            menu.menu.add.button('Done',   action=done_button.set_pressed)
+            menu.menu.add.button('Delete', action=delete_button.set_pressed, font_color=Color.RED.value)
+            menu.menu.add.button('Return', action=return_button.set_pressed)
 
-        if delete_button.pressed:
-            if get_yes(gui, title, f"Delete {str(orig_recipe)}?", 'No'):
-                recipe_db.remove_recipe(orig_recipe)
-                show_message(gui, title, 'Recipe has been removed.')
+            menu.show_error_message(error_message)
+            menu.start()
+
+            if return_button.pressed:
                 return
 
-        if done_button.pressed:
-            new_recipe = Recipe(name.value, author.value,
-                                selected_ingredients.values,
-                                selected_accompaniments.values,
-                                orig_recipe.is_mealprep)
+            if delete_button.pressed:
+                if get_yes(gui, title, f"Delete {str(orig_recipe)}?", 'No'):
+                    recipe_db.remove_recipe(orig_recipe)
+                    show_message(gui, title, 'Recipe has been removed.')
+                    return
 
-            recipe_id_changed = new_recipe != orig_recipe
+            if done_button.pressed:
+                if name.value == '':
+                    raise ValueError(f'Please a name for the recipe')
 
-            if not recipe_id_changed:
-                recipe_db.replace_recipe(new_recipe)
-                show_message(gui, title, 'Recipe has been updated.')
-                return
+                new_recipe = Recipe(name.value, author.value,
+                                    selected_ingredients.values,
+                                    selected_accompaniments.values,
+                                    orig_recipe.is_mealprep)
 
-            if not recipe_db.has_recipe(new_recipe):
-                recipe_db.remove_recipe(orig_recipe)
-                recipe_db.insert_recipe(new_recipe)
-                show_message(gui, title, 'Recipe has been renamed and updated.')
-                return
+                recipe_id_changed = new_recipe != orig_recipe
 
-            if get_yes(gui, title,
-                       f'Another recipe {str(new_recipe)} already exists. Overwrite(?)',
-                       default_str='No'):
-                recipe_db.remove_recipe(orig_recipe)
-                recipe_db.replace_recipe(new_recipe)
-                show_message(gui, title, 'Recipe has been replaced.')
-                return
+                if not recipe_id_changed:
+                    recipe_db.replace_recipe(new_recipe)
+                    show_message(gui, title, 'Recipe has been updated.')
+                    return
+
+                if not recipe_db.has_recipe(new_recipe):
+                    recipe_db.remove_recipe(orig_recipe)
+                    recipe_db.insert_recipe(new_recipe)
+                    show_message(gui, title, 'Recipe has been renamed and updated.')
+                    return
+
+                if get_yes(gui, title,
+                           f'Another recipe {str(new_recipe)} already exists. Overwrite(?)',
+                           default_str='No'):
+                    recipe_db.remove_recipe(orig_recipe)
+                    recipe_db.replace_recipe(new_recipe)
+                    show_message(gui, title, 'Recipe has been replaced.')
+                    return
+        except ValueError as e:
+            error_message = e.args[0]
+            continue

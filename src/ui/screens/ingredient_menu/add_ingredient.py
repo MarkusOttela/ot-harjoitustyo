@@ -19,11 +19,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.conversion import convert_input_fields
-from src.common.statics    import Color, ColorScheme, FontSize
+from src.common.enums      import Color, ColorScheme, FontSize
 from src.common.validation import floats
 
-from src.diet.ingredient         import Ingredient, in_metadata
-from src.diet.nutritional_values import nv_metadata
+from src.entities.ingredient         import Ingredient, in_metadata
+from src.entities.nutritional_values import nv_metadata
 
 from src.ui.gui_menu             import GUIMenu
 from src.ui.callback_classes     import Button, StringInput
@@ -39,7 +39,7 @@ def add_ingredient_menu(gui           : 'GUI',
                         ingredient_db : 'IngredientDatabase'
                         ) -> None:
     """Render the `Add Ingredient` menu."""
-    title              = 'Add Ingredient'
+    title = 'Add Ingredient'
 
     joined_metadata = dict()
     joined_metadata.update(in_metadata)
@@ -69,12 +69,17 @@ def add_ingredient_menu(gui           : 'GUI',
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
         menu.menu.add.button('Cancel', action=return_button.set_pressed)
+
         menu.start()
 
         if return_button.pressed:
             return
 
         if done_button.pressed:
+            if not string_inputs['name'].value:
+                failed_conversions['name'] = ''
+                continue
+
             success, value_dict = convert_input_fields(string_inputs, joined_metadata)
 
             if not success:

@@ -16,7 +16,7 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from src.diet.nutritional_values import NutritionalValues
+from src.entities.nutritional_values import NutritionalValues
 
 
 mealprep_metadata = {

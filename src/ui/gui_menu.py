@@ -22,7 +22,7 @@ from typing import Optional
 
 from pygame_menu import BaseImage, Menu, Theme
 
-from src.common.statics import AssetFiles, ColorScheme, Program, Color, FontSize
+from src.common.enums import AssetFiles, ColorScheme, Program, Color, FontSize
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

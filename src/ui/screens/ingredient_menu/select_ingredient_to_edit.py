@@ -48,8 +48,6 @@ def select_ingredient_to_edit(gui           : 'GUI',
 
         for ingredient in list_of_ingredients:
             label = f'{ingredient.name}'
-            if ingredient.manufacturer:
-                label += f' ({ingredient.manufacturer})'
             menu.menu.add.button(label, action=buttons[ingredient.name].set_pressed)
         menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
 

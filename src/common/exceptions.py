@@ -28,22 +28,6 @@ class SecurityException(CalorinatorException):
     """Base-class for critical security exceptions that should close the program."""
 
 
-class DatabaseException(CalorinatorException):
-    """Base-class for database exceptions."""
-
-
-class IngredientNotFound(DatabaseException):
-    """Exception raised when the Ingredient is not found in the IngredientDatabase."""
-
-
-class RecipeNotFound(DatabaseException):
-    """Exception raised when the Recipe is not found in the RecipeDatabase."""
-
-
-class MealprepNotFound(DatabaseException):
-    """Exception raised when the Mealprep is not found in the MealprepDatabase."""
-
-
 class ValidationError(CalorinatorException):
     """Exception raised when a value fails validation"""
 
@@ -62,6 +46,22 @@ class IncorrectPassword(CalorinatorException):
 
 class AbortMenuOperation(CalorinatorException):
     """Exception raised when the user returns to main menu."""
+
+
+class DatabaseException(CalorinatorException):
+    """Base-class for database exceptions."""
+
+
+class IngredientNotFound(DatabaseException):
+    """Exception raised when the Ingredient is not found in the IngredientDatabase."""
+
+
+class RecipeNotFound(DatabaseException):
+    """Exception raised when the Recipe is not found in the RecipeDatabase."""
+
+
+class MealprepNotFound(DatabaseException):
+    """Exception raised when the Mealprep is not found in the MealprepDatabase."""
 
 
 class KeyPress(Exception):

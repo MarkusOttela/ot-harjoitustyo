@@ -18,21 +18,25 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from datetime import datetime
+
 from src.common.exceptions import AbortMenuOperation
-from src.common.statics    import Gender
+from src.common.enums      import Gender, Format
 from src.common.validation import date
 
 from src.ui.gui_menu         import GUIMenu
-from src.ui.callback_classes import Button
+from src.ui.callback_classes import Button, StringInput, BooleanSelector
 
 if typing.TYPE_CHECKING:
-    from src.entities.user import User
-    from src.ui.gui        import GUI
+    from src.ui.gui import GUI
 
 
-def get_dob_and_gender(gui: 'GUI', user: 'User') -> None:
+def get_dob_and_gender(gui: 'GUI') -> tuple:
     """Get the date of birth, and the gender of the user."""
     error_message = ''
+
+    dob     = StringInput()
+    is_male = BooleanSelector(True)
 
     while True:
 
@@ -43,14 +47,14 @@ def get_dob_and_gender(gui: 'GUI', user: 'User') -> None:
 
             menu.menu.add.text_input('Your DoB <dd/mm/yyyy> : ',
                                      valid_chars=date, maxchar=10,
-                                     onchange=user.set_birthday,
-                                     default=user.get_birthday())
+                                     onchange=dob.set_value,
+                                     default=dob.value)
 
             menu.menu.add.toggle_switch('Your gender :',
-                                        onchange=user.set_gender,
+                                        onchange=is_male.set_value,
                                         state_text=(Gender.FEMALE.value, Gender.MALE.value),
-                                        state_values=(Gender.FEMALE, Gender.MALE),
-                                        default=user.get_gender() != Gender.MALE.value,
+                                        state_values=(False, True),
+                                        default=is_male.value,
                                         **gui.toggle_switch_theme)
 
             menu.menu.add.button('Done', action=menu.menu.disable)
@@ -64,12 +68,15 @@ def get_dob_and_gender(gui: 'GUI', user: 'User') -> None:
                 raise AbortMenuOperation
 
             # Validate inputs
-            for requested_action, var in [( 'enter your birthday', user.get_birthday() ),
-                                          ( 'select your gender',  user.get_gender()   )]:
-                if var is None or var == '' or var == []:
-                    raise ValueError(f'Please {requested_action}')
+            if dob.value == '':
+                raise ValueError(f'Please enter your birthday')
 
-            return
+            try:
+                datetime.strptime(dob.value, Format.DATETIME_DATE.value)
+            except ValueError:
+                raise ValueError("Error: Invalid birthday format")
+
+            return dob.value, is_male.value
 
         except ValueError as e:
             error_message = e.args[0]

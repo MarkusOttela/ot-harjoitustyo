@@ -71,8 +71,8 @@ Calorinator supports the user in maintaining their diet by
 $ sudo apt update
 $ sudo apt install -y curl git
 $ curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/poetry python3 -
-$ echo "export PATH=\"\$HOME/poetry/bin:\$PATH\"" >> $HOME/.bashrc && bash
-$ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> $HOME/.bashrc && bash
+$ echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> $HOME/.bashrc && bash
+$ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.fail.Keyring" >> $HOME/.bashrc && bash
 ```
 
 ##### 2. Install Calorinator

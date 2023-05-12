@@ -30,16 +30,16 @@ class Meal:
     def __init__(self,
                  name                : str,
                  eat_tstamp          : str,
-                 mp_grams            : float,
-                 accompaniment_grams : dict,
-                 meal_nv             : NutritionalValues
+                 main_grams          : float,
+                 meal_nv             : NutritionalValues,
+                 accompaniment_grams : dict
                  ) -> None:
         """Create new Meal object."""
         self.name                = name
         self.eat_tstamp          = eat_tstamp
-        self.mp_grams            = mp_grams
-        self.accompaniment_grams = accompaniment_grams
+        self.main_grams          = main_grams
         self.meal_nv             = meal_nv
+        self.accompaniment_grams = accompaniment_grams
 
     def __repr__(self) -> str:
         """Format Meal attributes."""
@@ -68,7 +68,10 @@ class Meal:
     @property
     def total_weight(self) -> float:
         """Returns the total weight of the meal (main recipe plus accompaniments)."""
-        return self.mp_grams + sum(self.accompaniment_grams.values())
+        total_weight = self.main_grams
+        if self.accompaniment_grams:
+            total_weight += sum(self.accompaniment_grams.values())
+        return total_weight
 
     def get_nv(self) -> NutritionalValues:
         """Get the nutritional values of the meal."""
@@ -78,7 +81,7 @@ class Meal:
         """Return the serialized version of the object."""
         return str({'name':                self.name,
                     'eat_tstamp':          self.eat_tstamp,
-                    'mp_grams':            self.mp_grams,
+                    'main_grams':          self.main_grams,
                     'accompaniment_grams': str(self.accompaniment_grams),
                     'meal_nv':             self.meal_nv.serialize()
                     })
@@ -90,6 +93,6 @@ class Meal:
 
         return Meal(name=ast_dict['name'],
                     eat_tstamp=ast_dict['eat_tstamp'],
-                    mp_grams=ast_dict['mp_grams'],
+                    main_grams=ast_dict['main_grams'],
                     accompaniment_grams=ast.literal_eval(ast_dict['accompaniment_grams']),
                     meal_nv=NutritionalValues.from_serialized(ast_dict['meal_nv']))

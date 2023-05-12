@@ -39,7 +39,7 @@ def select_mealprep_recipe_to_create(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, title)
 
-        list_of_recipes = recipe_db.get_list_of_recipes()
+        list_of_recipes = recipe_db.get_list_of_mealprep_recipes()
 
         if not list_of_recipes:
             show_message(gui, title, 'No recipes yet in database.')

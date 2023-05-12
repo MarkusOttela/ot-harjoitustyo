@@ -22,10 +22,10 @@ from datetime import datetime
 
 from src.common.conversion             import convert_input_fields
 from src.common.statics                import Format
-from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
+from src.database.unencrypted_database import IngredientDatabase
 from src.diet.meal                     import Meal
-from src.diet.mealprep                 import Mealprep
-from src.entities.user                 import User
+from src.diet.nutritional_values       import NutritionalValues
+from src.diet.recipe                   import Recipe
 
 from src.ui.gui_menu                              import GUIMenu
 from src.ui.callback_classes                      import Button, StringInput
@@ -33,19 +33,18 @@ from src.ui.screens.mealprep_menu.create_mealprep import add_ingredient_gram_inp
 from src.ui.screens.show_message                  import show_message
 
 if typing.TYPE_CHECKING:
-    from src.ui.gui import GUI
+    from src.entities.user import User
+    from src.ui.gui        import GUI
 
 
-def log_meal(gui           : 'GUI',
-             user          : 'User',
-             mealprep      : Mealprep,
-             recipe_db     : 'RecipeDatabase',
-             ingredient_db : IngredientDatabase
-             ) -> None:
-    """Render the `Log Meal` menu."""
-    title  = 'Log Meal'
-    recipe = recipe_db.get_recipe(mealprep.recipe_name)
-    keys   = [mealprep.recipe_name] + recipe.accompaniment_names
+def log_single_meal(gui           : 'GUI',
+                    user          : 'User',
+                    ingredient_db : IngredientDatabase,
+                    recipe        : Recipe
+                    ) -> None:
+    """Render the `Log Single Meal` menu."""
+    title = 'Log Single Meal'
+    keys  = [recipe.name]
 
     metadata           = {k: (k, float) for k in keys}
     failed_conversions = {}  # type: dict
@@ -73,20 +72,16 @@ def log_meal(gui           : 'GUI',
         if done_button.pressed:
             success, weight_dict = convert_input_fields(string_inputs, metadata)
 
-            mp_grams = weight_dict[mealprep.recipe_name]
-            meal_nv  = mealprep.get_nv(for_grams=mp_grams)
-
-            for ac_name in recipe.accompaniment_names:
-                ac_nv    = ingredient_db.get_ingredient(
-                    ac_name).get_nv(for_grams=weight_dict[ac_name])
-                meal_nv += ac_nv
+            meal_nv  = NutritionalValues()
+            for in_name in recipe.ingredient_names:
+                in_nv    = ingredient_db.get_ingredient(
+                    in_name).get_nv(for_grams=weight_dict[in_name])
+                meal_nv += in_nv
 
             eat_tstamp = datetime.now().strftime(Format.DATETIME_TSTAMP.value)
-            weight_dict.pop(mealprep.recipe_name)
-
-            meal = Meal(recipe.name, eat_tstamp, mp_grams, weight_dict, meal_nv)
+            meal_grams = weight_dict[recipe.name]
+            meal       = Meal(recipe.name, eat_tstamp, meal_grams, meal_nv, accompaniment_grams={})
 
             user.add_meal(meal)
-
             show_message(gui, title, 'Meal has been successfully recorded.')
             return

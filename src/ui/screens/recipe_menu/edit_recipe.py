@@ -106,15 +106,17 @@ def edit_recipe(gui           : 'GUI',
                                           selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
                                           **gui.drop_multi_selection_theme
                                           )
-        menu.menu.add.dropselect_multiple(f'Select accompaniments: ',
-                                          onchange=selected_accompaniments.set_value,
-                                          onreturn=selected_accompaniments.set_value,
-                                          items=available_ingredients,  # type: ignore
-                                          default=selected_accompaniment_indexes,
-                                          selection_box_height=len(available_ingredients),
-                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
-                                          **gui.drop_multi_selection_theme
-                                          )
+
+        if orig_recipe.is_mealprep:
+            menu.menu.add.dropselect_multiple(f'Select accompaniments: ',
+                                              onchange=selected_accompaniments.set_value,
+                                              onreturn=selected_accompaniments.set_value,
+                                              items=available_ingredients,  # type: ignore
+                                              default=selected_accompaniment_indexes,
+                                              selection_box_height=len(available_ingredients),
+                                              selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                              **gui.drop_multi_selection_theme
+                                              )
 
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
@@ -133,7 +135,9 @@ def edit_recipe(gui           : 'GUI',
 
         if done_button.pressed:
             new_recipe = Recipe(name.value, author.value,
-                                selected_ingredients.values, selected_accompaniments.values)
+                                selected_ingredients.values,
+                                selected_accompaniments.values,
+                                orig_recipe.is_mealprep)
 
             recipe_id_changed = new_recipe != orig_recipe
 

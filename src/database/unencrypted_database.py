@@ -44,6 +44,7 @@ class DatabaseTypes(Enum):
 column_type_dict : dict = {
     str   : DatabaseTypes.TEXT.value,
     float : DatabaseTypes.REAL.value,
+    bool  : DatabaseTypes.TEXT.value,
     list  : DatabaseTypes.TEXT.value
 }
 
@@ -209,6 +210,16 @@ class RecipeDatabase(UnencryptedDatabase):
         """Get list of recipes."""
         return [self.get_recipe(name) for name in self.get_list_of_recipe_names()]
 
+    def get_list_of_mealprep_recipes(self) -> list:
+        """Get list of mealprep recipes."""
+        recipes = [self.get_recipe(name) for name in self.get_list_of_recipe_names()]
+        return [recipe for recipe in recipes if recipe.is_mealprep]
+
+    def get_list_of_single_recipes(self) -> list:
+        """Get list of single recipes."""
+        recipes = [self.get_recipe(name) for name in self.get_list_of_recipe_names()]
+        return [recipe for recipe in recipes if not recipe.is_mealprep]
+
     def get_recipe(self,
                    name   : str,
                    author : str = ''
@@ -228,12 +239,14 @@ class RecipeDatabase(UnencryptedDatabase):
 
         if results:
             for result in results:
-                author, in_names, ac_names = result
+                author, in_names, ac_names, is_mealprep = result
 
-                in_names = in_names.split('\x1f') if '\x1f' in in_names else [in_names]
-                ac_names = ac_names.split('\x1f') if '\x1f' in ac_names else [ac_names]
+                in_names = ([] if in_names == 'None' else
+                            in_names.split('\x1f') if '\x1f' in in_names else [in_names])
+                ac_names = ([] if ac_names == 'None' else
+                            ac_names.split('\x1f') if '\x1f' in ac_names else [ac_names])
 
-                return Recipe(name, author, in_names, ac_names)
+                return Recipe(name, author, in_names, ac_names, ast.literal_eval(is_mealprep))
 
         author_info = f" by '{author}'" if author else ''
         raise RecipeNotFound(f"Could not find recipe '{name}'{author_info}.")
@@ -243,10 +256,12 @@ class RecipeDatabase(UnencryptedDatabase):
         keys = list(self.db_metadata.keys())
 
         values = []
-        for key in self.db_metadata:
+        for key, metadata in self.db_metadata.items():
             value = getattr(recipe, key)
-            if self.db_metadata[key][1] == list:
-                value = '\x1f'.join([v.name for v in value])
+            if metadata[1] == list:
+                value = '\x1f'.join([v.name for v in value]) if value else 'None'
+            if metadata[1] == bool:
+                value = str(value)
             values.append(value)
 
         sql_command = f'INSERT INTO {self.table_name} ('

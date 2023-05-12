@@ -36,13 +36,13 @@ if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
 
 
-def add_recipe(gui           : 'GUI',
-               user          : Optional['User'],
-               recipe_db     : 'RecipeDatabase',
-               ingredient_db : 'IngredientDatabase'
-               ) -> None:
-    """Render the `Add Recipe` menu."""
-    title = 'Add Recipe'
+def add_mealprep_recipe(gui           : 'GUI',
+                        user          : Optional['User'],
+                        recipe_db     : 'RecipeDatabase',
+                        ingredient_db : 'IngredientDatabase'
+                        ) -> None:
+    """Render the `Add Mealprep Recipe` menu."""
+    title = 'Add Mealprep Recipe'
 
     available_ingredients = [(ingredient.name, ingredient)
                              for ingredient in ingredient_db.get_list_of_ingredients()]
@@ -50,7 +50,8 @@ def add_recipe(gui           : 'GUI',
     name   = StringInput()
     author = StringInput()
 
-    selected_ingredients = MultiSelection()
+    selected_ingredients    = MultiSelection()
+    selected_accompaniments = MultiSelection()
 
     name.set_value('Ragu')  # TODO: remove
 
@@ -82,6 +83,14 @@ def add_recipe(gui           : 'GUI',
                                           selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
                                           **gui.drop_multi_selection_theme)
 
+        menu.menu.add.dropselect_multiple(f'Select accompaniments: ',
+                                          onchange=selected_accompaniments.set_value,
+                                          onreturn=selected_accompaniments.set_value,  # type: ignore
+                                          items=available_ingredients,  # type: ignore
+                                          selection_box_height=len(available_ingredients),
+                                          selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                          **gui.drop_multi_selection_theme)
+
         menu.menu.add.label('\n', font_size=5)
         menu.menu.add.button('Done',   action=done_button.set_pressed)
         menu.menu.add.button('Return', action=return_button.set_pressed)
@@ -94,8 +103,8 @@ def add_recipe(gui           : 'GUI',
         if done_button.pressed:
             new_recipe = Recipe(name.value, author.value,
                                 selected_ingredients.values,
-                                accompaniment_names=[],
-                                is_mealprep=False)
+                                selected_accompaniments.values,
+                                is_mealprep=True)
 
             if not recipe_db.has_recipe(new_recipe):
                 recipe_db.insert_recipe(new_recipe)

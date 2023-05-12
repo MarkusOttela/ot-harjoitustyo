@@ -23,7 +23,8 @@ from typing import Optional
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button
 
-from src.ui.screens.recipe_menu.add_recipe            import add_recipe_menu
+from src.ui.screens.recipe_menu.add_mealprep_recipe   import add_mealprep_recipe
+from src.ui.screens.recipe_menu.add_recipe            import add_recipe
 from src.ui.screens.recipe_menu.select_recipe_to_edit import select_recipe_to_edit
 from src.ui.screens.show_message                      import show_message
 
@@ -46,18 +47,24 @@ def manage_recipes_menu(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, 'Manage Recipes')
 
-        add_recipe_button  = Button(menu, closes_menu=True)
-        edit_recipe_button = Button(menu, closes_menu=True)
-        return_button      = Button(menu, closes_menu=True)
+        add_mealprep_recipe_button = Button(menu, closes_menu=True)
+        add_recipe_button          = Button(menu, closes_menu=True)
+        edit_recipe_button         = Button(menu, closes_menu=True)
+        return_button              = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Add Recipe',  action=add_recipe_button.set_pressed)
-        menu.menu.add.button('Edit Recipe', action=edit_recipe_button.set_pressed)
-        menu.menu.add.button('Return',      action=return_button.set_pressed)
+        menu.menu.add.button('Add Single Recipe',   action=add_recipe_button.set_pressed)
+        menu.menu.add.button('Add Mealprep Recipe', action=add_mealprep_recipe_button.set_pressed)
+        menu.menu.add.button('Edit Recipe',         action=edit_recipe_button.set_pressed)
+        menu.menu.add.button('Return',              action=return_button.set_pressed)
 
         menu.start()
 
         if add_recipe_button.pressed:
-            add_recipe_menu(gui, user, recipe_db, ingredient_db)
+            add_recipe(gui, user, recipe_db, ingredient_db)
+            continue
+
+        if add_mealprep_recipe_button.pressed:
+            add_mealprep_recipe(gui, user, recipe_db, ingredient_db)
             continue
 
         if edit_recipe_button.pressed:

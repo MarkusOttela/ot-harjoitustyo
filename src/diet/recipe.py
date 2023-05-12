@@ -24,6 +24,7 @@ recipe_metadata = {
     'author':              ('Author',              str),
     'ingredient_names':    ('IngredientNames',    list),
     'accompaniment_names': ('AccompanimentNames', list),
+    'is_mealprep':         ('IsMealPrep',         bool),
 }
 
 
@@ -35,12 +36,14 @@ class Recipe:
                  author              : str,
                  ingredient_names    : list,
                  accompaniment_names : list,
+                 is_mealprep         : bool,
                  ) -> None:
         """Create new Recipe object."""
         self.name                = name
         self.author              = author
         self.ingredient_names    = ingredient_names
         self.accompaniment_names = accompaniment_names
+        self.is_mealprep         = is_mealprep
 
     def __eq__(self, other: Any) -> bool:
         """Return True if two Recipes are equal."""
@@ -54,14 +57,16 @@ class Recipe:
 
     def __str__(self) -> str:
         """Identifying version of the Recipe"""
-        return f'{self.name} (by {self.author})'
+        return self.name
 
     def __repr__(self) -> str:
         """Format Ingredient attributes."""
         lines = [f"<Recipe-object {id(self)}>",
-                 f'  <name>       : {self.name}',
-                 f'  <author>     : {self.author}',
-                 '  <ingredients>:']
-        for ingredient in self.ingredient_names:
-            lines.append(f'    {ingredient.name}')
+                 'General Information'
+                 f'  Name        : {self.name}',
+                 f'  Author      : {self.author}',
+                 f'  Is Mealprep : {self.is_mealprep}',
+                 'Ingredients:']
+        for ingredient_name in self.ingredient_names:
+            lines.append(f'  {ingredient_name}')
         return '\n'.join(lines)

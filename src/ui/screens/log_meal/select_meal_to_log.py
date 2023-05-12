@@ -20,10 +20,12 @@ import typing
 
 from src.common.exceptions import AbortMenuOperation
 
-from src.ui.gui_menu                  import GUIMenu
-from src.ui.screens.log_meal.log_meal import log_meal
-from src.ui.screens.show_message      import show_message
 from src.ui.callback_classes          import Button
+from src.ui.gui_menu                  import GUIMenu
+
+from src.ui.screens.log_meal.log_mealprep_meal import log_mealprep_meal
+from src.ui.screens.log_meal.log_single_meal   import log_single_meal
+from src.ui.screens.show_message               import show_message
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase, RecipeDatabase
@@ -43,19 +45,28 @@ def select_meal_to_log(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, title)
 
-        list_of_mealpreps = mealprep_db.get_list_of_mealpreps()
+        list_of_single_recipes = recipe_db.get_list_of_single_recipes()
+        list_of_mealpreps      = mealprep_db.get_list_of_mealpreps()
 
-        if not list_of_mealpreps:
-            show_message(gui, title, 'No mealpreps yet in database.')
+        if not list_of_single_recipes and not list_of_mealpreps:
+            show_message(gui, title, 'No creatable meals yet in database.')
             return
 
-        buttons       = {mealprep.recipe_name: Button(
-            menu, closes_menu=True) for mealprep in list_of_mealpreps}
+        single_recipe_buttons = {f'{single_recipe.name}': Button(
+            menu, closes_menu=True) for single_recipe in list_of_single_recipes}
+        mealprep_buttons      = {f'{mealprep.recipe_name}':
+                                 Button(menu, closes_menu=True) for mealprep in list_of_mealpreps}
+
         cancel_button = Button(menu, closes_menu=True)
+
+        for single_recipe in list_of_single_recipes:
+            menu.menu.add.button(f'{str(single_recipe)}',
+                                 action=single_recipe_buttons[single_recipe.name].set_pressed)
 
         for mealprep in list_of_mealpreps:
             menu.menu.add.button(f'{str(mealprep)}',
-                                 action=buttons[mealprep.recipe_name].set_pressed)
+                                 action=mealprep_buttons[mealprep.recipe_name].set_pressed)
+
         menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
 
         menu.start()
@@ -63,10 +74,14 @@ def select_meal_to_log(gui           : 'GUI',
         if cancel_button.pressed:
             return
 
-        for mealprep_name, button in buttons.items():
+        for single_recipe_name, button in single_recipe_buttons.items():
+            if button.pressed:
+                recipe = recipe_db.get_recipe(single_recipe_name)
+                log_single_meal(gui, user, ingredient_db, recipe)
+                raise AbortMenuOperation('Meal added')
 
+        for mealprep_name, button in mealprep_buttons.items():
             if button.pressed:
                 mealprep = mealprep_db.get_mealprep(mealprep_name)
-                log_meal(gui, user, mealprep, recipe_db, ingredient_db)
-
+                log_mealprep_meal(gui, user, recipe_db, ingredient_db, mealprep)
                 raise AbortMenuOperation('Meal added')

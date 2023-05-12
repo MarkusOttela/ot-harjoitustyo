@@ -223,6 +223,10 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         """Get the user's Basal Metabolic Rate (kcal/day)."""
         return self._bmr
 
+    def get_weight_log(self) -> dict:
+        """Get the user's weight log."""
+        return self._weight_log
+
     # Has'ers
     # -------
     def has_weight_entry_for_the_day(self) -> bool:

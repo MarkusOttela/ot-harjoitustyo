@@ -38,6 +38,7 @@ from src.ui.screens.meal_menu.delete_meal                import delete_meal
 from src.ui.screens.mealprep_menu.manage_mealpreps       import manage_mealpreps_menu
 from src.ui.screens.recipe_menu.manage_recipes           import manage_recipes_menu
 from src.ui.screens.statistics.daily_overview            import show_daily_overview
+from src.ui.screens.statistics.progress                  import show_weight_progress
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
@@ -61,6 +62,7 @@ def main_menu(gui           : 'GUI',
 
             log_meal_bt        = Button(menu, closes_menu=True)
             daily_overview_bt  = Button(menu, closes_menu=True)
+            weight_progress_bt = Button(menu, closes_menu=True)
 
             delete_meals       = Button(menu, closes_menu=True)
             mealprep_menu_bt   = Button(menu, closes_menu=True)
@@ -81,6 +83,7 @@ def main_menu(gui           : 'GUI',
                 menu.menu.add.label('\n')
                 menu.menu.add.button('Log Meal',       action=log_meal_bt.set_pressed)
                 menu.menu.add.button('Daily Overview', action=daily_overview_bt.set_pressed)
+                menu.menu.add.button('Show Progress',  action=weight_progress_bt.set_pressed)
 
             menu.menu.add.label('')
             if user is not None:
@@ -119,6 +122,9 @@ def main_menu(gui           : 'GUI',
 
             if daily_overview_bt.pressed and user is not None:
                 show_daily_overview(gui, user, recipe_db)
+
+            if weight_progress_bt.pressed and user is not None:
+                show_weight_progress(gui, user.get_weight_log())
 
             # ---
 

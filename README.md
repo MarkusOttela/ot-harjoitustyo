@@ -70,7 +70,7 @@ Calorinator supports the user in maintaining their diet by
 ```
 $ sudo apt update
 $ sudo apt install -y curl git
-$ curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/poetry python3 -
+$ curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.local python3 -
 $ echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> $HOME/.bashrc && bash
 $ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.fail.Keyring" >> $HOME/.bashrc && bash
 ```

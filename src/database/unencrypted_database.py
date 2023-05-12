@@ -245,10 +245,8 @@ class RecipeDatabase(UnencryptedDatabase):
         keys = list(self.db_metadata.keys())
 
         values = []
-        print(recipe)
         for key, metadata in self.db_metadata.items():
             value = getattr(recipe, key)
-            print(f'{value=}')
             if metadata[1] == list:
                 value = '\x1f'.join([v.name for v in value]) if value else 'None'
             if metadata[1] == bool:

@@ -47,7 +47,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                  diet_stage  : 'DietStage'
                  ) -> None:
         self.credentials = credentials
-        self.name       = credentials.get_username()
+        self.name        = credentials.get_username()
 
         self.birthday = dob
         self.gender   = gender
@@ -60,8 +60,8 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self.bmr        = 0.0
 
         self.daily_macro_goals : dict = {}
-        self.weight_log       : dict = {}
-        self.meal_log         : dict = {}
+        self.weight_log        : dict = {}
+        self.meal_log          : dict = {}
 
         self.database = EncryptedDatabase(self.credentials)
 

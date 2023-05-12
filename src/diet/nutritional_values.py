@@ -184,7 +184,7 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
         """Format NutritionalValues attributes."""
         lines  = [f"<NutritionalValues-object {id(self)}>"]
         indent = len(max(self.__dict__.keys(), key=len)) + 1
-        lines.extend([f'    <{k:{indent}}: {v}>' for k, v in self.__dict__.items()])
+        lines.extend([f'    {k:{indent}}: {v}' for k, v in self.__dict__.items()])
 
         # Sub-headers for lines
         for index, txt in [( 1, 'Energy (per 1 g of ingredient)'),

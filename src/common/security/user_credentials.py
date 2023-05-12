@@ -30,28 +30,29 @@ class UserCredentials:
     """UserCredentials object manages the user's login information."""
 
     def __init__(self,
-                 name         : str,
+                 user_name    : str,
                  salt         : bytes,
                  database_key : bytes
                  ) -> None:
         """Create new UserCredentials object."""
-        self.__name           : str   = name
+        self.__user_name      : str   = user_name
         self.__salt           : bytes = salt
         self.__database_key   : bytes = database_key
-        self.__userdata_dir   : str   = f'{Directories.USER_DATA.value}/{self.__name}'
+        self.__userdata_dir   : str   = f'{Directories.USER_DATA.value}/{self.__user_name}'
         self.__credentials_db : str   = f'{self.__userdata_dir}/credentials.db'
 
         self.store_credentials()
 
     def __repr__(self) -> str:
-        """Represent user object's data."""
-        return f"Username:    {self.__name}\n" \
-               f"Salt:        {self.__salt.hex()}\n" \
-               f"DB key hash: {self.get_key_hash().hex()}"
+        """Format UserCredentials attributes."""
+        return f"<UserCredentials-object {id(self)}>" \
+               f"  User Name:   {self.__user_name}\n" \
+               f"  Salt:        {self.__salt.hex()}\n" \
+               f"  DB key hash: {self.get_key_hash().hex()}"
 
     def get_username(self) -> str:
         """Get the username."""
-        return self.__name
+        return self.__user_name
 
     def get_key_hash(self) -> bytes:
         """Get key hash."""

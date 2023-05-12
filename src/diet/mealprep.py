@@ -59,13 +59,13 @@ class Mealprep:
         return f'{self.recipe_name} ({self.cook_date})'
 
     def __repr__(self) -> str:
-        """Return repr-representation of the Mealprep."""
+        """Format Mealprep attributes."""
         string = (f'<Mealprep-object {id(self)}>\n'
-                  f'Cook_date: {self.cook_date}\n'
-                  f'Grams:     {self.total_grams}\n'
-                  'Ingredients:')
+                  f'  Cook_date: {self.cook_date}\n'
+                  f'  Grams:     {self.total_grams}\n'
+                  '  Ingredients:')
         for ingredient, grams in self.ingredient_grams.items():
-            string += f'  {ingredient}: {grams}g'
+            string += f'    {ingredient}: {grams}g'
         return string
 
     def get_nv(self, for_grams: float) -> NutritionalValues:

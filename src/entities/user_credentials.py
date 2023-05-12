@@ -20,7 +20,8 @@ import hashlib
 import secrets
 
 from src.common.exceptions import IncorrectPassword
-from src.common.crypto     import CryptoLiterals, derive_database_key, encrypt_and_sign, auth_and_decrypt
+from src.common.crypto     import (CryptoLiterals, derive_database_key,
+                                   encrypt_and_sign, auth_and_decrypt)
 from src.common.enums      import Directories
 from src.common.utils      import ensure_dir, write_bytes
 

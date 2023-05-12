@@ -45,7 +45,7 @@ class UnencryptedDatabase:
     The database is intended to be public and shareable, thus it is not encrypted.
     """
 
-    def __init__(self, 
+    def __init__(self,
                  table_name  : DatabaseTableName,
                  db_metadata : dict
                  ) -> None:
@@ -189,7 +189,7 @@ class RecipeDatabase(UnencryptedDatabase):
     The database is intended to be public and shareable, thus it is not encrypted.
     """
 
-    def __init__(self) -> None:        
+    def __init__(self) -> None:
         """Create new RecipeDatabase."""
         super().__init__(table_name=DatabaseTableName.RECIPES, db_metadata=recipe_metadata)
 

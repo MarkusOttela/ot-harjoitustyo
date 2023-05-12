@@ -31,7 +31,7 @@ if typing.TYPE_CHECKING:
 def start_diet_survey(gui: 'GUI') -> tuple:
     """Start initial diet survey."""
     pal_options        = [(member.value, member) for member in PhysicalActivityLevel]
-    diet_type_options = [(member.value, member) for member in DietType]
+    diet_type_options  = [(member.value, member) for member in DietType]
 
     pal_ds        = DropSelection()
     diet_type_ds = DropSelection()
@@ -43,14 +43,14 @@ def start_diet_survey(gui: 'GUI') -> tuple:
 
         try:
             default_pal = None
-            for i, tup in enumerate(pal_options):
-                if tup[1] == pal_ds.value:
+            for i, pal in enumerate(pal_options):
+                if pal[1] == pal_ds.value:
                     default_pal = i
                     break
 
             default_ds = None
-            for i, tup in enumerate(diet_type_options):
-                if tup[1] == diet_type_ds.value:
+            for i, dt in enumerate(diet_type_options):
+                if dt[1] == diet_type_ds.value:
                     default_ds = i
                     break
 

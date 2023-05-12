@@ -30,7 +30,7 @@ from src.entities.user_credentials   import UserCredentials
 from src.entities.meal import Meal
 
 
-class User:  # pylint: disable=too-many-instance-attributes, too-many-public-methods
+class User:  # pylint: disable=too-many-instance-attributes, too-many-public-methods, too-many-arguments
     """UserCredentials object manages all information about the user.
 
     Note: The `pylint: disable=` suppressions here are because User is more
@@ -90,7 +90,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                            DBKeys.HEIGHT_CM.value:      self.height_cm,
                            DBKeys.INIT_WEIGHT_KG.value: self.init_weight_kg,
                            DBKeys.PAL.value:            self.pal.value,
-                           DBKeys.diet_type.value:     self.diet_type.value,
+                           DBKeys.DIET_TYPE.value:      self.diet_type.value,
                            DBKeys.WEIGHT_LOG.value:     json.dumps(self.weight_log),
                            DBKeys.MEAL_LOG.value:       json.dumps(self.meal_log),
                            }).encode()
@@ -112,7 +112,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
 
         gender     = Gender(json_db[DBKeys.GENDER.value])
         pal        = PhysicalActivityLevel(json_db[DBKeys.PAL.value])
-        diet_type = DietType(json_db[DBKeys.diet_type.value])
+        diet_type  = DietType(json_db[DBKeys.DIET_TYPE.value])
         weight_log = json.loads(json_db[DBKeys.WEIGHT_LOG.value])
         meal_log   = json.loads(json_db[DBKeys.MEAL_LOG.value])
 

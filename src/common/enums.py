@@ -146,6 +146,6 @@ class DBKeys(Enum):
     HEIGHT_CM      = 'height_cm'
     INIT_WEIGHT_KG = 'init_weight_kg'
     PAL            = 'pal'
-    diet_type     = 'diet_type'
+    DIET_TYPE      = 'diet_type'
     WEIGHT_LOG     = 'weight_log'
     MEAL_LOG       = 'meal_log'

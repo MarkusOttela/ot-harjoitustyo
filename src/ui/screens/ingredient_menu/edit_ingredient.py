@@ -62,6 +62,12 @@ def edit_ingredient(gui             : 'GUI',
         else:
             string_inputs[k].value = getattr(orig_ingredient.nv_per_g, k) * gram_multiplier
 
+        # Round displayed values to two decimals
+        try:
+            string_inputs[k].value = str(round(float(string_inputs[k].value), 2))
+        except ValueError:
+            pass
+
     while True:
         menu = GUIMenu(gui, title, columns=3, rows=18, column_max_width=532)
 
@@ -101,9 +107,9 @@ def edit_ingredient(gui             : 'GUI',
             new_ingredient        = Ingredient.from_dict(value_dict)
             ingredient_id_changed = new_ingredient != orig_ingredient
 
-            if orig_ingredient.grams_per_unit != string_inputs['grams_per_unit'].value:
+            if float(orig_ingredient.grams_per_unit) != float(string_inputs['grams_per_unit'].value):
                 multiplier = orig_ingredient.grams_per_unit / value_dict['grams_per_unit']
-                if multiplier > 1:
+                if multiplier > 1.0:
                     adjective  = 'larger'
                 else:
                     adjective  = 'smaller'

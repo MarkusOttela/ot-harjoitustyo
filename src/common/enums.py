@@ -83,8 +83,8 @@ class DatabaseTypes(Enum):
 
 
 @unique
-class DietStage(Enum):
-    """Diet stage types."""
+class DietType(Enum):
+    """Diet types."""
     DIET                   = 'Diet'
     MUSCLE_MASS_GROWTH     = 'Muscle mass growth'
     BODY_BUILDING          = 'Body building'
@@ -146,6 +146,6 @@ class DBKeys(Enum):
     HEIGHT_CM      = 'height_cm'
     INIT_WEIGHT_KG = 'init_weight_kg'
     PAL            = 'pal'
-    DIET_STAGE     = 'diet_stage'
+    diet_type     = 'diet_type'
     WEIGHT_LOG     = 'weight_log'
     MEAL_LOG       = 'meal_log'

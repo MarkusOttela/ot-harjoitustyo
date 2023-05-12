@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.enums               import Gender, CalContent, PhysicalActivityLevel, DietStage
+from src.common.enums               import Gender, CalContent, PhysicalActivityLevel, DietType
 from src.entities.nutritional_values import NutritionalValues
 
 if typing.TYPE_CHECKING:
@@ -59,7 +59,7 @@ def calculate_nv_goal(user: 'User') -> NutritionalValues:
                         user.get_age())
 
     theoretical_maintenance_kcal = get_pal_multiplier(user.pal) * bmr
-    calorie_deficit_multiplier   = get_calorie_deficit_multiplier(user.diet_stage)
+    calorie_deficit_multiplier   = get_calorie_diet_multiplier(user.diet_type)
 
     macro_goals_nv = NutritionalValues()
 
@@ -104,13 +104,13 @@ def get_pal_multiplier(activity_level: PhysicalActivityLevel) -> float:
     return multiplier_d[activity_level]
 
 
-def get_calorie_deficit_multiplier(diet_stage: 'DietStage') -> float:
-    """Determine the calorie deficit multiplier."""
+def get_calorie_diet_multiplier(diet_type: 'DietType') -> float:
+    """Determine the calorie surplus/deficit multiplier."""
     multiplier_d = {
-        DietStage.DIET:                   0.8,
-        DietStage.MUSCLE_MASS_GROWTH:     0.9,
-        DietStage.BODY_BUILDING:          1.1,
-        DietStage.SHREDDED_BODY_BUILDING: 1.0,
+        DietType.DIET:                   0.8,  # Deficit
+        DietType.MUSCLE_MASS_GROWTH:     0.9,  # Slight deficit
+        DietType.BODY_BUILDING:          1.1,  # Slight surplus
+        DietType.SHREDDED_BODY_BUILDING: 1.0,  # Maintenance
     }
 
-    return multiplier_d[diet_stage]
+    return multiplier_d[diet_type]

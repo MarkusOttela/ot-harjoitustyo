@@ -80,9 +80,13 @@ def get_body_measurements(gui: 'GUI') -> tuple:
             if return_bt.pressed:
                 raise AbortMenuOperation
 
-            # Validate and add body measurements
-            weight_f = validate_positive_float(weight.value)
+            if height.value == '':
+                raise ValueError("Please enter your height")
             height_f = validate_positive_float(height.value)
+
+            if weight.value == '':
+                raise ValueError("Please enter your current weight")
+            weight_f = validate_positive_float(weight.value)
 
             return weight_f, height_f
 

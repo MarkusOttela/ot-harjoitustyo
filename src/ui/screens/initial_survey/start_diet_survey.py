@@ -19,7 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import typing
 
 from src.common.exceptions import AbortMenuOperation
-from src.common.enums      import FontSize, PhysicalActivityLevel, DietStage
+from src.common.enums      import FontSize, PhysicalActivityLevel, DietType
 
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import DropSelection, Button
@@ -31,10 +31,10 @@ if typing.TYPE_CHECKING:
 def start_diet_survey(gui: 'GUI') -> tuple:
     """Start initial diet survey."""
     pal_options        = [(member.value, member) for member in PhysicalActivityLevel]
-    diet_stage_options = [(member.value, member) for member in DietStage]
+    diet_type_options = [(member.value, member) for member in DietType]
 
     pal_ds        = DropSelection()
-    diet_stage_ds = DropSelection()
+    diet_type_ds = DropSelection()
 
     error_message = ''
     while True:
@@ -42,20 +42,34 @@ def start_diet_survey(gui: 'GUI') -> tuple:
         return_bt = Button(menu, closes_menu=True)
 
         try:
+            default_pal = None
+            for i, tup in enumerate(pal_options):
+                if tup[1] == pal_ds.value:
+                    default_pal = i
+                    break
+
+            default_ds = None
+            for i, tup in enumerate(diet_type_options):
+                if tup[1] == diet_type_ds.value:
+                    default_ds = i
+                    break
+
             menu.menu.add.dropselect(f'Non-exercise PAL: ',
                                      onchange=pal_ds.set_value,
                                      items=pal_options,  # type: ignore
                                      selection_box_height=len(pal_options),
                                      selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
                                      selection_box_width=300,
+                                     default=default_pal,
                                      **gui.drop_selection_theme)
 
-            menu.menu.add.dropselect(f'Diet stage: ',
-                                     onchange=diet_stage_ds.set_value,
-                                     items=diet_stage_options,  # type: ignore
-                                     selection_box_height=len(diet_stage_options),
+            menu.menu.add.dropselect(f'Diet Type: ',
+                                     onchange=diet_type_ds.set_value,
+                                     items=diet_type_options,  # type: ignore
+                                     selection_box_height=len(diet_type_options),
                                      selection_option_font_size=FontSize.FONT_SIZE_SMALL.value,
                                      selection_box_width=300,
+                                     default=default_ds,
                                      **gui.drop_selection_theme)
 
             menu.menu.add.button('Done', action=menu.menu.disable)
@@ -69,10 +83,10 @@ def start_diet_survey(gui: 'GUI') -> tuple:
             if return_bt.pressed:
                 raise AbortMenuOperation
 
-            if not diet_stage_ds.value:
+            if not pal_ds.value or not diet_type_ds.value:
                 raise ValueError("Please select one option from each drop-down menu.")
 
-            return pal_ds.value, diet_stage_ds.value
+            return pal_ds.value, diet_type_ds.value
 
         except ValueError as e:
             error_message = e.args[0]

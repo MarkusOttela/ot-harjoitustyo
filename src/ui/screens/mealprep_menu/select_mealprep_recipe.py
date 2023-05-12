@@ -49,7 +49,8 @@ def select_mealprep_recipe_to_create(gui           : 'GUI',
         cancel_button = Button(menu, closes_menu=True)
 
         for recipe in list_of_recipes:
-            menu.menu.add.button(f'{recipe.name} ({recipe.author})',
+            author = f' ({recipe.author})' if recipe.author else ''
+            menu.menu.add.button(f'{recipe.name}{author}',
                                  action=buttons[recipe.name].set_pressed)
         menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
 

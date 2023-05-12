@@ -21,7 +21,7 @@ import json
 from datetime import datetime
 
 from src.common.conversion import Conversion
-from src.common.enums      import Gender, Format, PhysicalActivityLevel, DietStage, DBKeys
+from src.common.enums      import Gender, Format, PhysicalActivityLevel, DietType, DBKeys
 from src.common.utils      import get_today_str
 
 from src.database.encrypted_database import EncryptedDatabase
@@ -44,7 +44,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                  init_weight : float,
                  height      : float,
                  pal         : 'PhysicalActivityLevel',
-                 diet_stage  : 'DietStage'
+                 diet_type  : 'DietType'
                  ) -> None:
         self.credentials = credentials
         self.name        = credentials.get_username()
@@ -56,7 +56,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self.init_weight_kg = init_weight
 
         self.pal        = pal
-        self.diet_stage = diet_stage
+        self.diet_type = diet_type
         self.bmr        = 0.0
 
         self.daily_macro_goals : dict = {}
@@ -90,7 +90,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                            DBKeys.HEIGHT_CM.value:      self.height_cm,
                            DBKeys.INIT_WEIGHT_KG.value: self.init_weight_kg,
                            DBKeys.PAL.value:            self.pal.value,
-                           DBKeys.DIET_STAGE.value:     self.diet_stage.value,
+                           DBKeys.diet_type.value:     self.diet_type.value,
                            DBKeys.WEIGHT_LOG.value:     json.dumps(self.weight_log),
                            DBKeys.MEAL_LOG.value:       json.dumps(self.meal_log),
                            }).encode()
@@ -112,7 +112,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
 
         gender     = Gender(json_db[DBKeys.GENDER.value])
         pal        = PhysicalActivityLevel(json_db[DBKeys.PAL.value])
-        diet_stage = DietStage(json_db[DBKeys.DIET_STAGE.value])
+        diet_type = DietType(json_db[DBKeys.diet_type.value])
         weight_log = json.loads(json_db[DBKeys.WEIGHT_LOG.value])
         meal_log   = json.loads(json_db[DBKeys.MEAL_LOG.value])
 
@@ -122,7 +122,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                     init_weight,
                     height,
                     pal,
-                    diet_stage)
+                    diet_type)
 
         user.name       = name
         user.weight_log = weight_log

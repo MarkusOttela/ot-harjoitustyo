@@ -38,7 +38,7 @@ def register_new_user(gui: 'GUI') -> User:
     username, password = register_credentials(gui)
     dob, is_male       = get_dob_and_gender(gui)
     weight, height     = get_body_measurements(gui)
-    pal, diet_stage    = start_diet_survey(gui)
+    pal, diet_type    = start_diet_survey(gui)
     salt, database_key = derive_database_key(password)
 
     # We have all values, now we can generate the database entries
@@ -49,7 +49,7 @@ def register_new_user(gui: 'GUI') -> User:
                             weight,
                             height,
                             pal,
-                            diet_stage)
+                            diet_type)
 
     user.set_morning_weight(weight)
     return user

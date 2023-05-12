@@ -107,7 +107,10 @@ def edit_ingredient(gui             : 'GUI',
             new_ingredient        = Ingredient.from_dict(value_dict)
             ingredient_id_changed = new_ingredient != orig_ingredient
 
-            if float(orig_ingredient.grams_per_unit) != float(string_inputs['grams_per_unit'].value):
+            orig_f_grams  = float(orig_ingredient.grams_per_unit)
+            input_f_grams = float(string_inputs['grams_per_unit'].value)
+
+            if orig_f_grams != input_f_grams:
                 multiplier = orig_ingredient.grams_per_unit / value_dict['grams_per_unit']
                 if multiplier > 1.0:
                     adjective  = 'larger'

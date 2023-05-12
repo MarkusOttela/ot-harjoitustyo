@@ -122,8 +122,12 @@ def edit_recipe(gui           : 'GUI',
                                                   )
 
             menu.menu.add.label('\n', font_size=5)
-            menu.menu.add.button('Done',   action=done_button.set_pressed)
-            menu.menu.add.button('Delete', action=delete_button.set_pressed, font_color=Color.RED.value)
+            menu.menu.add.button('Done', action=done_button.set_pressed)
+
+            menu.menu.add.button('Delete',
+                                 action=delete_button.set_pressed,
+                                 font_color=Color.RED.value)
+
             menu.menu.add.button('Return', action=return_button.set_pressed)
 
             menu.show_error_message(error_message)

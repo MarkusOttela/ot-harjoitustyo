@@ -23,7 +23,7 @@ class Program(Enum):
     """Program information and global settings."""
     NAME       = 'Calorinator'
     VERSION    = '0.23.05'
-    RESOLUTION = (1920-80, 1080-80)
+    RESOLUTION = (1920 - 80, 1080 - 80)
     FPS        = 60
 
 

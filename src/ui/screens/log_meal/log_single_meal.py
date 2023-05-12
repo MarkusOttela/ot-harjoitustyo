@@ -78,7 +78,8 @@ def log_single_meal(gui           : 'GUI',
             meal_grams = 0.0
 
             for in_name in recipe.ingredient_names:
-                in_nv       = ingredient_db.get_ingredient(in_name).get_nv(for_grams=weight_dict[in_name])
+                ingredient  = ingredient_db.get_ingredient(in_name)
+                in_nv       = ingredient.get_nv(for_grams=weight_dict[in_name])
                 meal_nv    += in_nv
                 meal_grams += weight_dict[in_name]
 

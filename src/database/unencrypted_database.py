@@ -81,7 +81,7 @@ class UnencryptedDatabase:
         sql_command = f'INSERT INTO {self.table_name} ('
         sql_command += ', '.join(keys)
         sql_command += ') VALUES ('
-        sql_command += ', '.join(len(keys)*['?'])
+        sql_command += ', '.join(len(keys) * ['?'])
         sql_command += ')'
 
         self.cursor.execute(sql_command, values)
@@ -119,7 +119,7 @@ class IngredientDatabase(UnencryptedDatabase):
         sql_command = f'INSERT INTO {self.table_name} ('
         sql_command += ', '.join(in_keys + nv_keys)
         sql_command += ') VALUES ('
-        sql_command += ', '.join(no_values*['?'])
+        sql_command += ', '.join(no_values * ['?'])
         sql_command += ')'
 
         self.cursor.execute(sql_command, in_values + nv_values)

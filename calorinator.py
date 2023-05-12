@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 from src.common.statics import Program
 
-from src.database.default_ingredient_database import sorted_ingredients
+from src.database.default_ingredient_database import default_ingredients
 from src.database.unencrypted_database        import IngredientDatabase, MealprepDatabase, RecipeDatabase
 from src.ui.gui                               import GUI
 from src.ui.screens.get_yes                   import get_yes
@@ -40,7 +40,8 @@ def main() -> None:
 
     if not ingredient_db.get_list_of_ingredients():
         if get_yes(gui, 'Welcome', 'Ingredient database is empty. Add default ingredients?', 'No'):
-            for ingredient in sorted_ingredients:
+            default_ingredients.sort(key=lambda i: i.name)
+            for ingredient in default_ingredients:
                 ingredient_db.insert(ingredient)
 
     recipe_db     = RecipeDatabase()

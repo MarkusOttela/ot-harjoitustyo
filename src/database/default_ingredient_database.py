@@ -41,5 +41,3 @@ default_ingredients = [
     Ingredient('Parmesan',               NutritionalValues(kcal=402.0, carbohydrates_g=0.0,  sugar_g=0.0,  protein_g=32.0, fat_g=30.0, satisfied_fat_g=20.0, fiber_g=0.0, salt_g=1.6),  manufacturer='Lovilio'),
     Ingredient('Pasta (full-grain)',     NutritionalValues(kcal=348.0, carbohydrates_g=65.8, sugar_g=2.8,  protein_g=14.0, fat_g=1.9,  satisfied_fat_g=0.4,  fiber_g=6.2, salt_g=0.01), manufacturer='Rummo'),
 ]
-
-sorted_ingredients = default_ingredients.sort(key=lambda i: i.name)

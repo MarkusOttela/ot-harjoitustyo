@@ -28,9 +28,10 @@ from src.entities.nutritional_values import NutritionalValues
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
 
-from src.ui.screens.get_yes                       import get_yes
-from src.ui.screens.mealprep_menu.create_mealprep import add_ingredient_gram_inputs
-from src.ui.screens.show_message                  import show_message
+from src.ui.screens.get_yes      import get_yes
+from src.ui.screens.show_message import show_message
+
+from src.ui.shared import add_ingredient_gram_inputs
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase
@@ -59,28 +60,28 @@ def edit_mealprep(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, title)
 
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
-        delete_button = Button(menu, closes_menu=True)
+        return_bt = Button(menu, closes_menu=True)
+        done_bt   = Button(menu, closes_menu=True)
+        delete_bt = Button(menu, closes_menu=True)
 
         add_ingredient_gram_inputs(menu, metadata, string_inputs, failed_conversions)
 
         menu.menu.add.label('\n', font_size=5)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Delete', action=delete_button.set_pressed, font_color=Color.RED.value)
-        menu.menu.add.button('Return', action=return_button.set_pressed)
+        menu.menu.add.button('Done',   action=done_bt.set_pressed)
+        menu.menu.add.button('Delete', action=delete_bt.set_pressed, font_color=Color.RED.value)
+        menu.menu.add.button('Return', action=return_bt.set_pressed)
         menu.start()
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return
 
-        if delete_button.pressed:
+        if delete_bt.pressed:
             if get_yes(gui, title, f"Delete {str(orig_mealprep)}?", 'No'):
                 mealprep_db.remove_mealprep(orig_mealprep)
                 show_message(gui, title, 'Mealprep has been removed.')
                 return
 
-        if done_button.pressed:
+        if done_bt.pressed:
             success, weight_dict = convert_input_fields(string_inputs, metadata)
             total_grams          = weight_dict['total_grams']
             weight_dict.pop('total_grams')

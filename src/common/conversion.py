@@ -16,16 +16,10 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from enum   import Enum
 from typing import Any
 
 from src.common.exceptions import ConversionError, ValidationError
 from src.common.validation import validate_float, validate_int
-
-
-class Conversion(Enum):
-    """Conversion values."""
-    DAYS_PER_YEAR = 365.25
 
 
 def str_to_float(key              : str,

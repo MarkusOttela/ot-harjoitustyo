@@ -20,8 +20,8 @@ import typing
 
 from typing import Optional
 
-from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
 
 from src.ui.screens.recipe_menu.add_mealprep_recipe   import add_mealprep_recipe
 from src.ui.screens.recipe_menu.add_recipe            import add_recipe
@@ -47,29 +47,29 @@ def manage_recipes_menu(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, 'Manage Recipes')
 
-        add_mealprep_recipe_button = Button(menu, closes_menu=True)
-        add_recipe_button          = Button(menu, closes_menu=True)
-        edit_recipe_button         = Button(menu, closes_menu=True)
-        return_button              = Button(menu, closes_menu=True)
+        add_mealprep_recipe_bt = Button(menu, closes_menu=True)
+        add_recipe_bt          = Button(menu, closes_menu=True)
+        edit_recipe_bt         = Button(menu, closes_menu=True)
+        return_bt              = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Add Single Recipe',   action=add_recipe_button.set_pressed)
-        menu.menu.add.button('Add Mealprep Recipe', action=add_mealprep_recipe_button.set_pressed)
-        menu.menu.add.button('Edit Recipe',         action=edit_recipe_button.set_pressed)
-        menu.menu.add.button('Return',              action=return_button.set_pressed)
+        menu.menu.add.button('Add Single Recipe',   action=add_recipe_bt.set_pressed)
+        menu.menu.add.button('Add Mealprep Recipe', action=add_mealprep_recipe_bt.set_pressed)
+        menu.menu.add.button('Edit Recipe',         action=edit_recipe_bt.set_pressed)
+        menu.menu.add.button('Return',              action=return_bt.set_pressed)
 
         menu.start()
 
-        if add_recipe_button.pressed:
+        if add_recipe_bt.pressed:
             add_recipe(gui, user, recipe_db, ingredient_db)
             continue
 
-        if add_mealprep_recipe_button.pressed:
+        if add_mealprep_recipe_bt.pressed:
             add_mealprep_recipe(gui, user, recipe_db, ingredient_db)
             continue
 
-        if edit_recipe_button.pressed:
+        if edit_recipe_bt.pressed:
             select_recipe_to_edit(gui, recipe_db, ingredient_db)
             continue
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return

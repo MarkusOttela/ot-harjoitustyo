@@ -44,13 +44,13 @@ class CalContent(Enum):
 @unique
 class Color(Enum):
     """Pygame colors."""
-    WHITE    = (255, 255, 255)
-    RED      = (255,   0,   0)
-    BLACK    = (  0,   0,   0)
-    GREY     = ( 30,  30,  30)
-    MGREY    = ( 59,  59,  59)
-    LGREY    = (180, 180, 180)
-    CELESTE  = ( 14, 128, 113)
+    WHITE   = (255, 255, 255)
+    RED     = (255,   0,   0)
+    BLACK   = (  0,   0,   0)
+    GREY    = ( 30,  30,  30)
+    MGREY   = ( 59,  59,  59)
+    LGREY   = (180, 180, 180)
+    CELESTE = ( 14, 128, 113)
 
 
 @unique
@@ -58,6 +58,11 @@ class ColorScheme(Enum):
     """Program's color scheme."""
     BACKGROUND = Color.GREY.value
     FONT_COLOR = Color.LGREY.value
+
+
+class Conversion(Enum):
+    """Conversion values."""
+    DAYS_PER_YEAR = 365.25
 
 
 @unique

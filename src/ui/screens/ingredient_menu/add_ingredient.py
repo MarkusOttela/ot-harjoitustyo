@@ -25,8 +25,8 @@ from src.common.validation import floats
 from src.entities.ingredient         import Ingredient, in_metadata
 from src.entities.nutritional_values import nv_metadata
 
-from src.ui.gui_menu             import GUIMenu
 from src.ui.callback_classes     import Button, StringInput
+from src.ui.gui_menu             import GUIMenu
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
 
@@ -49,7 +49,7 @@ def add_ingredient_menu(gui           : 'GUI',
     keys               = list(in_metadata.keys()) + list(nv_metadata.keys())
     string_inputs      = {k: StringInput() for k in keys}
 
-    # Prefill less commonly used fields with zeroes
+    # Prefill less commonly used fields with zeroes and units with default values.
     excluded = ['kcal', 'carbohydrates_g', 'sugar_g', 'protein_g', 'fat_g',
                 'satisfied_fat_g', 'fiber_g', 'salt_g']
     for k in string_inputs.keys():
@@ -63,19 +63,19 @@ def add_ingredient_menu(gui           : 'GUI',
 
         add_ingredient_attributes(menu, joined_metadata, string_inputs, failed_conversions)
 
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
+        done_bt   = Button(menu, closes_menu=True)
+        return_bt = Button(menu, closes_menu=True)
 
         menu.menu.add.label('\n', font_size=5)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Cancel', action=return_button.set_pressed)
+        menu.menu.add.button('Done',   action=done_bt.set_pressed)
+        menu.menu.add.button('Cancel', action=return_bt.set_pressed)
 
         menu.start()
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return
 
-        if done_button.pressed:
+        if done_bt.pressed:
             if not string_inputs['name'].value:
                 failed_conversions['name'] = ''
                 continue

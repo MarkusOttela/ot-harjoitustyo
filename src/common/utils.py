@@ -35,7 +35,9 @@ def ensure_dir(directory: str) -> None:
             os.makedirs(name)
 
 
-def write_bytes(path_to_file: str, data: bytes) -> None:
+def write_bytes(path_to_file : str,
+                data         : bytes
+                ) -> None:
     """Ensure bytestring is written to the disc."""
     with open(path_to_file, 'wb') as f_ptr:
         f_ptr.write(data)
@@ -45,6 +47,7 @@ def write_bytes(path_to_file: str, data: bytes) -> None:
 
 def get_list_of_user_account_names() -> list:
     """Get list of user account names."""
+    ensure_dir(Directories.USER_DATA.value)
     return next(os.walk(Directories.USER_DATA.value))[1]
 
 

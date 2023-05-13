@@ -21,6 +21,7 @@ import typing
 from datetime import datetime
 
 from src.common.conversion import convert_input_fields
+from src.common.exceptions import ReturnToMainMenu
 from src.common.enums      import Format
 
 from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
@@ -28,10 +29,11 @@ from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
 from src.entities.meal     import Meal
 from src.entities.mealprep import Mealprep
 
-from src.ui.gui_menu                              import GUIMenu
-from src.ui.callback_classes                      import Button, StringInput
-from src.ui.screens.mealprep_menu.create_mealprep import add_ingredient_gram_inputs
-from src.ui.screens.show_message                  import show_message
+from src.ui.callback_classes import Button, StringInput
+from src.ui.gui_menu         import GUIMenu
+from src.ui.shared            import add_ingredient_gram_inputs
+
+from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User
@@ -51,8 +53,8 @@ def log_mealprep_meal(gui           : 'GUI',
     recipe = recipe_db.get_recipe(mealprep.recipe_name)
     keys   = [mealprep.recipe_name] + recipe.accompaniment_names
 
-    metadata           = {k: (k, float) for k in keys}
     failed_conversions = {}  # type: dict
+    metadata           = {k: (k, float)    for k in keys}
     string_inputs      = {k: StringInput() for k in keys}
 
     for k in string_inputs.keys():
@@ -61,31 +63,35 @@ def log_mealprep_meal(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, title)
 
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
+        done_bt   = Button(menu, closes_menu=True)
+        return_bt = Button(menu, closes_menu=True)
 
         add_ingredient_gram_inputs(menu, metadata, string_inputs, failed_conversions)
 
         menu.menu.add.label('\n', font_size=5)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Return', action=return_button.set_pressed)
+        menu.menu.add.button('Done',   action=done_bt.set_pressed)
+        menu.menu.add.button('Return', action=return_bt.set_pressed)
 
         menu.show_error_message(error_message)
         menu.start()
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return
 
-        if done_button.pressed:
+        if done_bt.pressed:
             success, weight_dict = convert_input_fields(string_inputs, metadata)
+
+            if not success:
+                failed_conversions = weight_dict
+                continue
 
             main_grams = weight_dict[mealprep.recipe_name]
             meal_nv    = mealprep.get_nv(for_grams=main_grams)
 
             for ac_name in recipe.accompaniment_names:
-                ac_nv    = ingredient_db.get_ingredient(
-                    ac_name).get_nv(for_grams=weight_dict[ac_name])
-                meal_nv += ac_nv
+                ingredient = ingredient_db.get_ingredient(ac_name)
+                ac_nv      = ingredient.get_nv(for_grams=weight_dict[ac_name])
+                meal_nv   += ac_nv
 
             eat_tstamp = datetime.now().strftime(Format.DATETIME_TSTAMP.value)
             weight_dict.pop(mealprep.recipe_name)
@@ -95,4 +101,4 @@ def log_mealprep_meal(gui           : 'GUI',
             user.add_meal(meal)
 
             show_message(gui, title, 'Meal has been successfully recorded.')
-            return
+            raise ReturnToMainMenu('Meal successfully added')

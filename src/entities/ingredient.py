@@ -28,7 +28,7 @@ in_metadata = {
 }  # type: dict
 
 
-class Ingredient:  # pylint: disable=too-many-instance-attributes
+class Ingredient:
     """\
     Food ingredient is an object that represents something
     drinks, servings, and mealpreps are cooked from.
@@ -64,11 +64,11 @@ class Ingredient:  # pylint: disable=too-many-instance-attributes
         """Format Ingredient attributes."""
         lines  = [f"<Ingredient-object {id(self)}>",
                   "General Info",
-                  f"  Name:         {self.name}",
+                  f"  Name: {self.name}",
                   'Nutrients: ']
         nv_lines = repr(self.nv_per_g).split('\n')
-        string  = '\n'.join(lines)
-        string += '\n  '.join(nv_lines)
+        string   = '\n'.join(lines)
+        string  += '\n  '.join(nv_lines)
 
         return string
 

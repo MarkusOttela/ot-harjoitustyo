@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions                        import AbortMenuOperation
+from src.common.exceptions                        import ReturnToMainMenu
 from src.ui.gui_menu                              import GUIMenu
 from src.ui.screens.mealprep_menu.create_mealprep import create_mealprep
 from src.ui.screens.show_message                  import show_message
@@ -45,21 +45,21 @@ def select_mealprep_recipe_to_create(gui           : 'GUI',
             show_message(gui, title, 'No recipes yet in database.')
             return
 
-        buttons       = {recipe.name: Button(menu, closes_menu=True) for recipe in list_of_recipes}
-        cancel_button = Button(menu, closes_menu=True)
+        buttons   = {recipe.name: Button(menu, closes_menu=True) for recipe in list_of_recipes}
+        cancel_bt = Button(menu, closes_menu=True)
 
         for recipe in list_of_recipes:
             author = f' ({recipe.author})' if recipe.author else ''
             menu.menu.add.button(f'{recipe.name}{author}',
                                  action=buttons[recipe.name].set_pressed)
-        menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
+        menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()
 
-        if cancel_button.pressed:
+        if cancel_bt.pressed:
             return
 
         for name, button in buttons.items():
             if button.pressed:
                 create_mealprep(gui, ingredient_db, mealprep_db, recipe_db.get_recipe(name))
-                raise AbortMenuOperation('Mealprep created.')
+                raise ReturnToMainMenu('Mealprep created.')

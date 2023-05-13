@@ -18,27 +18,30 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions import AbortMenuOperation
-from src.common.enums      import FontSize, PhysicalActivityLevel, DietType
+from src.common.exceptions import ReturnToMainMenu
+from src.common.enums      import DietType, FontSize, PhysicalActivityLevel
 
-from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import DropSelection, Button
+from src.ui.gui_menu         import GUIMenu
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
 
 
-def start_diet_survey(gui: 'GUI') -> tuple:
-    """Start initial diet survey."""
-    pal_options        = [(member.value, member) for member in PhysicalActivityLevel]
-    diet_type_options  = [(member.value, member) for member in DietType]
+def get_pal_and_diet_type(gui: 'GUI') -> tuple:
+    """Get the user's Physical Activity Level (PAL) and diet type."""
+    title         = 'Initial Diet Survey'
+    error_message = ''
 
-    pal_ds        = DropSelection()
+    pal_options       = [(member.value, member) for member in PhysicalActivityLevel]
+    diet_type_options = [(member.value, member) for member in DietType]
+
+    pal_ds       = DropSelection()
     diet_type_ds = DropSelection()
 
-    error_message = ''
     while True:
-        menu      = GUIMenu(gui, 'Initial Diet Survey')
+        menu      = GUIMenu(gui, title)
+        done_bt   = Button(menu, closes_menu=True)
         return_bt = Button(menu, closes_menu=True)
 
         try:
@@ -72,21 +75,22 @@ def start_diet_survey(gui: 'GUI') -> tuple:
                                      default=default_ds,
                                      **gui.drop_selection_theme)
 
-            menu.menu.add.button('Done', action=menu.menu.disable)
-
-            menu.menu.add.label(f'')
+            menu.menu.add.button('Done', done_bt.set_pressed)
+            menu.menu.add.label('')
             menu.menu.add.button('Cancel', return_bt.set_pressed)
 
             menu.show_error_message(error_message)
             menu.start()
 
             if return_bt.pressed:
-                raise AbortMenuOperation
+                raise ReturnToMainMenu
 
-            if not pal_ds.value or not diet_type_ds.value:
-                raise ValueError("Please select one option from each drop-down menu.")
+            if done_bt.pressed:
 
-            return pal_ds.value, diet_type_ds.value
+                if not pal_ds.value or not diet_type_ds.value:
+                    raise ValueError("Please select one option from each drop-down menu.")
+
+                return pal_ds.value, diet_type_ds.value
 
         except ValueError as e:
             error_message = e.args[0]

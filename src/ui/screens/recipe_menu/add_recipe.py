@@ -58,9 +58,10 @@ def add_recipe(gui           : 'GUI',
 
     while True:
         try:
-            menu          = GUIMenu(gui, title)
-            return_button = Button(menu, closes_menu=True)
-            done_button   = Button(menu, closes_menu=True)
+            menu = GUIMenu(gui, title)
+
+            return_bt = Button(menu, closes_menu=True)
+            done_bt   = Button(menu, closes_menu=True)
 
             menu.menu.add.text_input(f'Name: ',
                                      onchange=name.set_value,
@@ -83,16 +84,16 @@ def add_recipe(gui           : 'GUI',
                                               **gui.drop_multi_selection_theme)
 
             menu.menu.add.label('\n', font_size=5)
-            menu.menu.add.button('Done',   action=done_button.set_pressed)
-            menu.menu.add.button('Return', action=return_button.set_pressed)
+            menu.menu.add.button('Done',   action=done_bt.set_pressed)
+            menu.menu.add.button('Return', action=return_bt.set_pressed)
 
             menu.show_error_message(error_message)
             menu.start()
 
-            if return_button.pressed:
+            if return_bt.pressed:
                 return
 
-            if done_button.pressed:
+            if done_bt.pressed:
 
                 if name.value == '':
                     raise ValueError(f'Please a name for the recipe')

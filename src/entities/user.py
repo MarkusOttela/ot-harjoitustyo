@@ -20,9 +20,8 @@ import json
 
 from datetime import datetime
 
-from src.common.conversion import Conversion
-from src.common.enums      import Gender, Format, PhysicalActivityLevel, DietType, DBKeys
-from src.common.utils      import get_today_str
+from src.common.enums import Conversion, DBKeys, DietType, Format, Gender, PhysicalActivityLevel
+from src.common.utils import get_today_str
 
 from src.database.encrypted_database import EncryptedDatabase
 from src.entities.user_credentials   import UserCredentials
@@ -44,7 +43,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                  init_weight : float,
                  height      : float,
                  pal         : 'PhysicalActivityLevel',
-                 diet_type  : 'DietType'
+                 diet_type   : 'DietType'
                  ) -> None:
         self.credentials = credentials
         self.name        = credentials.get_username()
@@ -55,9 +54,9 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self.height_cm      = height
         self.init_weight_kg = init_weight
 
-        self.pal        = pal
+        self.pal       = pal
         self.diet_type = diet_type
-        self.bmr        = 0.0
+        self.bmr       = 0.0
 
         self.daily_macro_goals : dict = {}
         self.weight_log        : dict = {}

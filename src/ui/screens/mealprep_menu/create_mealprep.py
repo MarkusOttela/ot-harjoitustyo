@@ -20,8 +20,7 @@ import datetime
 import typing
 
 from src.common.conversion import convert_input_fields
-from src.common.enums      import Color, ColorScheme, Format
-from src.common.validation import floats
+from src.common.enums      import Format
 
 from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase
 
@@ -33,6 +32,8 @@ from src.ui.gui_menu             import GUIMenu
 from src.ui.callback_classes     import Button, StringInput
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
+
+from src.ui.shared import add_ingredient_gram_inputs
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -60,19 +61,25 @@ def create_mealprep(gui           : 'GUI',
 
         menu.menu.add.label('\n', font_size=5)
 
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Cancel', action=return_button.set_pressed)
+        return_bt = Button(menu, closes_menu=True)
+        done_bt   = Button(menu, closes_menu=True)
+
+        menu.menu.add.button('Done',   action=done_bt.set_pressed)
+        menu.menu.add.button('Cancel', action=return_bt.set_pressed)
 
         menu.start()
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return
 
-        if done_button.pressed:
+        if done_bt.pressed:
             success, weight_dict = convert_input_fields(string_inputs, metadata)
-            total_grams          = weight_dict['Total Weight']
+
+            if not success:
+                failed_conversions = weight_dict
+                continue
+
+            total_grams = weight_dict['Total Weight']
             weight_dict.pop('Total Weight')
 
             mealprep_nv = NutritionalValues()
@@ -100,24 +107,3 @@ def create_mealprep(gui           : 'GUI',
                 mealprep_db.replace_mealprep(new_mealprep)
                 show_message(gui, title, 'Mealprep has been replaced.')
                 return
-
-
-def add_ingredient_gram_inputs(menu               : GUIMenu,
-                               metadata           : dict,
-                               string_inputs      : dict,
-                               failed_conversions : dict,
-                               ) -> None:
-    """Add text inputs on screen."""
-    for i, k in enumerate(list(metadata.keys())):
-        warning_color = Color.RED.value
-        normal_color  = ColorScheme.FONT_COLOR.value
-
-        valid_chars = None if metadata[k][1] == str else floats
-        font_color  = warning_color if k in failed_conversions else normal_color
-        menu.menu.add.text_input(f'{metadata[k][0]} (g): ',
-                                 onchange=string_inputs[k].set_value,
-                                 default=string_inputs[k].value,
-                                 valid_chars=valid_chars,
-                                 maxchar=19,
-                                 font_color=font_color)
-    failed_conversions.clear()

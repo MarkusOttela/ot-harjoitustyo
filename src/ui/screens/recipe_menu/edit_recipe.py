@@ -84,9 +84,9 @@ def edit_recipe(gui           : 'GUI',
 
             menu = GUIMenu(gui, title)
 
-            return_button = Button(menu, closes_menu=True)
-            done_button   = Button(menu, closes_menu=True)
-            delete_button = Button(menu, closes_menu=True)
+            return_bt = Button(menu, closes_menu=True)
+            done_bt   = Button(menu, closes_menu=True)
+            delete_bt = Button(menu, closes_menu=True)
 
             menu.menu.add.text_input(f'Name: ',
                                      onchange=name.set_value,
@@ -122,27 +122,27 @@ def edit_recipe(gui           : 'GUI',
                                                   )
 
             menu.menu.add.label('\n', font_size=5)
-            menu.menu.add.button('Done', action=done_button.set_pressed)
+            menu.menu.add.button('Done', action=done_bt.set_pressed)
 
             menu.menu.add.button('Delete',
-                                 action=delete_button.set_pressed,
+                                 action=delete_bt.set_pressed,
                                  font_color=Color.RED.value)
 
-            menu.menu.add.button('Return', action=return_button.set_pressed)
+            menu.menu.add.button('Return', action=return_bt.set_pressed)
 
             menu.show_error_message(error_message)
             menu.start()
 
-            if return_button.pressed:
+            if return_bt.pressed:
                 return
 
-            if delete_button.pressed:
+            if delete_bt.pressed:
                 if get_yes(gui, title, f"Delete {str(orig_recipe)}?", 'No'):
                     recipe_db.remove_recipe(orig_recipe)
                     show_message(gui, title, 'Recipe has been removed.')
                     return
 
-            if done_button.pressed:
+            if done_bt.pressed:
                 if name.value == '':
                     raise ValueError(f'Please a name for the recipe')
 

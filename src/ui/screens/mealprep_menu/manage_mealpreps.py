@@ -38,23 +38,23 @@ def manage_mealpreps_menu(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, 'Manage Mealpreps')
 
-        create_mealprep      = Button(menu, closes_menu=True)
-        edit_mealprep_button = Button(menu, closes_menu=True)
-        return_button        = Button(menu, closes_menu=True)
+        create_mealprep_bt = Button(menu, closes_menu=True)
+        edit_mealprep_bt   = Button(menu, closes_menu=True)
+        return_bt          = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Create Mealprep', action=create_mealprep.set_pressed)
-        menu.menu.add.button('Edit Mealprep',   action=edit_mealprep_button.set_pressed)
-        menu.menu.add.button('Return',          action=return_button.set_pressed)
+        menu.menu.add.button('Create Mealprep', action=create_mealprep_bt.set_pressed)
+        menu.menu.add.button('Edit Mealprep',   action=edit_mealprep_bt.set_pressed)
+        menu.menu.add.button('Return',          action=return_bt.set_pressed)
 
         menu.start()
 
-        if create_mealprep.pressed:
+        if create_mealprep_bt.pressed:
             select_mealprep_recipe_to_create(gui, mealprep_db, recipe_db, ingredient_db)
             continue
 
-        if edit_mealprep_button.pressed:
+        if edit_mealprep_bt.pressed:
             select_mealprep_to_edit(gui, mealprep_db, ingredient_db)
             continue
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return

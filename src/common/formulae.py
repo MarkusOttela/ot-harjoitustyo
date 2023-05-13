@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.enums               import Gender, CalContent, PhysicalActivityLevel, DietType
+from src.common.enums                import CalContent, DietType, Gender, PhysicalActivityLevel
 from src.entities.nutritional_values import NutritionalValues
 
 if typing.TYPE_CHECKING:
@@ -61,7 +61,7 @@ def calculate_nv_goal(user: 'User') -> NutritionalValues:
     theoretical_maintenance_kcal = get_pal_multiplier(user.pal) * bmr
     calorie_deficit_multiplier   = get_calorie_diet_multiplier(user.diet_type)
 
-    macro_goals_nv = NutritionalValues()
+    macro_goals_nv    = NutritionalValues()
 
     kcal_goal         = calorie_deficit_multiplier * theoretical_maintenance_kcal
 

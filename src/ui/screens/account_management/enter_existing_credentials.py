@@ -18,68 +18,73 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions         import IncorrectPassword, AbortMenuOperation
-from src.entities.user_credentials import UserCredentials
-from src.common.enums              import Directories
-from src.common.utils              import ensure_dir, get_list_of_user_account_names
+from src.common.exceptions import IncorrectPassword, ReturnToMainMenu
+from src.common.utils      import get_list_of_user_account_names
 
-from src.ui.gui_menu             import GUIMenu
-from src.ui.callback_classes     import DropSelection, Button, StringInput
-from src.ui.screens.show_message import show_message
+from src.entities.user_credentials import UserCredentials
+
+from src.ui.callback_classes import Button, DropSelection, StringInput
+from src.ui.gui_menu         import GUIMenu
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
 
 
 def enter_existing_credentials(gui: 'GUI') -> UserCredentials:
-    """Login with existing user account"""
-    title = 'Login existing user'
+    """Login with existing user account."""
+    title         = 'Login existing user'
+    error_message = ''
 
-    ensure_dir(Directories.USER_DATA.value)
+    accounts = get_list_of_user_account_names()
+    ds_items = [(a, a) for a in accounts]
 
-    accounts      = get_list_of_user_account_names()
-    sel_items     = [(a, a) for a in accounts]
-    user_name_ds  = DropSelection()
-    default_uname = None
+    user_name_ds        = DropSelection()
+    default_uname_index = None
 
     # If there's only one user, automatically select it from the drop-down list.
     if len(accounts) == 1:
-        default_uname = 0
+        default_uname_index = 0
         user_name_ds.set_value(None, accounts[0])
 
     while True:
-        menu = GUIMenu(gui, title)
-
-        return_bt = Button(menu, closes_menu=True)
-        password  = StringInput()
-
-        menu.menu.add.dropselect('Select User Account',
-                                 onreturn=user_name_ds.set_value,
-                                 items=sel_items,  # type: ignore
-                                 default=default_uname,
-                                 selection_box_width=280,
-                                 **gui.drop_selection_theme)
-
-        menu.menu.add.text_input(f'Password: ', onchange=password.set_value, password=True)
-        menu.menu.add.button('Done', action=menu.menu.disable)
-        menu.menu.add.label(f'')
-        menu.menu.add.button('Return', return_bt.set_pressed)
-
-        menu.start()
-
-        if return_bt.pressed:
-            raise AbortMenuOperation
-
-        if not user_name_ds.value:
-            show_message(gui, title, 'Error: No account selected')
-            continue
-
-        default_uname = accounts.index(user_name_ds.value)
-
         try:
-            user_credentials = UserCredentials.from_password(user_name_ds.value, password.value)
-        except IncorrectPassword as f:
-            show_message(gui, title, f"Error: {f}")
-            continue
+            menu = GUIMenu(gui, title)
 
-        return user_credentials
+            done_bt   = Button(menu, closes_menu=True)
+            return_bt = Button(menu, closes_menu=True)
+            password  = StringInput()
+
+            menu.menu.add.dropselect('Select User Account',
+                                     onreturn=user_name_ds.set_value,
+                                     items=ds_items,  # type: ignore
+                                     default=default_uname_index,
+                                     selection_box_width=280,
+                                     **gui.drop_selection_theme)
+
+            menu.menu.add.text_input('Password: ', onchange=password.set_value, password=True)
+
+            menu.menu.add.button('Done', done_bt.set_pressed)
+            menu.menu.add.label('')
+            menu.menu.add.button('Return', return_bt.set_pressed)
+
+            menu.show_error_message(error_message)
+            menu.start()
+
+            if return_bt.pressed:
+                raise ReturnToMainMenu
+
+            if done_bt.pressed:
+
+                if not user_name_ds.value:
+                    raise ValueError('Error: No account selected')
+
+                default_uname_index = accounts.index(user_name_ds.value)
+
+                try:
+                    return UserCredentials.from_password(user_name_ds.value, password.value)
+                except IncorrectPassword as f:
+                    raise ValueError(f"Error: {f}")
+
+        except ValueError as e:
+            error_message = e.args[0]
+            continue

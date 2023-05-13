@@ -37,12 +37,11 @@ class CryptoLiterals(Enum):
 
     TODO: Replace memory cost with 512*1024
     """
-    BLAKE2_DIGEST_LENGTH   = 64
-    SALT_LENGTH            = 32
-
     # Password account_management / key derivation
-    ARGON2_TIME_COST      = 20
-    ARGON2_MEMORY_COST    = 1000
+    ARGON2_TIME_COST     = 20
+    ARGON2_MEMORY_COST   = 1000
+    BLAKE2_DIGEST_LENGTH = 64
+    SALT_LENGTH          = 32
 
     # Symmetric encryption
     XCHACHA20_NONCE_LENGTH = 24

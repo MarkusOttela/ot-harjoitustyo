@@ -21,7 +21,7 @@ import typing
 from typing import Optional
 
 from src.common.enums      import ColorScheme, FontSize
-from src.common.exceptions import AbortMenuOperation
+from src.common.exceptions import ReturnToMainMenu
 
 from src.entities.recipe import Recipe
 from src.entities.user   import User
@@ -78,9 +78,10 @@ def add_mealprep_recipe(gui           : 'GUI',
                 if ingredient in selected_accompaniments.sel_list:
                     selected_accompaniment_indexes.append(i)
 
-            menu          = GUIMenu(gui, title)
-            return_button = Button(menu, closes_menu=True)
-            done_button   = Button(menu, closes_menu=True)
+            menu = GUIMenu(gui, title)
+
+            return_bt = Button(menu, closes_menu=True)
+            done_bt   = Button(menu, closes_menu=True)
 
             menu.menu.add.text_input(f'Name: ',
                                      onchange=name.set_value,
@@ -115,16 +116,16 @@ def add_mealprep_recipe(gui           : 'GUI',
                                               )
 
             menu.menu.add.label('\n', font_size=5)
-            menu.menu.add.button('Done',   action=done_button.set_pressed)
-            menu.menu.add.button('Return', action=return_button.set_pressed)
+            menu.menu.add.button('Done',   action=done_bt.set_pressed)
+            menu.menu.add.button('Return', action=return_bt.set_pressed)
 
             menu.show_error_message(error_message)
             menu.start()
 
-            if return_button.pressed:
+            if return_bt.pressed:
                 return
 
-            if done_button.pressed:
+            if done_bt.pressed:
 
                 if name.value == '':
                     raise ValueError("Please enter a name for the recipe")
@@ -140,14 +141,14 @@ def add_mealprep_recipe(gui           : 'GUI',
                 if not recipe_db.has_recipe(new_recipe):
                     recipe_db.insert_recipe(new_recipe)
                     show_message(gui, title, 'Recipe has been added.')
-                    raise AbortMenuOperation("Recipe added.")
+                    raise ReturnToMainMenu("Recipe added.")
 
                 if get_yes(gui, title,
                            f'Recipe {str(new_recipe)} already exists. Overwrite(?)',
                            default_str='No'):
                     recipe_db.replace_recipe(new_recipe)
                     show_message(gui, title, 'Recipe has been replaced')
-                    raise AbortMenuOperation("Recipe replaced.")
+                    raise ReturnToMainMenu("Recipe replaced.")
 
         except ValueError as e:
             error_message = e.args[0]

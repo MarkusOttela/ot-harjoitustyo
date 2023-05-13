@@ -43,8 +43,8 @@ def delete_meal(gui: 'GUI', user: 'User') -> None:
         buttons = {f'{meal.name} ({meal.eat_time})': (Button(menu, closes_menu=True), meal)
                    for meal in list_of_todays_meals}
 
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
+        return_bt = Button(menu, closes_menu=True)
+        done_bt   = Button(menu, closes_menu=True)
 
         menu.menu.add.label('Select meal to delete')
         menu.menu.add.label('\n')
@@ -53,8 +53,8 @@ def delete_meal(gui: 'GUI', user: 'User') -> None:
             menu.menu.add.button(name, action=button_meal_tup[0].set_pressed)
 
         menu.menu.add.label('\n', font_size=5)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Cancel', action=return_button.set_pressed)
+        menu.menu.add.button('Done',   action=done_bt.set_pressed)
+        menu.menu.add.button('Cancel', action=return_bt.set_pressed)
         menu.start()
 
         for name, button_meal_tup in buttons.items():
@@ -69,8 +69,8 @@ def delete_meal(gui: 'GUI', user: 'User') -> None:
 
                 continue
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return
 
-        if done_button.pressed:
+        if done_bt.pressed:
             return

@@ -20,12 +20,12 @@ import typing
 
 from datetime import datetime
 
-from src.common.exceptions import AbortMenuOperation
-from src.common.enums      import Gender, Format
+from src.common.enums      import Format, Gender
+from src.common.exceptions import ReturnToMainMenu
 from src.common.validation import date
 
+from src.ui.callback_classes import BooleanSelector, Button, StringInput
 from src.ui.gui_menu         import GUIMenu
-from src.ui.callback_classes import Button, StringInput, BooleanSelector
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -33,16 +33,17 @@ if typing.TYPE_CHECKING:
 
 def get_dob_and_gender(gui: 'GUI') -> tuple:
     """Get the date of birth, and the gender of the user."""
+    title         = 'Initial Diet Survey'
     error_message = ''
 
     dob     = StringInput()
     is_male = BooleanSelector(True)
 
     while True:
-
-        menu = GUIMenu(gui, "Initial Survey")
-
         try:
+            menu = GUIMenu(gui, title)
+
+            done_bt   = Button(menu, closes_menu=True)
             return_bt = Button(menu, closes_menu=True)
 
             menu.menu.add.text_input('Your DoB <dd/mm/yyyy> : ',
@@ -57,26 +58,27 @@ def get_dob_and_gender(gui: 'GUI') -> tuple:
                                         default=is_male.value,
                                         **gui.toggle_switch_theme)
 
-            menu.menu.add.button('Done', action=menu.menu.disable)
-            menu.menu.add.label(f'')
+            menu.menu.add.button('Done', done_bt.set_pressed)
+            menu.menu.add.label('')
             menu.menu.add.button('Cancel', return_bt.set_pressed)
 
             menu.show_error_message(error_message)
             menu.start()
 
             if return_bt.pressed:
-                raise AbortMenuOperation
+                raise ReturnToMainMenu
 
-            # Validate inputs
-            if dob.value == '':
-                raise ValueError(f'Please enter your birthday')
+            if done_bt.pressed:
 
-            try:
-                datetime.strptime(dob.value, Format.DATETIME_DATE.value)
-            except ValueError:
-                raise ValueError("Error: Invalid birthday format")
+                if dob.value == '':
+                    raise ValueError(f'Please enter your birthday')
 
-            return dob.value, is_male.value
+                try:
+                    datetime.strptime(dob.value, Format.DATETIME_DATE.value)
+                except ValueError:
+                    raise ValueError("Error: Invalid birthday format")
+
+                return dob.value, is_male.value
 
         except ValueError as e:
             error_message = e.args[0]

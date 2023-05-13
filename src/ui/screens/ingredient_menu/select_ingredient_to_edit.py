@@ -18,9 +18,9 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from src.ui.callback_classes     import Button
 from src.ui.gui_menu             import GUIMenu
 from src.ui.screens.show_message import show_message
-from src.ui.callback_classes     import Button
 
 from src.ui.screens.ingredient_menu.edit_ingredient import edit_ingredient
 
@@ -43,17 +43,16 @@ def select_ingredient_to_edit(gui           : 'GUI',
             show_message(gui, title, 'No ingredients yet in database.')
             return
 
-        buttons       = {i.name: Button(menu, closes_menu=True) for i in list_of_ingredients}
-        cancel_button = Button(menu, closes_menu=True)
+        buttons   = {i.name: Button(menu, closes_menu=True) for i in list_of_ingredients}
+        cancel_bt = Button(menu, closes_menu=True)
 
         for ingredient in list_of_ingredients:
-            label = f'{ingredient.name}'
-            menu.menu.add.button(label, action=buttons[ingredient.name].set_pressed)
-        menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
+            menu.menu.add.button(ingredient.name, action=buttons[ingredient.name].set_pressed)
+        menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()
 
-        if cancel_button.pressed:
+        if cancel_bt.pressed:
             return
 
         for name, button in buttons.items():

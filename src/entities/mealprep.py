@@ -63,7 +63,7 @@ class Mealprep:
         string = (f'<Mealprep-object {id(self)}>\n'
                   f'  Cook_date: {self.cook_date}\n'
                   f'  Grams:     {self.total_grams}\n'
-                  '  Ingredients:')
+                  '   Ingredients:')
         for ingredient, grams in self.ingredient_grams.items():
             string += f'    {ingredient}: {grams}g'
         return string

@@ -18,11 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions       import AbortMenuOperation
-from src.common.utils            import get_list_of_user_account_names
-from src.ui.gui_menu             import GUIMenu
-from src.ui.callback_classes     import StringInput, Button
-from src.ui.screens.show_message import show_message
+from src.common.exceptions import ReturnToMainMenu
+from src.common.utils      import get_list_of_user_account_names
+
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button, StringInput
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -30,49 +30,59 @@ if typing.TYPE_CHECKING:
 
 def register_credentials(gui: 'GUI') -> tuple:
     """Get credentials for new user."""
-    title   = 'Create Account'
-    message = 'Welcome! To start, enter your desired credentials.'
+    title         = 'Create Account'
+    message       = 'Welcome! To start, enter your desired credentials.'
+    error_message = ''
 
-    accounts  = get_list_of_user_account_names()
     user_name = StringInput()
 
     while True:
-        menu = GUIMenu(gui, title)
+        try:
+            menu = GUIMenu(gui, title)
 
-        password_1 = StringInput()
-        password_2 = StringInput()
-        return_bt  = Button(menu, closes_menu=True)
+            password_1 = StringInput()
+            password_2 = StringInput()
 
-        menu.menu.add.label(f'{message}\n')
+            done_bt   = Button(menu, closes_menu=True)
+            return_bt = Button(menu, closes_menu=True)
 
-        menu.menu.add.text_input(f'Your name: ',
-                                 onchange=user_name.set_value,
-                                 default=user_name.value)
+            menu.menu.add.label(f'{message}\n')
 
-        menu.menu.add.text_input(
-            f'Password: ',
-            onchange=password_1.set_value,
-            password=True)
-        menu.menu.add.text_input(
-            f'Password (again): ',
-            onchange=password_2.set_value,
-            password=True)
+            menu.menu.add.text_input(f'Your name: ',
+                                     onchange=user_name.set_value,
+                                     default=user_name.value)
 
-        menu.menu.add.button('Done',   action=menu.menu.disable)
-        menu.menu.add.label(f'')
-        menu.menu.add.button('Cancel', return_bt.set_pressed)
+            menu.menu.add.text_input(f'Password: ',
+                                     onchange=password_1.set_value,
+                                     password=True)
 
-        menu.start()
+            menu.menu.add.text_input(f'Password (again): ',
+                                     onchange=password_2.set_value,
+                                     password=True)
 
-        if return_bt.pressed:
-            raise AbortMenuOperation
+            menu.menu.add.button('Done', done_bt.set_pressed)
+            menu.menu.add.label('')
+            menu.menu.add.button('Cancel', return_bt.set_pressed)
 
-        if user_name.value in accounts:
-            show_message(gui, title, f"Error: The user account {user_name.value} already exists!")
+            menu.show_error_message(error_message)
+            menu.start()
+
+            if return_bt.pressed:
+                raise ReturnToMainMenu
+
+            if done_bt.pressed:
+
+                if user_name.value == '':
+                    raise ValueError("Please specify a user name")
+
+                if user_name.value in get_list_of_user_account_names():
+                    raise ValueError(f"Error: The user account {user_name.value} already exists!")
+
+                if password_1.value != password_2.value:
+                    raise ValueError("Error: Passwords did not match!")
+
+                return user_name.value, password_1.value
+
+        except ValueError as e:
+            error_message = e.args[0]
             continue
-
-        if password_1.value == password_2.value:
-            return user_name.value, password_1.value
-
-        else:
-            show_message(gui, title, "Error: Passwords did not match!")

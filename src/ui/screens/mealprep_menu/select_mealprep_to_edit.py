@@ -18,10 +18,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu             import GUIMenu
-from src.ui.screens.show_message import show_message
-from src.ui.callback_classes     import Button
+from src.ui.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
 
+from src.ui.screens.show_message                import show_message
 from src.ui.screens.mealprep_menu.edit_mealprep import edit_mealprep
 
 if typing.TYPE_CHECKING:
@@ -45,18 +45,19 @@ def select_mealprep_to_edit(gui           : 'GUI',
             show_message(gui, title, 'No mealpreps yet in database.')
             return
 
-        buttons       = {mealprep.recipe_name: Button(
-            menu, closes_menu=True) for mealprep in list_of_mealpreps}
-        cancel_button = Button(menu, closes_menu=True)
+        buttons = {mealprep.recipe_name: Button(menu, closes_menu=True)
+                   for mealprep in list_of_mealpreps}
+
+        cancel_bt = Button(menu, closes_menu=True)
 
         for mealprep in list_of_mealpreps:
             menu.menu.add.button(f'{str(mealprep)}',
                                  action=buttons[mealprep.recipe_name].set_pressed)
-        menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
+        menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()
 
-        if cancel_button.pressed:
+        if cancel_bt.pressed:
             return
 
         for name, button in buttons.items():

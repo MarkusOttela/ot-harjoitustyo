@@ -22,6 +22,7 @@ from typing import Union
 
 from src.common.enums import CalContent, TefMultipliers
 
+
 nv_metadata = {
 
     # Macronutrients
@@ -188,10 +189,10 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
         lines.extend([f'    {k:{indent}}: {v}' for k, v in self.__dict__.items()])
 
         # Sub-headers for lines
-        for index, txt in [( 1, 'Energy (per 1 g of ingredient)'),
-                           ( 3, 'Macronutrients (per 1g of ingredient)'),
-                           (10, 'Micronutrients (per 1g of ingredient)')]:
-            lines.insert(index, f'  {txt}')
+        for index, txt in [( 1, 'Energy'),
+                           ( 3, 'Macronutrients'),
+                           (10, 'Micronutrients')]:
+            lines.insert(index, f'  {txt} (per 1g of ingredient)')
         return '\n'.join(lines)
 
     def __add__(self, other: 'NutritionalValues') -> 'NutritionalValues':

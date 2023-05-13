@@ -88,7 +88,7 @@ class Meal:
 
     @classmethod
     def from_serialized_string(cls, serialized_string: str) -> 'Meal':
-        """Instantiate the object from a serialized string"""
+        """Instantiate the object from a serialized string."""
         ast_dict = ast.literal_eval(serialized_string)
 
         return Meal(name=ast_dict['name'],

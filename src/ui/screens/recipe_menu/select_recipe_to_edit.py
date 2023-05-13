@@ -44,18 +44,18 @@ def select_recipe_to_edit(gui           : 'GUI',
             show_message(gui, title, 'No recipes yet in database.')
             return
 
-        buttons       = {i.name: Button(menu, closes_menu=True) for i in list_of_recipes}
-        cancel_button = Button(menu, closes_menu=True)
+        buttons   = {i.name: Button(menu, closes_menu=True) for i in list_of_recipes}
+        cancel_bt = Button(menu, closes_menu=True)
 
         for recipe in list_of_recipes:
             author = f' ({recipe.author})' if recipe.author else ''
             menu.menu.add.button(f'{recipe.name}{author}',
                                  action=buttons[recipe.name].set_pressed)
-        menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
+        menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()
 
-        if cancel_button.pressed:
+        if cancel_bt.pressed:
             return
 
         for name, button in buttons.items():

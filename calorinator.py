@@ -45,8 +45,8 @@ def main() -> None:
                 ingredient.nv_per_g /= 100.0
                 ingredient_db.insert(ingredient)
 
-    recipe_db     = RecipeDatabase()
-    mealprep_db   = MealprepDatabase()
+    recipe_db   = RecipeDatabase()
+    mealprep_db = MealprepDatabase()
 
     main_menu(gui, ingredient_db, recipe_db, mealprep_db)
 

@@ -78,7 +78,7 @@ class UnencryptedDatabase:
         keys   = list(self.db_metadata.keys())
         values = [getattr(obj, key) for key in keys]
 
-        sql_command = f'INSERT INTO {self.table_name} ('
+        sql_command  = f'INSERT INTO {self.table_name} ('
         sql_command += ', '.join(keys)
         sql_command += ') VALUES ('
         sql_command += ', '.join(len(keys) * ['?'])
@@ -93,8 +93,7 @@ class UnencryptedDatabase:
         sql_command +=  ', '.join(list(self.db_metadata.keys()))
         sql_command += f' FROM {self.table_name}'
 
-        results = self.cursor.execute(sql_command).fetchall()
-        return results
+        return self.cursor.execute(sql_command).fetchall()
 
 
 class IngredientDatabase(UnencryptedDatabase):
@@ -116,7 +115,7 @@ class IngredientDatabase(UnencryptedDatabase):
         nv_values = [getattr(obj.nv_per_g, key) for key in nv_keys]
         no_values = len(in_keys + nv_keys)
 
-        sql_command = f'INSERT INTO {self.table_name} ('
+        sql_command  = f'INSERT INTO {self.table_name} ('
         sql_command += ', '.join(in_keys + nv_keys)
         sql_command += ') VALUES ('
         sql_command += ', '.join(no_values * ['?'])
@@ -135,9 +134,7 @@ class IngredientDatabase(UnencryptedDatabase):
         """Get list of ingredients in the database."""
         return [self.get_ingredient(name) for name in self.get_list_of_ingredient_names()]
 
-    def get_ingredient(self,
-                       name         : str,
-                       ) -> Ingredient:
+    def get_ingredient(self, name: str) -> Ingredient:
         """Get Ingredient from database by name."""
         keys = list(self.db_metadata.keys())[1:]
 

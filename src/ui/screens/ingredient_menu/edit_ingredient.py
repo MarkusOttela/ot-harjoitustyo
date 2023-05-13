@@ -24,12 +24,12 @@ from src.common.enums      import Color
 from src.entities.ingredient         import in_metadata, Ingredient
 from src.entities.nutritional_values import nv_metadata
 
-from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
+from src.ui.gui_menu         import GUIMenu
 
 from src.ui.screens.get_yes                        import get_yes
-from src.ui.screens.show_message                   import show_message
 from src.ui.screens.ingredient_menu.add_ingredient import add_ingredient_attributes
+from src.ui.screens.show_message                   import show_message
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import IngredientDatabase
@@ -73,27 +73,27 @@ def edit_ingredient(gui             : 'GUI',
 
         add_ingredient_attributes(menu, joined_metadata, string_inputs, failed_conversions)
 
-        return_button = Button(menu, closes_menu=True)
-        done_button   = Button(menu, closes_menu=True)
-        delete_button = Button(menu, closes_menu=True)
+        done_bt   = Button(menu, closes_menu=True)
+        delete_bt = Button(menu, closes_menu=True)
+        return_bt = Button(menu, closes_menu=True)
 
         menu.menu.add.label('\n', font_size=5)
-        menu.menu.add.button('Done',   action=done_button.set_pressed)
-        menu.menu.add.button('Delete', action=delete_button.set_pressed, font_color=Color.RED.value)
-        menu.menu.add.button('Return', action=return_button.set_pressed)
+        menu.menu.add.button('Done',   action=done_bt.set_pressed)
+        menu.menu.add.button('Delete', action=delete_bt.set_pressed, font_color=Color.RED.value)
+        menu.menu.add.button('Return', action=return_bt.set_pressed)
 
         menu.start()
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return
 
-        if delete_button.pressed:
+        if delete_bt.pressed:
             if get_yes(gui, title, f"Delete {str(orig_ingredient)}?", 'No'):
                 ingredient_db.remove_ingredient(orig_ingredient)
                 show_message(gui, title, 'Ingredient has been removed.')
                 return
 
-        if done_button.pressed:
+        if done_bt.pressed:
             if not string_inputs['name'].value:
                 failed_conversions['name'] = ''
                 continue
@@ -113,7 +113,7 @@ def edit_ingredient(gui             : 'GUI',
             if orig_f_grams != input_f_grams:
                 multiplier = orig_ingredient.grams_per_unit / value_dict['grams_per_unit']
                 if multiplier > 1.0:
-                    adjective  = 'larger'
+                    adjective = 'larger'
                 else:
                     adjective  = 'smaller'
                     multiplier = 1 / multiplier

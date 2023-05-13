@@ -18,11 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions import AbortMenuOperation
-from src.common.validation import validate_positive_float, floats
+from src.common.exceptions import ReturnToMainMenu
+from src.common.validation import floats, validate_positive_float
 
-from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
+from src.ui.gui_menu         import GUIMenu
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI
@@ -30,18 +30,18 @@ if typing.TYPE_CHECKING:
 
 def get_body_measurements(gui: 'GUI') -> tuple:
     """Get initial body measurements (weight and height) from the user."""
+    title         = 'Initial Diet Survey'
     error_message = ''
 
     weight = StringInput()
     height = StringInput()
 
     while True:
-        menu = GUIMenu(gui, "Body Measurements")
-
+        menu      = GUIMenu(gui, title)
+        done_bt   = Button(menu, closes_menu=True)
         return_bt = Button(menu, closes_menu=True)
 
         try:
-            # Pre-fill only valid inputs if an error occurred.
             if weight.value is not None:
                 try:
                     default_weight = str(validate_positive_float(weight.value))
@@ -70,25 +70,27 @@ def get_body_measurements(gui: 'GUI') -> tuple:
                                      valid_chars=floats,
                                      maxchar=5)
 
-            menu.menu.add.button('Done', action=menu.menu.disable)
-            menu.menu.add.label(f'')
+            menu.menu.add.button('Done', done_bt.set_pressed)
+            menu.menu.add.label('')
             menu.menu.add.button('Cancel', return_bt.set_pressed)
 
             menu.show_error_message(error_message)
             menu.start()
 
             if return_bt.pressed:
-                raise AbortMenuOperation
+                raise ReturnToMainMenu
 
-            if height.value == '':
-                raise ValueError("Please enter your height")
-            height_f = validate_positive_float(height.value)
+            if done_bt.pressed:
 
-            if weight.value == '':
-                raise ValueError("Please enter your current weight")
-            weight_f = validate_positive_float(weight.value)
+                if height.value == '':
+                    raise ValueError("Please enter your height")
+                height_f = validate_positive_float(height.value)
 
-            return weight_f, height_f
+                if weight.value == '':
+                    raise ValueError("Please enter your current weight")
+                weight_f = validate_positive_float(weight.value)
+
+                return weight_f, height_f
 
         except ValueError as e:
             error_message = e.args[0]

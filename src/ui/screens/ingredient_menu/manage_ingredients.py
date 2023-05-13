@@ -18,8 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
 
 from src.ui.screens.ingredient_menu.add_ingredient            import add_ingredient_menu
 from src.ui.screens.ingredient_menu.select_ingredient_to_edit import select_ingredient_to_edit
@@ -36,23 +36,23 @@ def manage_ingredients_menu(gui           : 'GUI',
     while True:
         menu = GUIMenu(gui, 'Manage Ingredients')
 
-        add_ingredient_button  = Button(menu, closes_menu=True)
-        edit_ingredient_button = Button(menu, closes_menu=True)
-        return_button          = Button(menu, closes_menu=True)
+        add_ingredient_bt  = Button(menu, closes_menu=True)
+        edit_ingredient_bt = Button(menu, closes_menu=True)
+        return_bt          = Button(menu, closes_menu=True)
 
-        menu.menu.add.button('Add Ingredient',  action=add_ingredient_button.set_pressed)
-        menu.menu.add.button('Edit Ingredient', action=edit_ingredient_button.set_pressed)
-        menu.menu.add.button('Return',          action=return_button.set_pressed)
+        menu.menu.add.button('Add Ingredient',  action=add_ingredient_bt.set_pressed)
+        menu.menu.add.button('Edit Ingredient', action=edit_ingredient_bt.set_pressed)
+        menu.menu.add.button('Return',          action=return_bt.set_pressed)
 
         menu.start()
 
-        if add_ingredient_button.pressed:
+        if add_ingredient_bt.pressed:
             add_ingredient_menu(gui, ingredient_db)
             continue
 
-        if edit_ingredient_button.pressed:
+        if edit_ingredient_bt.pressed:
             select_ingredient_to_edit(gui, ingredient_db)
             continue
 
-        if return_button.pressed:
+        if return_bt.pressed:
             return

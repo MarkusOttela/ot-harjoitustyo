@@ -19,7 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import sys
 import typing
 
-from src.common.exceptions import AbortMenuOperation
+from src.common.exceptions import ReturnToMainMenu
 from src.common.enums      import Program
 from src.common.utils      import get_list_of_user_account_names
 from src.entities.user     import User
@@ -147,5 +147,5 @@ def main_menu(gui           : 'GUI',
             if exit_bt.pressed:
                 sys.exit()
 
-        except AbortMenuOperation:
+        except ReturnToMainMenu:
             continue

@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions import AbortMenuOperation
+from src.common.exceptions import ReturnToMainMenu
 
 from src.ui.callback_classes          import Button
 from src.ui.gui_menu                  import GUIMenu
@@ -52,12 +52,13 @@ def select_meal_to_log(gui           : 'GUI',
             show_message(gui, title, 'No creatable meals yet in database.')
             return
 
-        single_recipe_buttons = {f'{single_recipe.name}': Button(
-            menu, closes_menu=True) for single_recipe in list_of_single_recipes}
-        mealprep_buttons      = {f'{mealprep.recipe_name}':
-                                 Button(menu, closes_menu=True) for mealprep in list_of_mealpreps}
+        single_recipe_buttons = {f'{single_recipe.name}': Button(menu, closes_menu=True)
+                                 for single_recipe in list_of_single_recipes}
 
-        cancel_button = Button(menu, closes_menu=True)
+        mealprep_buttons      = {f'{mealprep.recipe_name}': Button(menu, closes_menu=True)
+                                 for mealprep in list_of_mealpreps}
+
+        cancel_bt = Button(menu, closes_menu=True)
 
         for single_recipe in list_of_single_recipes:
             menu.menu.add.button(f'{str(single_recipe)}',
@@ -67,21 +68,21 @@ def select_meal_to_log(gui           : 'GUI',
             menu.menu.add.button(f'{str(mealprep)}',
                                  action=mealprep_buttons[mealprep.recipe_name].set_pressed)
 
-        menu.menu.add.button('Cancel', action=cancel_button.set_pressed)
+        menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()
 
-        if cancel_button.pressed:
+        if cancel_bt.pressed:
             return
 
         for single_recipe_name, button in single_recipe_buttons.items():
             if button.pressed:
                 recipe = recipe_db.get_recipe(single_recipe_name)
                 log_single_meal(gui, user, ingredient_db, recipe)
-                raise AbortMenuOperation('Meal added')
+                raise ReturnToMainMenu('Meal added')
 
         for mealprep_name, button in mealprep_buttons.items():
             if button.pressed:
                 mealprep = mealprep_db.get_mealprep(mealprep_name)
                 log_mealprep_meal(gui, user, recipe_db, ingredient_db, mealprep)
-                raise AbortMenuOperation('Meal added')
+                raise ReturnToMainMenu('Meal added')

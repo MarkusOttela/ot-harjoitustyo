@@ -24,6 +24,13 @@ class CalorinatorException(Exception):
     """Base-class for internal program exceptions."""
 
 
+class CriticalError(CalorinatorException):
+    """\
+    Exception that is raised when program's internal
+    logic is about to do something terribly wrong.
+    """
+
+
 class SecurityException(CalorinatorException):
     """Base-class for critical security exceptions that should close the program."""
 

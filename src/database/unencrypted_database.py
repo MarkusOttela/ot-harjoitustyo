@@ -22,7 +22,7 @@ import sqlite3
 from collections import ChainMap
 from typing      import Any
 
-from src.common.exceptions import IngredientNotFound, RecipeNotFound
+from src.common.exceptions import CriticalError, IngredientNotFound, RecipeNotFound
 from src.common.enums      import DatabaseFileName, Directories, DatabaseTableName, DatabaseTypes
 from src.common.utils      import ensure_dir
 
@@ -143,10 +143,10 @@ class IngredientDatabase(UnencryptedDatabase):
         sql_command += f' FROM {self.table_name}'
         sql_command += f" WHERE {self.db_metadata['name'][0]} == '{name}'"
 
-        result = self.cursor.execute(sql_command).fetchall()[0]
-
-        if not result:
-            raise IngredientNotFound(f"Could not find ingredient '{name}'.")
+        try:
+            result = self.cursor.execute(sql_command).fetchall()[0]
+        except IndexError:
+            raise IngredientNotFound(f"Could not find ingredient '{name}'.") from IndexError
 
         ingredient = Ingredient(name, NutritionalValues(*result[2:]),
                                 grams_per_unit=result[0],
@@ -156,6 +156,9 @@ class IngredientDatabase(UnencryptedDatabase):
 
     def remove_ingredient(self, ingredient: Ingredient) -> None:
         """Remove ingredient from database."""
+        if not isinstance(ingredient, Ingredient):
+            raise CriticalError(f"Provided parameter was not an Ingredient but {type(ingredient)} ")
+
         if not self.has_ingredient(ingredient):
             raise IngredientNotFound(f"No ingredient {ingredient.name} in database.")
 
@@ -165,11 +168,19 @@ class IngredientDatabase(UnencryptedDatabase):
 
     def replace_ingredient(self, ingredient: Ingredient) -> None:
         """Replace ingredient in database."""
+        if not isinstance(ingredient, Ingredient):
+            raise CriticalError(f"Provided parameter was not an Ingredient but"
+                                f" {type(ingredient)} ")
+
         self.remove_ingredient(ingredient)
         self.insert(ingredient)
 
     def has_ingredient(self, purp_ingredient: Ingredient) -> bool:
         """Returns True if the ingredient exists in the database."""
+        if not isinstance(purp_ingredient, Ingredient):
+            raise CriticalError(f"Provided parameter was not an Ingredient but "
+                                f"{type(purp_ingredient)} ")
+
         for ingredient in self.get_list_of_ingredients():
             if purp_ingredient == ingredient:
                 return True
@@ -213,10 +224,8 @@ class RecipeDatabase(UnencryptedDatabase):
                    author : str = ''
                    ) -> Recipe:
         """Get Recipe from database by name (and author)."""
-        sql_command  =  'SELECT '
-        sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])
-        sql_command += f' FROM {self.table_name}'
-        sql_command += f" WHERE name == '{name}'"
+        keys = ', '.join(list(self.db_metadata.keys())[1:])
+        sql_command  = f"SELECT {keys} FROM {self.table_name} WHERE name == '{name}'"
 
         if author:
             sql_command += f" AND author == '{author}'"
@@ -239,8 +248,10 @@ class RecipeDatabase(UnencryptedDatabase):
 
     def insert_recipe(self, recipe: Recipe) -> None:
         """Insert Recipe into the database."""
-        keys = list(self.db_metadata.keys())
+        if not isinstance(recipe, Recipe):
+            raise CriticalError(f"Provided parameter was not an Recipe but {type(recipe)} ")
 
+        keys   = list(self.db_metadata.keys())
         values = []
         for key, metadata in self.db_metadata.items():
             value = getattr(recipe, key)
@@ -256,26 +267,29 @@ class RecipeDatabase(UnencryptedDatabase):
 
             values.append(value)
 
-        sql_command = f'INSERT INTO {self.table_name} ('
-        sql_command += ', '.join(keys)
-        sql_command += ') VALUES ('
-        sql_command += ', '.join(['?' for _ in range(len(keys))])
-        sql_command += ')'
+        csv            = ', '.join(keys)
+        question_marks = ', '.join(['?' for _ in range(len(keys))])
+        sql_command    = f'INSERT INTO {self.table_name} ({csv}) VALUES ({question_marks})'
 
         self.cursor.execute(sql_command, values)
         self.cursor.connection.commit()
 
     def has_recipe(self, recipe: Recipe) -> bool:
         """Returns True if recipe exists in the database."""
+        if not isinstance(recipe, Recipe):
+            raise CriticalError(f"Provided parameter was not an Recipe but {type(recipe)} ")
+
         return any(name == recipe.name for name in self.get_list_of_recipe_names())
 
     def remove_recipe(self, recipe: Recipe) -> None:
         """Remove recipe from database."""
+        if not isinstance(recipe, Recipe):
+            raise CriticalError(f"Provided parameter was not an Recipe but {type(recipe)} ")
+
         if not self.has_recipe(recipe):
             raise RecipeNotFound(f"No recipe {recipe.name} in database.")
 
-        sql_command  = f'DELETE FROM {self.table_name}'
-        sql_command += f" WHERE name == '{recipe.name}'"
+        sql_command = f"DELETE FROM {self.table_name} WHERE name == '{recipe.name}'"
         self.cursor.execute(sql_command)
 
     def replace_recipe(self, recipe: Recipe) -> None:
@@ -309,24 +323,25 @@ class MealprepDatabase(UnencryptedDatabase):
 
     def get_mealprep(self, name: str) -> Mealprep:
         """Get Recipe from database by name."""
-        sql_command  =  'SELECT '
-        sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])
-        sql_command += f' FROM {self.table_name}'
-        sql_command += f" WHERE recipe_name == '{name}'"
+        keys        = ', '.join(list(self.db_metadata.keys())[1:])
+        sql_command = f"SELECT {keys} FROM {self.table_name} WHERE recipe_name == '{name}'"
 
-        result = self.cursor.execute(sql_command).fetchall()[0]
+        try:
+            result = self.cursor.execute(sql_command).fetchall()[0]
+        except IndexError:
+            raise RecipeNotFound(f"Could not find recipe '{name}'.") from IndexError
 
-        if result:
-            total_grams      = result[0]
-            cook_date        = result[1]
-            ingredient_grams = ast.literal_eval(result[2])
-            mealprep_nv      = NutritionalValues.from_serialized(result[3])
-            return Mealprep(name, total_grams, cook_date, ingredient_grams, mealprep_nv)
-
-        raise RecipeNotFound(f"Could not find recipe '{name}'.")
+        total_grams      = result[0]
+        cook_date        = result[1]
+        ingredient_grams = ast.literal_eval(result[2])
+        mealprep_nv      = NutritionalValues.from_serialized(result[3])
+        return Mealprep(name, total_grams, cook_date, ingredient_grams, mealprep_nv)
 
     def insert_mealprep(self, mealprep: Mealprep) -> None:
         """Insert Mealprep into the database."""
+        if not isinstance(mealprep, Mealprep):
+            raise CriticalError(f"Provided parameter was not an Mealprep but {type(mealprep)} ")
+
         keys = list(self.db_metadata.keys())
 
         values = []
@@ -338,21 +353,26 @@ class MealprepDatabase(UnencryptedDatabase):
                 value = value.serialize()
             values.append(value)
 
-        sql_command = f'INSERT INTO {self.table_name} ('
-        sql_command += ', '.join(keys)
-        sql_command += ') VALUES ('
-        sql_command += ', '.join(['?' for _ in range(len(keys))])
-        sql_command += ')'
+        csv            = ', '.join(keys)
+        question_marks = ', '.join(['?' for _ in range(len(keys))])
+
+        sql_command = f'INSERT INTO {self.table_name} ({csv}) VALUES ({question_marks})'
 
         self.cursor.execute(sql_command, values)
         self.cursor.connection.commit()
 
     def has_mealprep(self, mealprep: Mealprep) -> bool:
         """Returns True if the mealprep exists in the database."""
+        if not isinstance(mealprep, Mealprep):
+            raise CriticalError(f"Provided parameter was not an Mealprep but {type(mealprep)} ")
+
         return any(name == mealprep.recipe_name for name in self.get_list_of_mealprep_names())
 
     def remove_mealprep(self, mealprep: Mealprep) -> None:
         """Remove mealprep from the database."""
+        if not isinstance(mealprep, Mealprep):
+            raise CriticalError(f"Provided parameter was not an Mealprep but {type(mealprep)} ")
+
         if not self.has_mealprep(mealprep):
             raise RecipeNotFound(f"No mealprep {mealprep.recipe_name} in database.")
 

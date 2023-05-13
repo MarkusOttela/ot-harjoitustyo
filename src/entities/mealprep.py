@@ -16,6 +16,8 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
+from typing import Any
+
 from src.entities.nutritional_values import NutritionalValues
 
 
@@ -53,6 +55,16 @@ class Mealprep:
         self.cook_date        = cook_date
         self.ingredient_grams = ingredient_grams
         self.mealprep_nv      = mealprep_nv / self.total_grams
+
+    def __eq__(self, other: Any) -> bool:
+        """Returns True if the two Mealpreps are the same"""
+        if not isinstance(other, Mealprep):
+            return False
+        return self.recipe_name == other.recipe_name
+
+    def __ne__(self, other: Any) -> bool:
+        """Returns True if the two Mealpreps are not the same."""
+        return not self.__eq__(other)
 
     def __str__(self) -> str:
         """Return string-representation of the Mealprep."""

@@ -14,13 +14,18 @@ In this chapter we'll create a multi-ingredient recipe called Porridge
 <br><br><br>
 
 
-3. Enter the name for the recipe, e.g. `Milk` and select the default ingredient called `Fat-free Milk` 
+3. Enter the name for the recipe, e.g. `Porridge` (or `Otameal`) and select the default ingredients
+   * `Blueberry` 
+   * `Margarin` 
+   * `Rye Oatmeal` 
+   * `Salt` 
+   * `Water` 
 
-![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/4_multi_ingredient_recipe/1.jpg)
+![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/4_multi_ingredient_recipe/2.jpg)
 
 ---
 <br><br><br>
 
 4. Finally, when you're done press the `Done` button.
 
-![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/4_multi_ingredient_recipe/2.jpg)
+![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/4_multi_ingredient_recipe/3.jpg)

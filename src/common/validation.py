@@ -16,6 +16,8 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
+from string import ascii_lowercase, ascii_uppercase, digits, punctuation
+
 from typing import Any, Optional
 
 from src.common.exceptions import ValidationError
@@ -23,6 +25,7 @@ from src.common.exceptions import ValidationError
 integers = list(map(str, range(0, 10)))
 floats   = integers + ['.']
 date     = integers + ['/']
+strings  = ascii_lowercase + ascii_uppercase + digits + punctuation + ' '
 
 
 def validate_type(key            : str,

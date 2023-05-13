@@ -22,6 +22,7 @@ from typing import Optional
 
 from src.common.enums      import ColorScheme, FontSize
 from src.common.exceptions import ReturnToMainMenu
+from src.common.validation import strings
 
 from src.entities.recipe import Recipe
 from src.entities.user   import User
@@ -67,12 +68,14 @@ def add_recipe(gui           : 'GUI',
             menu.menu.add.text_input(f'Name: ',
                                      onchange=name.set_value,
                                      default=name.value,
+                                     valid_chars=strings,
                                      maxchar=19,
                                      font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.text_input(f'Author: ',
                                      onchange=author.set_value,
                                      default=author.value,
+                                     valid_chars=strings,
                                      maxchar=19,
                                      font_color=ColorScheme.FONT_COLOR.value)
 

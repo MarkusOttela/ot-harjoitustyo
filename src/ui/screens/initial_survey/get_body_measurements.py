@@ -18,6 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from src.common.enums      import ColorScheme
 from src.common.exceptions import ReturnToMainMenu
 from src.common.validation import floats, validate_positive_float
 
@@ -62,13 +63,15 @@ def get_body_measurements(gui: 'GUI') -> tuple:
                                      onchange=height.set_value,
                                      default=default_height,
                                      valid_chars=floats,
-                                     maxchar=5)
+                                     maxchar=5,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.text_input('Your weight (kg) : ',
                                      onchange=weight.set_value,
                                      default=default_weight,
                                      valid_chars=floats,
-                                     maxchar=5)
+                                     maxchar=5,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.button('Done', done_bt.set_pressed)
             menu.menu.add.label('')

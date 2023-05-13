@@ -18,7 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.enums import Color, ColorScheme, FontSize
+from src.common.enums      import Color, ColorScheme, FontSize
+from src.common.validation import strings
 
 from src.entities.recipe import Recipe
 
@@ -90,12 +91,14 @@ def edit_recipe(gui           : 'GUI',
             menu.menu.add.text_input(f'Name: ',
                                      onchange=name.set_value,
                                      default=name.value,
+                                     valid_chars=strings,
                                      maxchar=19,
                                      font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.text_input(f'Author: ',
                                      onchange=author.set_value,
                                      default=author.value,
+                                     valid_chars=strings,
                                      maxchar=19,
                                      font_color=ColorScheme.FONT_COLOR.value)
 

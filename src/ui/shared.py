@@ -17,7 +17,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 from src.common.enums      import Color, ColorScheme, FontSize
-from src.common.validation import floats
+from src.common.validation import floats, strings
 
 from src.ui.gui_menu import GUIMenu
 
@@ -32,8 +32,9 @@ def add_ingredient_gram_inputs(menu               : GUIMenu,
         warning_color = Color.RED.value
         normal_color  = ColorScheme.FONT_COLOR.value
 
-        valid_chars = None if metadata[k][1] == str else floats
+        valid_chars = strings if metadata[k][1] == str else floats
         font_color  = warning_color if k in failed_conversions else normal_color
+
         menu.menu.add.text_input(f'{metadata[k][0]} (g): ',
                                  onchange=string_inputs[k].set_value,
                                  default=string_inputs[k].value,
@@ -56,9 +57,10 @@ def add_ingredient_attributes(menu               : GUIMenu,
         warning_color = Color.RED.value
         normal_color  = ColorScheme.FONT_COLOR.value
 
-        valid_chars = None if metadata[k][1] == str else floats
+        valid_chars = strings if metadata[k][1] == str else floats
         font_color  = warning_color if k in failed_conversions else normal_color
         units       = f' ({metadata[k][2]})' if len(metadata[k]) == 4 else ''
+
         menu.menu.add.text_input(f'{metadata[k][0]}{units}: ',
                                  onchange=string_inputs[k].set_value,
                                  default=string_inputs[k].value,

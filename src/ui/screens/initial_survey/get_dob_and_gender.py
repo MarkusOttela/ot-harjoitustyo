@@ -20,7 +20,7 @@ import typing
 
 from datetime import datetime
 
-from src.common.enums      import Format, Gender
+from src.common.enums import Format, Gender, ColorScheme
 from src.common.exceptions import ReturnToMainMenu
 from src.common.validation import date
 
@@ -47,9 +47,11 @@ def get_dob_and_gender(gui: 'GUI') -> tuple:
             return_bt = Button(menu, closes_menu=True)
 
             menu.menu.add.text_input('Your DoB <dd/mm/yyyy> : ',
-                                     valid_chars=date, maxchar=10,
                                      onchange=dob.set_value,
-                                     default=dob.value)
+                                     valid_chars=date,
+                                     maxchar=10,
+                                     default=dob.value,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.toggle_switch('Your gender :',
                                         onchange=is_male.set_value,

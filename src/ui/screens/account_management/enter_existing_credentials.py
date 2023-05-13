@@ -18,6 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from src.common.enums      import ColorScheme
 from src.common.exceptions import IncorrectPassword, ReturnToMainMenu
 from src.common.utils      import get_list_of_user_account_names
 
@@ -61,7 +62,10 @@ def enter_existing_credentials(gui: 'GUI') -> UserCredentials:
                                      selection_box_width=280,
                                      **gui.drop_selection_theme)
 
-            menu.menu.add.text_input('Password: ', onchange=password.set_value, password=True)
+            menu.menu.add.text_input('Password: ',
+                                     onchange=password.set_value,
+                                     password=True,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.button('Done', done_bt.set_pressed)
             menu.menu.add.label('')

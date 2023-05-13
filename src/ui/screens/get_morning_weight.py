@@ -18,9 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.validation   import validate_positive_float, floats
-from src.ui.gui_menu         import GUIMenu
+from src.common.enums        import ColorScheme
+from src.common.validation   import floats, validate_positive_float
+
 from src.ui.callback_classes import StringInput
+from src.ui.gui_menu         import GUIMenu
 
 if typing.TYPE_CHECKING:
     from src.entities.user import User
@@ -47,12 +49,16 @@ def get_morning_weight(gui: 'GUI', user: 'User') -> None:
                 default_weight = ''
 
             menu.menu.add.label('Good Morning!\n')
+
             menu.menu.add.text_input('Your weight (kg) : ',
                                      onchange=weight.set_value,
                                      default=default_weight,
                                      valid_chars=floats,
-                                     maxchar=5)
+                                     maxchar=5,
+                                     font_color=ColorScheme.FONT_COLOR.value)
+
             menu.menu.add.button('Done', action=menu.menu.disable)
+
             menu.show_error_message(error_message)
             menu.start()
 

@@ -18,8 +18,10 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
+from src.common.enums      import ColorScheme
 from src.common.exceptions import ReturnToMainMenu
 from src.common.utils      import get_list_of_user_account_names
+from src.common.validation import strings
 
 from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
@@ -50,15 +52,20 @@ def register_credentials(gui: 'GUI') -> tuple:
 
             menu.menu.add.text_input(f'Your name: ',
                                      onchange=user_name.set_value,
-                                     default=user_name.value)
+                                     default=user_name.value,
+                                     maxchar=20,
+                                     valid_chars=strings,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.text_input(f'Password: ',
                                      onchange=password_1.set_value,
-                                     password=True)
+                                     password=True,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.text_input(f'Password (again): ',
                                      onchange=password_2.set_value,
-                                     password=True)
+                                     password=True,
+                                     font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.button('Done', done_bt.set_pressed)
             menu.menu.add.label('')

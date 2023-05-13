@@ -1,4 +1,4 @@
-# Logging meals
+# Logging a Meal
 
 To use Calorinator, when you eat something, press the `Log Meal` button in the `Main Menu` to open the `Select Meal` sub-menu. 
 

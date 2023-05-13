@@ -18,8 +18,9 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import unittest
 
-from src.common.conversion import str_to_float, str_to_int
+from src.common.conversion import str_to_float, str_to_int, convert_input_fields
 from src.common.exceptions import ConversionError
+from src.ui.callback_classes import StringInput
 
 
 class TestConversion(unittest.TestCase):
@@ -64,3 +65,65 @@ class TestConversion(unittest.TestCase):
             for v in ['string', '1.0', '']:
                 with self.assertRaises(ConversionError):
                     str_to_int('test', v, negative_allowed=b)
+
+
+class TestCovertInputFields(unittest.TestCase):
+
+    def test_successful_conversions(self) -> None:
+        metadata = {
+            'integer': ('integer', int   ),
+            'float':   ('float',   float ),
+            'string':  ('string',  str   ),
+        }
+
+        string_inputs = {'integer': StringInput(),
+                         'float':   StringInput(),
+                         'string':  StringInput()}
+
+        string_inputs['integer'].set_value('1')
+        string_inputs['float'].set_value('1.0')
+        string_inputs['string'].set_value('test')
+
+        success, value_dict = convert_input_fields(string_inputs, metadata)
+
+        self.assertTrue(success)
+        self.assertIsInstance(value_dict['integer'], int)
+        self.assertIsInstance(value_dict['float'], float)
+        self.assertIsInstance(value_dict['string'], str)
+
+    def test_unsuccessful_conversions(self) -> None:
+        metadata = {
+            'integer': ('integer', int   ),
+            'float':   ('float',   float ),
+            'string':  ('string',  str   ),
+        }
+
+        string_inputs = {'integer': StringInput(),
+                         'float':   StringInput(),
+                         'string':  StringInput()}
+
+        string_inputs['integer'].set_value('a')
+        string_inputs['float'].set_value('b')
+
+        success, failed_conversions = convert_input_fields(string_inputs, metadata)
+
+        self.assertFalse(success)
+        self.assertIsNone(failed_conversions['integer'])
+        self.assertIsNone(failed_conversions['float'])
+
+    def test_unknown_type_raise_value_error(self) -> None:
+        metadata = {
+            'integer' : ('integer',   int   ),
+            'float'   :   ('float',   float ),
+            'Nonetype':  ('Nonetype', None  ),
+        }
+
+        string_inputs = {'integer':  StringInput(),
+                         'float':    StringInput(),
+                         'Nonetype': StringInput()}
+
+        string_inputs['integer'].set_value('a')
+        string_inputs['float'].set_value('b')
+
+        with self.assertRaises(ValueError):
+            convert_input_fields(string_inputs, metadata)

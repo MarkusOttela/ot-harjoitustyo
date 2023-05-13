@@ -37,8 +37,9 @@ def calculate_bmr(gender    : Gender,
         ~75% with overweight
         On average, ~5% more accurate than Harris-Benedict
 
-    [1] https://inspire.edu.lb/inspire/educational-article-resources/
-        How-to-Calculate-Your-Calorie-Intake-BMR-and-TDEE
+    [1] https://www.omnicalculator.com/health/bmr
+
+    # BMR (kcal/day) = 10 × weight (kg) + 6.25 × height (cm) – 5 × age (y) + s (kcal/day)
     """
     constant = 5 if gender == Gender.MALE else -161
 
@@ -52,6 +53,8 @@ def calculate_nv_goal(user: 'User') -> NutritionalValues:
     """Calculate the daily macro goals for the user.
 
     Protein goal: avg. form https://youtu.be/l7jIU_73ZaM?t=403
+
+    Recomposition diet formula modified from Nippard - The Ultimate Guide to Body Recomposition
     """
     bmr = calculate_bmr(user.gender,
                         user.get_todays_weight(),

@@ -16,22 +16,13 @@ details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
-# import hashlib
-# import multiprocessing
-# import os
-# import random
-# import subprocess
 import unittest
-
-# from string        import ascii_letters, digits
 from unittest      import mock
 from unittest.mock import MagicMock
 
-# import argon2
 
-from src.common.exceptions      import SecurityException
-from src.common.crypto import derive_database_key, CryptoLiterals, encrypt_and_sign, auth_and_decrypt
-# from tests.utils                import cd_unit_test, cleanup
+from src.common.exceptions import SecurityException
+from src.common.crypto     import derive_database_key, CryptoLiterals, encrypt_and_sign, auth_and_decrypt
 
 """
 Author's note: The testing code here is modified from another personal project
@@ -52,6 +43,13 @@ class TestArgon2Wrapper(unittest.TestCase):
         salt, key = derive_database_key(self.password, self.salt)
         self.assertEqual(salt, self.salt)
         self.assertEqual(key.hex(), 'b402e985f14bb42fc10d1ed490f9d306f1dbbacd5aa244ee892d096fd7e3e325')
+
+    @mock.patch('os.getrandom', side_effect=[32*b'a'])
+    @mock.patch('multiprocessing.cpu_count', return_value=1)
+    def test_derive_database_key_without_salt(self, *_):
+        """Test same password and salt produce the same value consistently during development."""
+        salt, key = derive_database_key(self.password)
+        self.assertEqual(key.hex(), 'c4a7fce085d95fb5b3510a8f1054af32d2ae56d35a34ca892058284b2590c2ca')
 
 
 class TestXChaCha20Poly1305(unittest.TestCase):

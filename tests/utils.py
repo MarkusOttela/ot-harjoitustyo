@@ -20,6 +20,10 @@ import os
 import shutil
 import typing
 
+from src.common.enums import Gender, PhysicalActivityLevel, DietType
+from src.entities.user import User
+from src.entities.user_credentials import UserCredentials
+
 if typing.TYPE_CHECKING:
     pass
 
@@ -43,3 +47,17 @@ def cleanup(name) -> None:
     """Remove unit test related directory."""
     os.chdir('..')
     shutil.rmtree(f'{name}/')
+
+
+def create_mock_user() -> User:
+    """Create mock user for unit testing purposes."""
+    user_credentials = UserCredentials('unittest', salt=32*b'a', database_key=32*b'a')
+    user = User(user_credentials,
+                dob='01/01/1990',
+                gender=Gender.MALE,
+                init_weight=80.0,
+                height=180,
+                pal=PhysicalActivityLevel.MODERATELY_ACTIVE,
+                diet_type=DietType.DIET)
+    user.set_morning_weight(80.1)
+    return user

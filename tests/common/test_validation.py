@@ -19,7 +19,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import unittest
 
 from src.common.exceptions import ValidationError
-from src.common.validation import validate_bool, validate_float, validate_int, validate_str, validate_type
+from src.common.validation import (validate_bool, validate_float, validate_int, validate_str,
+                                   validate_type, validate_positive_float)
 
 
 class TestValidation(unittest.TestCase):
@@ -92,3 +93,18 @@ class TestValidation(unittest.TestCase):
             # Invalid values
             with self.assertRaises(ValidationError):
                 validate_bool('test', value)
+
+    def test_validate_positive_float(self):
+        # Valid values
+        self.assertEqual(5.0,  validate_positive_float(' 5.0', 'test',))
+        self.assertEqual(10.0, validate_positive_float(' 10.0', 'test', upper_limit=10.0))
+
+        # Invalid values
+        for bool_ in [None, 5]:
+            for string in [None, '', '-1', 'string']:
+                with self.assertRaises(ValueError):
+                    validate_positive_float(string, 'test', upper_limit=bool_)
+
+        # Upper limit exceeded
+        with self.assertRaises(ValueError):
+            validate_positive_float('10.1', 'test', upper_limit=10)

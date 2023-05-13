@@ -89,9 +89,20 @@ def get_body_measurements(gui: 'GUI') -> tuple:
                     raise ValueError("Please enter your height")
                 height_f = validate_positive_float(height.value)
 
+                # Tallest and shortest adults who ever lived as limits.
+                if height_f > 272.0 or height_f < 54.6:
+                    raise ValueError("Please enter a valid height.")
+
                 if weight.value == '':
                     raise ValueError("Please enter your current weight")
                 weight_f = validate_positive_float(weight.value)
+
+                bmi = weight_f / ((height_f / 100) ** 2)
+
+                if bmi > 40:
+                    raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously high!)")
+                elif bmi < 16:
+                    raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously low!)")
 
                 return weight_f, height_f
 

@@ -244,10 +244,16 @@ class RecipeDatabase(UnencryptedDatabase):
         values = []
         for key, metadata in self.db_metadata.items():
             value = getattr(recipe, key)
+
             if metadata[1] == list:
-                value = '\x1f'.join([v.name for v in value]) if value else 'None'
+                if not value:
+                    value = 'None'
+                elif not isinstance(value[0], str):
+                    value = '\x1f'.join([v.name for v in value])
+
             if metadata[1] == bool:
                 value = str(value)
+
             values.append(value)
 
         sql_command = f'INSERT INTO {self.table_name} ('

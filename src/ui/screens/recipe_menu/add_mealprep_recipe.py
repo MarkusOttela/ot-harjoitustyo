@@ -20,10 +20,9 @@ import typing
 
 from typing import Optional
 
-from pylint.checkers import strings
-
 from src.common.enums      import ColorScheme, FontSize
 from src.common.exceptions import ReturnToMainMenu
+from src.common.validation import strings
 
 from src.entities.recipe import Recipe
 from src.entities.user   import User

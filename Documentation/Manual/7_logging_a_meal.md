@@ -15,7 +15,7 @@ For single and multi-ingredient recipes (`Milk` and `Porridge` in this example),
 ---
 <br><br><br>
 
-2. Enter the grams of ingredients
+2. Enter the grams of ingredients and press `Done` when you're ready.
 
 ![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/7_logging_single_ingredient_recipe/2.jpg)
 ![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/8_logging_multi_ingredient_recipe/2.jpg)
@@ -27,4 +27,6 @@ For single and multi-ingredient recipes (`Milk` and `Porridge` in this example),
 
 ## Mealprep Recipes
 
-![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/9_logging_mealprep/1.jpg)
+For meal-preps, you only need to specify the amount of grams for the Ragù sauce, and the accompaniments. 
+
+![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Manual/Screenshots/9_logging_mealprep/2.jpg)

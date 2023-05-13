@@ -1,4 +1,4 @@
-# Morning Measurements
+# Weight Progress
 
 As the diet progresses, the morning weight measurements are logged into your private database. 
 

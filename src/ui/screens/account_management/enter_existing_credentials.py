@@ -65,6 +65,7 @@ def enter_existing_credentials(gui: 'GUI') -> UserCredentials:
             menu.menu.add.text_input('Password: ',
                                      onchange=password.set_value,
                                      password=True,
+                                     password_char=' ',
                                      font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.button('Done', done_bt.set_pressed)

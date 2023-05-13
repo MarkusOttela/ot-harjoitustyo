@@ -60,11 +60,13 @@ def register_credentials(gui: 'GUI') -> tuple:
             menu.menu.add.text_input(f'Password: ',
                                      onchange=password_1.set_value,
                                      password=True,
+                                     password_char=' ',
                                      font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.text_input(f'Password (again): ',
                                      onchange=password_2.set_value,
                                      password=True,
+                                     password_char=' ',
                                      font_color=ColorScheme.FONT_COLOR.value)
 
             menu.menu.add.button('Done', done_bt.set_pressed)

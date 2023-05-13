@@ -21,8 +21,8 @@ import typing
 from src.ui.callback_classes import Button
 from src.ui.gui_menu         import GUIMenu
 
-from src.ui.screens.show_message                import show_message
 from src.ui.screens.mealprep_menu.edit_mealprep import edit_mealprep
+from src.ui.screens.show_message                import show_message
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase

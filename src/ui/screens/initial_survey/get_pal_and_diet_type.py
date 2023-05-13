@@ -21,7 +21,7 @@ import typing
 from src.common.exceptions import ReturnToMainMenu
 from src.common.enums      import DietType, FontSize, PhysicalActivityLevel
 
-from src.ui.callback_classes import DropSelection, Button
+from src.ui.callback_classes import Button, DropSelection
 from src.ui.gui_menu         import GUIMenu
 
 if typing.TYPE_CHECKING:

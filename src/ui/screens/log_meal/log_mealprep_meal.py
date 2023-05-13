@@ -21,8 +21,8 @@ import typing
 from datetime import datetime
 
 from src.common.conversion import convert_input_fields
-from src.common.exceptions import ReturnToMainMenu
 from src.common.enums      import Format
+from src.common.exceptions import ReturnToMainMenu
 
 from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
 
@@ -31,7 +31,7 @@ from src.entities.mealprep import Mealprep
 
 from src.ui.callback_classes import Button, StringInput
 from src.ui.gui_menu         import GUIMenu
-from src.ui.shared            import add_ingredient_gram_inputs
+from src.ui.shared           import add_ingredient_gram_inputs
 
 from src.ui.screens.show_message import show_message
 

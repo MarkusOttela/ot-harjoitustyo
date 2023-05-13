@@ -22,12 +22,13 @@ import pygame
 
 from src.common.exceptions import EscPressed, KeyPress
 
-from src.common.enums                import CalContent
-from src.common.formulae             import calculate_nv_goal
-from src.entities.nutritional_values import NutritionalValues
+from src.common.enums    import CalContent
+from src.common.formulae import calculate_nv_goal
 
-from src.entities.user import User
-from src.ui.gui        import GUI
+from src.entities.nutritional_values import NutritionalValues
+from src.entities.user               import User
+
+from src.ui.gui import GUI
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import RecipeDatabase
@@ -42,7 +43,9 @@ def align_float(float_list: list) -> list:
             for s, d in zip(float_strings, decimal_points)]
 
 
-def get_meal_lines(user: 'User', recipe_db: 'RecipeDatabase') -> tuple:
+def get_meal_lines(user      : 'User',
+                   recipe_db : 'RecipeDatabase'
+                   ) -> tuple:
     """Get meal lines."""
     total_consumed_kcal      = 0.0
     total_consumed_carbs_g   = 0.0
@@ -53,46 +56,26 @@ def get_meal_lines(user: 'User', recipe_db: 'RecipeDatabase') -> tuple:
     meal_list = user.get_todays_meals()
 
     # Columns
-    c1 = []
-    c2 = []
-    c3 = []
-    c4 = []
-    c5 = []
-    c6 = []
-    c7 = []
-    c8 = []
+    c1, c2, c3, c4, c5, c6, c7, c8 = ([] for _ in range(8))
 
-    found_meals = False
-
-    for meal in meal_list:
-        name  = meal.name
-        grams = meal.total_weight
-
-        meal_energy_kcal = meal.meal_nv.kcal
-        meal_carbs_g     = meal.meal_nv.carbohydrates_g
-        meal_protein_g   = meal.meal_nv.protein_g
-        meal_fat_g       = meal.meal_nv.fat_g
-
-        total_consumed_kcal      += meal_energy_kcal
-        total_consumed_carbs_g   += meal_carbs_g
-        total_consumed_protein_g += meal_protein_g
-        total_consumed_fat_g     += meal_fat_g
-
-        c1.append(len(meal.eat_time) * ' ')
-        c2.append(meal.eat_time)
-        c3.append(name)
-        c4.append(grams)
-        c5.append(meal_protein_g)
-        c6.append(meal_energy_kcal)
-        c7.append(meal_carbs_g)
-        c8.append(meal_fat_g)
-
-        found_meals = True
-
-    if not found_meals:
+    if not meal_list:
         lines.append("    <n/a>")
+    else:
+        for meal in meal_list:
+            c1.append(len(meal.eat_time) * ' ')
+            c2.append(meal.eat_time)
+            c3.append(meal.name)
+            c4.append(meal.total_weight)
+            c5.append(meal.meal_nv.protein_g)
+            c6.append(meal.meal_nv.kcal)
+            c7.append(meal.meal_nv.carbohydrates_g)
+            c8.append(meal.meal_nv.fat_g)
 
-    if found_meals:
+            total_consumed_kcal      += meal.meal_nv.kcal
+            total_consumed_carbs_g   += meal.meal_nv.carbohydrates_g
+            total_consumed_protein_g += meal.meal_nv.protein_g
+            total_consumed_fat_g     += meal.meal_nv.fat_g
+
         c4s = align_float(c4)
         c5s = align_float(c5)
         c6s = align_float(c6)
@@ -123,7 +106,9 @@ def get_meal_lines(user: 'User', recipe_db: 'RecipeDatabase') -> tuple:
     return lines, total_consumed_kcal, total_consumed_carbs_g
 
 
-def get_daily_macro_lines(user: 'User', total_burned_carbs_g: float) -> list:
+def get_daily_macro_lines(user                 : 'User',
+                          total_burned_carbs_g : float
+                          ) -> list:
     """Get daily macro lines."""
     nv_goals = calculate_nv_goal(user)
 
@@ -213,11 +198,11 @@ def get_calorie_balance(user: 'User') -> list:
     bmr_warning = f'! Below BMR' if consumed_kcal < bmr_kcal else ''
 
     consumed_carbs_g_aligned, bmr_carbs_g_aligned = align_float([consumed_carbs_g, bmr_carbs_g])
-    consumed_fat_g_aligned, bmr_fat_g_aligned     = align_float([consumed_fats_g, bmr_fat_g])
+    consumed_fat_g_aligned,   bmr_fat_g_aligned   = align_float([consumed_fats_g,  bmr_fat_g  ])
     consumed_total_g_aligned, bmr_total_g_aligned = align_float([total_consumed_g, bmr_total_g])
 
     carb_total_change_g = consumed_carbs_g - bmr_carbs_g
-    fat_total_change_g  = consumed_fats_g - bmr_fat_g
+    fat_total_change_g  = consumed_fats_g  - bmr_fat_g
 
     weight_change_dir = '+' if weight_change_g     >= 0 else ''
     carb_change_dir   = '-' if carb_total_change_g  < 0 else '+'

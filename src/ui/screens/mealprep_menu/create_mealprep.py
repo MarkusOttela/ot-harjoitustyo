@@ -22,18 +22,18 @@ import typing
 from src.common.conversion import convert_input_fields
 from src.common.enums      import Format
 
-from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase
+from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase
 
 from src.entities.mealprep           import Mealprep
 from src.entities.nutritional_values import NutritionalValues
 from src.entities.recipe             import Recipe
 
-from src.ui.gui_menu             import GUIMenu
-from src.ui.callback_classes     import Button, StringInput
+from src.ui.gui_menu         import GUIMenu
+from src.ui.callback_classes import Button, StringInput
+from src.ui.shared           import add_ingredient_gram_inputs
+
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
-
-from src.ui.shared import add_ingredient_gram_inputs
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

@@ -31,7 +31,7 @@ from src.entities.recipe             import Recipe
 
 from src.ui.callback_classes import Button, StringInput
 from src.ui.gui_menu         import GUIMenu
-from src.ui.shared            import add_ingredient_gram_inputs
+from src.ui.shared           import add_ingredient_gram_inputs
 
 from src.ui.screens.show_message import show_message
 

@@ -26,8 +26,8 @@ from src.common.exceptions import ReturnToMainMenu
 from src.entities.recipe import Recipe
 from src.entities.user   import User
 
+from src.ui.callback_classes import Button, MultiSelection, StringInput
 from src.ui.gui_menu         import GUIMenu
-from src.ui.callback_classes import Button, StringInput, MultiSelection
 
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
@@ -80,8 +80,8 @@ def add_mealprep_recipe(gui           : 'GUI',
 
             menu = GUIMenu(gui, title)
 
-            return_bt = Button(menu, closes_menu=True)
             done_bt   = Button(menu, closes_menu=True)
+            return_bt = Button(menu, closes_menu=True)
 
             menu.menu.add.text_input(f'Name: ',
                                      onchange=name.set_value,

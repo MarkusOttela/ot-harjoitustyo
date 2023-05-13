@@ -20,13 +20,14 @@ import typing
 
 from typing import Optional
 
-from src.common.enums import ColorScheme, FontSize
+from src.common.enums      import ColorScheme, FontSize
+from src.common.exceptions import ReturnToMainMenu
 
 from src.entities.recipe import Recipe
 from src.entities.user   import User
 
+from src.ui.callback_classes import Button, MultiSelection, StringInput
 from src.ui.gui_menu         import GUIMenu
-from src.ui.callback_classes import Button, StringInput, MultiSelection
 
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
@@ -109,14 +110,14 @@ def add_recipe(gui           : 'GUI',
                 if not recipe_db.has_recipe(new_recipe):
                     recipe_db.insert_recipe(new_recipe)
                     show_message(gui, title, 'Recipe has been added.')
-                    return
+                    raise ReturnToMainMenu('Recipe added.')
 
                 if get_yes(gui, title,
                            f'Recipe {str(new_recipe)} already exists. Overwrite(?)',
                            default_str='No'):
                     recipe_db.replace_recipe(new_recipe)
                     show_message(gui, title, 'Recipe has been replaced.')
-                    return
+                    raise ReturnToMainMenu('Recipe replaced.')
 
         except ValueError as e:
             error_message = e.args[0]

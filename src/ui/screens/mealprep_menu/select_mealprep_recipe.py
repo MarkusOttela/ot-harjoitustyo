@@ -18,11 +18,13 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions                        import ReturnToMainMenu
-from src.ui.gui_menu                              import GUIMenu
+from src.common.exceptions import ReturnToMainMenu
+
+from src.ui.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
+
 from src.ui.screens.mealprep_menu.create_mealprep import create_mealprep
 from src.ui.screens.show_message                  import show_message
-from src.ui.callback_classes                      import Button
 
 if typing.TYPE_CHECKING:
     from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
@@ -52,6 +54,7 @@ def select_mealprep_recipe_to_create(gui           : 'GUI',
             author = f' ({recipe.author})' if recipe.author else ''
             menu.menu.add.button(f'{recipe.name}{author}',
                                  action=buttons[recipe.name].set_pressed)
+
         menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()

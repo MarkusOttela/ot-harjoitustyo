@@ -51,6 +51,7 @@ def select_recipe_to_edit(gui           : 'GUI',
             author = f' ({recipe.author})' if recipe.author else ''
             menu.menu.add.button(f'{recipe.name}{author}',
                                  action=buttons[recipe.name].set_pressed)
+
         menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()

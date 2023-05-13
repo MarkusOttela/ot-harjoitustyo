@@ -20,9 +20,10 @@ import typing
 
 
 from src.common.conversion import convert_input_fields
-from src.common.enums    import Color
+from src.common.exceptions import ReturnToMainMenu
+from src.common.enums      import Color
 
-from src.entities.mealprep import Mealprep
+from src.entities.mealprep           import Mealprep
 from src.entities.nutritional_values import NutritionalValues
 
 from src.ui.gui_menu         import GUIMenu
@@ -44,17 +45,20 @@ def edit_mealprep(gui           : 'GUI',
                   orig_mealprep : Mealprep,
                   ) -> None:
     """Render the `Edit Mealprep` menu."""
-    title    = 'Edit Mealprep'
-    keys     = list(orig_mealprep.ingredient_grams.keys()) + ['total_grams']
-    metadata = {k: (k, float) for k in keys}
+    title = 'Edit Mealprep'
 
-    metadata['total_grams'] = ('Total Weight', float)
-    failed_conversions      = {}  # type: dict
-    string_inputs           = {k: StringInput() for k in keys}
+    keys = list(orig_mealprep.ingredient_grams.keys()) + ['total_grams']
 
-    # Prefill fields with previous data
+    failed_conversions = {}  # type: dict
+
+    string_inputs = {k: StringInput() for k in keys}
+    metadata      = {k: (k, float)    for k in keys}
+
+    # Prefill fields
     for k in orig_mealprep.ingredient_grams.keys():
         string_inputs[k].set_value(orig_mealprep.ingredient_grams[k])
+
+    metadata['total_grams']            = ('Total Weight', float)
     string_inputs['total_grams'].value = str(orig_mealprep.total_grams)
 
     while True:
@@ -83,7 +87,12 @@ def edit_mealprep(gui           : 'GUI',
 
         if done_bt.pressed:
             success, weight_dict = convert_input_fields(string_inputs, metadata)
-            total_grams          = weight_dict['total_grams']
+
+            if not success:
+                failed_conversions = weight_dict
+                continue
+
+            total_grams = weight_dict['total_grams']
             weight_dict.pop('total_grams')
 
             mealprep_nv = NutritionalValues()
@@ -101,17 +110,17 @@ def edit_mealprep(gui           : 'GUI',
             if not recipe_id_changed:
                 mealprep_db.replace_mealprep(new_mealprep)
                 show_message(gui, title, 'Mealprep has been updated.')
-                return
+                raise ReturnToMainMenu("Mealprep updated.")
 
             if not mealprep_db.has_mealprep(new_mealprep):
                 mealprep_db.remove_mealprep(orig_mealprep)
                 mealprep_db.insert_mealprep(new_mealprep)
                 show_message(gui, title, 'Mealprep has been renamed and updated.')
-                return
+                raise ReturnToMainMenu("Mealprep renamed and updated.")
 
             if get_yes(gui, title,
                        f'Another mealprep {str(new_mealprep)} already exists. Overwrite(?)',
                        default_str='No'):
                 mealprep_db.replace_mealprep(new_mealprep)
                 show_message(gui, title, 'Mealprep has been replaced.')
-                return
+                raise ReturnToMainMenu("Mealprep replaced.")

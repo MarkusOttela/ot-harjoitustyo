@@ -23,14 +23,14 @@ from src.common.enums import Color, ColorScheme, FontSize
 from src.entities.recipe import Recipe
 
 from src.ui.gui_menu         import GUIMenu
-from src.ui.callback_classes import Button, StringInput, MultiSelection
+from src.ui.callback_classes import Button, MultiSelection, StringInput
 
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
 
 if typing.TYPE_CHECKING:
+    from src.database.unencrypted_database import IngredientDatabase, RecipeDatabase
     from src.ui.gui import GUI
-    from src.database.unencrypted_database import RecipeDatabase, IngredientDatabase
 
 
 def edit_recipe(gui           : 'GUI',
@@ -81,12 +81,11 @@ def edit_recipe(gui           : 'GUI',
 
     while True:
         try:
-
             menu = GUIMenu(gui, title)
 
-            return_bt = Button(menu, closes_menu=True)
             done_bt   = Button(menu, closes_menu=True)
             delete_bt = Button(menu, closes_menu=True)
+            return_bt = Button(menu, closes_menu=True)
 
             menu.menu.add.text_input(f'Name: ',
                                      onchange=name.set_value,
@@ -139,7 +138,7 @@ def edit_recipe(gui           : 'GUI',
             if delete_bt.pressed:
                 if get_yes(gui, title, f"Delete {str(orig_recipe)}?", 'No'):
                     recipe_db.remove_recipe(orig_recipe)
-                    show_message(gui, title, 'Recipe has been removed.')
+                    show_message(gui, title, 'Recipe has been deleted.')
                     return
 
             if done_bt.pressed:
@@ -171,6 +170,7 @@ def edit_recipe(gui           : 'GUI',
                     recipe_db.replace_recipe(new_recipe)
                     show_message(gui, title, 'Recipe has been replaced.')
                     return
+
         except ValueError as e:
             error_message = e.args[0]
             continue

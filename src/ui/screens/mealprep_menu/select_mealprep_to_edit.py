@@ -53,6 +53,7 @@ def select_mealprep_to_edit(gui           : 'GUI',
         for mealprep in list_of_mealpreps:
             menu.menu.add.button(f'{str(mealprep)}',
                                  action=buttons[mealprep.recipe_name].set_pressed)
+
         menu.menu.add.button('Cancel', action=cancel_bt.set_pressed)
 
         menu.start()

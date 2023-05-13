@@ -20,8 +20,8 @@ import typing
 
 from src.common.exceptions import ReturnToMainMenu
 
-from src.ui.callback_classes          import Button
-from src.ui.gui_menu                  import GUIMenu
+from src.ui.callback_classes import Button
+from src.ui.gui_menu         import GUIMenu
 
 from src.ui.screens.log_meal.log_mealprep_meal import log_mealprep_meal
 from src.ui.screens.log_meal.log_single_meal   import log_single_meal
@@ -38,7 +38,6 @@ def select_meal_to_log(gui           : 'GUI',
                        mealprep_db   : 'MealprepDatabase',
                        recipe_db     : 'RecipeDatabase',
                        ingredient_db : 'IngredientDatabase',
-
                        ) -> None:
     """Render the `Select Meal` menu."""
     title = 'Select Meal'
@@ -55,8 +54,8 @@ def select_meal_to_log(gui           : 'GUI',
         single_recipe_buttons = {f'{single_recipe.name}': Button(menu, closes_menu=True)
                                  for single_recipe in list_of_single_recipes}
 
-        mealprep_buttons      = {f'{mealprep.recipe_name}': Button(menu, closes_menu=True)
-                                 for mealprep in list_of_mealpreps}
+        mealprep_buttons = {f'{mealprep.recipe_name}': Button(menu, closes_menu=True)
+                            for mealprep in list_of_mealpreps}
 
         cancel_bt = Button(menu, closes_menu=True)
 

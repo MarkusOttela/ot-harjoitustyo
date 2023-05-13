@@ -309,7 +309,6 @@ class MealprepDatabase(UnencryptedDatabase):
 
     def get_mealprep(self, name: str) -> Mealprep:
         """Get Recipe from database by name."""
-
         sql_command  =  'SELECT '
         sql_command +=  ', '.join(list(self.db_metadata.keys())[1:])
         sql_command += f' FROM {self.table_name}'

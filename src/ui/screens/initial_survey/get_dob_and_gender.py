@@ -20,7 +20,7 @@ import typing
 
 from datetime import datetime
 
-from src.common.enums import Format, Gender, ColorScheme
+from src.common.enums      import ColorScheme, Format, Gender
 from src.common.exceptions import ReturnToMainMenu
 from src.common.validation import date
 

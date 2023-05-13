@@ -23,8 +23,8 @@ from src.common.exceptions import ReturnToMainMenu
 from src.common.utils      import get_list_of_user_account_names
 from src.common.validation import strings
 
-from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
+from src.ui.gui_menu         import GUIMenu
 
 if typing.TYPE_CHECKING:
     from src.ui.gui import GUI

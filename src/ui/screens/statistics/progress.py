@@ -64,9 +64,7 @@ def draw_graph(measurement_log: dict) -> pygame.Surface:
         days         = [-1]              + days
         measurements = [measurements[0]] + measurements
 
-    plt.plot(days, measurements,
-             linestyle='', color=light_grey,
-             marker='+', label='')  # Scatter plot
+    plt.plot(days, measurements, linestyle='', color=light_grey, marker='+', label='')
     plt.plot(days, measurements, linestyle='-', linewidth=1)
 
     x_min = -1
@@ -140,7 +138,7 @@ def init_figure(dpi: int = 100) -> 'Figure':
     figure_size = list(map(lambda x: x / dpi, Program.RESOLUTION.value))
     figure      = pylab.figure(figsize=figure_size, dpi=dpi, facecolor=grey)
 
-    set_colors()  # We set colors here just to ensure we can't accidentally mess up the order.
+    set_colors()
     return figure
 
 

@@ -26,8 +26,8 @@ from src.common.enums      import Color
 from src.entities.mealprep           import Mealprep
 from src.entities.nutritional_values import NutritionalValues
 
-from src.ui.gui_menu         import GUIMenu
 from src.ui.callback_classes import Button, StringInput
+from src.ui.gui_menu         import GUIMenu
 
 from src.ui.screens.get_yes      import get_yes
 from src.ui.screens.show_message import show_message
@@ -103,7 +103,7 @@ def edit_mealprep(gui           : 'GUI',
                 mealprep_nv += in_nv
 
             new_mealprep = Mealprep(orig_mealprep.recipe_name, total_grams,
-                                    orig_mealprep.cook_date,   weight_dict, mealprep_nv)
+                                    orig_mealprep.cook_date, weight_dict, mealprep_nv)
 
             recipe_id_changed = new_mealprep != orig_mealprep
 

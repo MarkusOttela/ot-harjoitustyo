@@ -92,10 +92,10 @@ def get_meal_lines(user      : 'User',
         c8s.insert(0, 'Fat (g)')
 
         # Determine column widths
-        c1w, c2w, c3w, c4w, c5w, c6w, c7w, c8w = [max(len(v) for v in column) for column in [
-            c1, c2, c3, c4s, c5s, c6s, c7s, c8s]]
+        c1w, c2w, c3w, c4w, c5w, c6w, c7w, c8w \
+            = [max(len(v) for v in column) for column in [c1, c2, c3, c4s, c5s, c6s, c7s, c8s]]
 
-        recipe_names     = [r[:17] for r in recipe_db.get_list_of_recipe_names()]
+        recipe_names = [r[:17] for r in recipe_db.get_list_of_recipe_names()]
 
         c3w = max(c3w, len(max(recipe_names, key=len)))
 
@@ -168,7 +168,6 @@ def get_calorie_balance(user: 'User') -> list:
     """Get daily calorie balance."""
     nv_goals = calculate_nv_goal(user)
 
-    # Eaten NVs
     todays_consumed_nv = NutritionalValues()
     for meal in user.get_todays_meals():
         todays_consumed_nv += meal.meal_nv

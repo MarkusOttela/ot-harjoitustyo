@@ -18,8 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import typing
 
-from src.common.exceptions import ReturnToMainMenu
 from src.common.enums      import DietType, FontSize, PhysicalActivityLevel
+from src.common.exceptions import ReturnToMainMenu
 
 from src.ui.callback_classes import Button, DropSelection
 from src.ui.gui_menu         import GUIMenu

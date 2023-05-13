@@ -31,28 +31,18 @@ if typing.TYPE_CHECKING:
 
 def get_morning_weight(gui: 'GUI', user: 'User') -> None:
     """Get morning weight from the user."""
-    weight = StringInput()
-
+    title         = 'Morning Weight'
     error_message = ''
 
+    weight = StringInput()
+
     while True:
-        menu = GUIMenu(gui, "Morning Weight")
+        menu = GUIMenu(gui, title)
         try:
-
-            # Pre-fill only valid inputs if an error occurred.
-            if weight.value is not None:
-                try:
-                    default_weight = str(validate_positive_float(weight.value))
-                except ValueError:
-                    default_weight = ''
-            else:
-                default_weight = ''
-
             menu.menu.add.label('Good Morning!\n')
 
             menu.menu.add.text_input('Your weight (kg) : ',
                                      onchange=weight.set_value,
-                                     default=default_weight,
                                      valid_chars=floats,
                                      maxchar=5,
                                      font_color=ColorScheme.FONT_COLOR.value)
@@ -62,9 +52,15 @@ def get_morning_weight(gui: 'GUI', user: 'User') -> None:
             menu.show_error_message(error_message)
             menu.start()
 
-            weight_kg = validate_positive_float(weight.value)
+            weight_f = validate_positive_float(weight.value)
+            bmi      = weight_f / ((user.height_cm / 100) ** 2)
 
-            user.set_morning_weight(weight_kg)
+            if bmi > 40:
+                raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously high!)")
+            elif bmi < 16:
+                raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously low!)")
+
+            user.set_morning_weight(weight_f)
             return
 
         except ValueError as e:

@@ -115,13 +115,7 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         weight_log = json.loads(json_db[DBKeys.WEIGHT_LOG.value])
         meal_log   = json.loads(json_db[DBKeys.MEAL_LOG.value])
 
-        user = User(credentials,
-                    dob,
-                    gender,
-                    init_weight,
-                    height,
-                    pal,
-                    diet_type)
+        user = User(credentials, dob, gender, init_weight, height, pal, diet_type)
 
         user.name       = name
         user.weight_log = weight_log

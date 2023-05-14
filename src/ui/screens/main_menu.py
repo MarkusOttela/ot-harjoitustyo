@@ -39,7 +39,8 @@ from src.ui.screens.statistics.daily_overview              import show_daily_ove
 from src.ui.screens.statistics.progress                    import show_weight_progress
 
 if typing.TYPE_CHECKING:
-    from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
+    from src.database.unencrypted_database import (IngredientDatabase, MealprepDatabase,
+                                                   RecipeDatabase)
     from src.ui.gui import GUI
 
 

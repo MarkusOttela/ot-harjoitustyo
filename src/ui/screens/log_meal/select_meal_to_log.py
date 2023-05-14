@@ -28,7 +28,8 @@ from src.ui.screens.log_meal.log_single_meal   import log_single_meal
 from src.ui.screens.show_message               import show_message
 
 if typing.TYPE_CHECKING:
-    from src.database.unencrypted_database import MealprepDatabase, IngredientDatabase, RecipeDatabase
+    from src.database.unencrypted_database import (MealprepDatabase, IngredientDatabase,
+                                                   RecipeDatabase)
     from src.entities.user import User
     from src.ui.gui        import GUI
 

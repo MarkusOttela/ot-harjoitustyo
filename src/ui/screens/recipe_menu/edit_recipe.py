@@ -80,6 +80,8 @@ def edit_recipe(gui           : 'GUI',
             if ing_name in selected_accompaniments.sel_list:
                 selected_accompaniment_indexes.append(i)
 
+    font_size = FontSize.FONT_SIZE_XSMALL.value
+
     while True:
         try:
             menu = GUIMenu(gui, title)
@@ -108,7 +110,7 @@ def edit_recipe(gui           : 'GUI',
                                               items=available_ingredients,  # type: ignore
                                               default=selected_ingredient_indexes,
                                               selection_box_height=len(available_ingredients),
-                                              selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                              selection_option_font_size=font_size,
                                               **gui.drop_multi_selection_theme
                                               )
 
@@ -119,7 +121,7 @@ def edit_recipe(gui           : 'GUI',
                                                   items=available_ingredients,  # type: ignore
                                                   default=selected_accompaniment_indexes,
                                                   selection_box_height=len(available_ingredients),
-                                                  selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                                  selection_option_font_size=font_size,
                                                   **gui.drop_multi_selection_theme
                                                   )
 

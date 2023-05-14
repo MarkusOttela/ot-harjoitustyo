@@ -27,7 +27,8 @@ from src.ui.screens.mealprep_menu.create_mealprep import create_mealprep
 from src.ui.screens.show_message                  import show_message
 
 if typing.TYPE_CHECKING:
-    from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
+    from src.database.unencrypted_database import (IngredientDatabase, MealprepDatabase,
+                                                   RecipeDatabase)
     from src.ui.gui import GUI
 
 

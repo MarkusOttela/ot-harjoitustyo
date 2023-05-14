@@ -100,9 +100,11 @@ def get_body_measurements(gui: 'GUI') -> tuple:
                 bmi = weight_f / ((height_f / 100) ** 2)
 
                 if bmi > 40:
-                    raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously high!)")
+                    raise ValueError(
+                        f"Invalid weight (BMI of value {bmi:.1f} is dangerously high!)")
                 elif bmi < 16:
-                    raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously low!)")
+                    raise ValueError(
+                        f"Invalid weight (BMI of value {bmi:.1f} is dangerously low!)")
 
                 return weight_f, height_f
 

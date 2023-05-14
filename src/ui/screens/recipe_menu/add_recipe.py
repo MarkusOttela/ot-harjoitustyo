@@ -79,13 +79,14 @@ def add_recipe(gui           : 'GUI',
                                      maxchar=19,
                                      font_color=ColorScheme.FONT_COLOR.value)
 
-            menu.menu.add.dropselect_multiple('Select ingredients: ',
-                                              onchange=selected_ingredients.set_value,
-                                              onreturn=selected_ingredients.set_value,  # type: ignore
-                                              items=available_ingredients,  # type: ignore
-                                              selection_box_height=len(available_ingredients),
-                                              selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
-                                              **gui.drop_multi_selection_theme)
+            menu.menu.add.dropselect_multiple(
+                'Select ingredients: ',
+                onchange=selected_ingredients.set_value,
+                onreturn=selected_ingredients.set_value,  # type: ignore
+                items=available_ingredients,  # type: ignore
+                selection_box_height=len(available_ingredients),
+                selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                **gui.drop_multi_selection_theme)
 
             menu.menu.add.label('\n', font_size=5)
             menu.menu.add.button('Done',   action=done_bt.set_pressed)

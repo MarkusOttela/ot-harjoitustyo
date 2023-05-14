@@ -62,8 +62,9 @@ def add_mealprep_recipe(gui           : 'GUI',
     if user is not None:
         author.set_value(user.name)
 
-    while True:
+    font_size = FontSize.FONT_SIZE_XSMALL.value
 
+    while True:
         try:
             # Find indexes of previously selected ingredients
             selected_ingredient_indexes = []
@@ -104,7 +105,7 @@ def add_mealprep_recipe(gui           : 'GUI',
                                               items=available_ingredients,  # type: ignore
                                               default=selected_ingredient_indexes,
                                               selection_box_height=len(available_ingredients),
-                                              selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                              selection_option_font_size=font_size,
                                               **gui.drop_multi_selection_theme
                                               )
 
@@ -114,7 +115,7 @@ def add_mealprep_recipe(gui           : 'GUI',
                                               items=available_ingredients,  # type: ignore
                                               default=selected_accompaniment_indexes,
                                               selection_box_height=len(available_ingredients),
-                                              selection_option_font_size=FontSize.FONT_SIZE_XSMALL.value,
+                                              selection_option_font_size=font_size,
                                               **gui.drop_multi_selection_theme
                                               )
 

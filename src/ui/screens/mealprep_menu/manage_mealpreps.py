@@ -25,7 +25,8 @@ from src.ui.screens.mealprep_menu.select_mealprep_recipe  import select_mealprep
 from src.ui.screens.mealprep_menu.select_mealprep_to_edit import select_mealprep_to_edit
 
 if typing.TYPE_CHECKING:
-    from src.database.unencrypted_database import IngredientDatabase, MealprepDatabase, RecipeDatabase
+    from src.database.unencrypted_database import (IngredientDatabase, MealprepDatabase,
+                                                   RecipeDatabase)
     from src.ui.gui import GUI
 
 

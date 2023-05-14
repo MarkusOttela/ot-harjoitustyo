@@ -62,7 +62,7 @@ class Recipe:
     def __repr__(self) -> str:
         """Format Recipe attributes."""
         lines = [f"<Recipe-object {id(self)}>",
-                 'General Information'
+                 'General Information',
                  f'  Name        : {self.name}',
                  f'  Author      : {self.author}',
                  f'  Is Mealprep : {self.is_mealprep}',

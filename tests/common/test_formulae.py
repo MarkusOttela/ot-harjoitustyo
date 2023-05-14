@@ -58,17 +58,17 @@ class TestCalculateNVGoal(unittest.TestCase):
         cleanup(self.unit_test_dir)
 
     def test_calculate_nv(self):
-        nv = calculate_nv_goal(self.user)
+        nv_goal = calculate_nv_goal(self.user)
 
         # Note: The values pinned here are simply to detect if
         #       the algorithm ever changes accidentally during
         #       development. There is no Known Answer Test to
         #       this specific algorithm as far as we know.
-        self.assertIsInstance(nv, NutritionalValues)
-        self.assertEqual(round(nv.kcal, 0),              2195)
-        self.assertEqual(round(nv.protein_g, 1),        152.2)
-        self.assertEqual(round(nv.fat_g, 1),             61.0)
-        self.assertEqual(round(nv.carbohydrates_g, 1),  259.3)
+        self.assertIsInstance(nv_goal, NutritionalValues)
+        self.assertEqual(round(nv_goal.kcal, 0),              2195)
+        self.assertEqual(round(nv_goal.protein_g, 1),        152.2)
+        self.assertEqual(round(nv_goal.fat_g, 1),             61.0)
+        self.assertEqual(round(nv_goal.carbohydrates_g, 1),  259.3)
 
 
 class TestGetPalMultiplier(unittest.TestCase):

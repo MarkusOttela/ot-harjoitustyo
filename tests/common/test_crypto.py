@@ -14,6 +14,11 @@ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License
 along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
+
+---
+
+Author's note: The testing code here is modified from another personal project
+https://github.com/maqp/tfc/blob/master/tests/common/test_crypto.py
 """
 
 import unittest
@@ -22,12 +27,8 @@ from unittest.mock import MagicMock
 
 
 from src.common.exceptions import SecurityException
-from src.common.crypto     import derive_database_key, CryptoLiterals, encrypt_and_sign, auth_and_decrypt
-
-"""
-Author's note: The testing code here is modified from another personal project
-https://github.com/maqp/tfc/blob/master/tests/common/test_crypto.py
-"""
+from src.common.crypto     import (derive_database_key, CryptoLiterals,
+                                   encrypt_and_sign, auth_and_decrypt)
 
 
 class TestArgon2Wrapper(unittest.TestCase):
@@ -42,14 +43,17 @@ class TestArgon2Wrapper(unittest.TestCase):
         """Test same password and salt produce the same value consistently during development."""
         salt, key = derive_database_key(self.password, self.salt)
         self.assertEqual(salt, self.salt)
-        self.assertEqual(key.hex(), 'b402e985f14bb42fc10d1ed490f9d306f1dbbacd5aa244ee892d096fd7e3e325')
+        self.assertEqual(key.hex(), 'b402e985f14bb42fc10d1ed490f9d306'
+                                    'f1dbbacd5aa244ee892d096fd7e3e325')
 
     @mock.patch('os.getrandom', side_effect=[32*b'a'])
     @mock.patch('multiprocessing.cpu_count', return_value=1)
     def test_derive_database_key_without_salt(self, *_):
         """Test same password and salt produce the same value consistently during development."""
         salt, key = derive_database_key(self.password)
-        self.assertEqual(key.hex(), 'c4a7fce085d95fb5b3510a8f1054af32d2ae56d35a34ca892058284b2590c2ca')
+        self.assertEqual(key.hex(), 'c4a7fce085d95fb5b3510a8f1054af32'
+                                    'd2ae56d35a34ca892058284b2590c2ca')
+        self.assertEqual(len(salt), CryptoLiterals.SALT_LENGTH.value)
 
 
 class TestXChaCha20Poly1305(unittest.TestCase):
@@ -70,11 +74,16 @@ class TestXChaCha20Poly1305(unittest.TestCase):
         https://tools.ietf.org/html/draft-irtf-cfrg-xchacha-03#appendix-A.3
 
     Libsodium test vectors:
-        Message: https://github.com/jedisct1/libsodium/blob/master/test/default/aead_xchacha20poly1305.c#L22
-        Ad:      https://github.com/jedisct1/libsodium/blob/master/test/default/aead_xchacha20poly1305.c#L28
-        Key:     https://github.com/jedisct1/libsodium/blob/master/test/default/aead_xchacha20poly1305.c#L14
-        Nonce:   https://github.com/jedisct1/libsodium/blob/master/test/default/aead_xchacha20poly1305.c#L25
-        CT+tag:  https://github.com/jedisct1/libsodium/blob/master/test/default/aead_xchacha20poly1305.exp#L1
+        Message: https://github.com/jedisct1/libsodium/blob/master/test/default/
+                 aead_xchacha20poly1305.c#L22
+        Ad:      https://github.com/jedisct1/libsodium/blob/master/test/default/
+                 aead_xchacha20poly1305.c#L28
+        Key:     https://github.com/jedisct1/libsodium/blob/master/test/default/
+                 aead_xchacha20poly1305.c#L14
+        Nonce:   https://github.com/jedisct1/libsodium/blob/master/test/default/
+                 aead_xchacha20poly1305.c#L25
+        CT+tag:  https://github.com/jedisct1/libsodium/blob/master/test/default/
+                 aead_xchacha20poly1305.exp#L1
 
     To make the verification of the test vectors (listed below) easy,
     they are formatted in the most identical way as is possible.
@@ -155,23 +164,38 @@ class TestXChaCha20Poly1305(unittest.TestCase):
         self.assertNotEqual(self.ietf_nonce,        self.libsodium_nonce)
         self.assertNotEqual(self.nonce_ct_tag_ietf, self.nonce_ct_tag_libsodium)
 
-        self.plaintext = self.ietf_plaintext
-        self.ad        = self.ietf_ad
-        self.key       = self.ietf_key
+        self.plaintext       = self.ietf_plaintext
+        self.associated_data = self.ietf_ad
+        self.key             = self.ietf_key
 
     @mock.patch('os.getrandom', side_effect=[ietf_nonce, libsodium_nonce])
     def test_encrypt_and_sign_with_the_official_test_vectors(self, mock_csprng: MagicMock) :
-        self.assertEqual(encrypt_and_sign(self.plaintext, self.key, self.ad), self.nonce_ct_tag_ietf)
-        self.assertEqual(encrypt_and_sign(self.plaintext, self.key, self.ad), self.nonce_ct_tag_libsodium)
+        self.assertEqual(encrypt_and_sign(self.plaintext,
+                                          self.key,
+                                          self.associated_data),
+                         self.nonce_ct_tag_ietf)
+
+        self.assertEqual(encrypt_and_sign(self.plaintext,
+                                          self.key,
+                                          self.associated_data),
+                         self.nonce_ct_tag_libsodium)
+
         mock_csprng.assert_called_with(CryptoLiterals.XCHACHA20_NONCE_LENGTH.value, flags=0)
 
     def test_auth_and_decrypt_with_the_official_test_vectors(self) :
-        self.assertEqual(auth_and_decrypt(self.nonce_ct_tag_ietf,      self.key, associated_data=self.ad), self.plaintext)
-        self.assertEqual(auth_and_decrypt(self.nonce_ct_tag_libsodium, self.key, associated_data=self.ad), self.plaintext)
+        self.assertEqual(auth_and_decrypt(self.nonce_ct_tag_ietf,
+                                          self.key,
+                                          associated_data=self.associated_data),
+                         self.plaintext)
+        self.assertEqual(auth_and_decrypt(self.nonce_ct_tag_libsodium,
+                                          self.key,
+                                          associated_data=self.associated_data),
+                         self.plaintext)
 
     def test_invalid_size_key_raises_security_exception(self) :
-        invalid_keys = [key_length * b'a' for key_length in [1, CryptoLiterals.SYMMETRIC_KEY_LENGTH.value-1,
-                                                                CryptoLiterals.SYMMETRIC_KEY_LENGTH.value+1, 1000]]
+        invalid_keys = [key_length * b'a' for key_length in
+                        [1, CryptoLiterals.SYMMETRIC_KEY_LENGTH.value-1,
+                            CryptoLiterals.SYMMETRIC_KEY_LENGTH.value+1, 1000]]
         for invalid_key in invalid_keys:
             with self.assertRaises(SecurityException):
                 encrypt_and_sign(self.libsodium_plaintext, invalid_key)
@@ -185,7 +209,8 @@ class TestXChaCha20Poly1305(unittest.TestCase):
 
     def test_invalid_tag_in_ciphertext_raises_security_exception(self) :
         with self.assertRaises(SecurityException):
-            auth_and_decrypt(self.nonce_ct_tag_ietf, key=bytes(CryptoLiterals.SYMMETRIC_KEY_LENGTH.value))
+            auth_and_decrypt(self.nonce_ct_tag_ietf,
+                             key=bytes(CryptoLiterals.SYMMETRIC_KEY_LENGTH.value))
 
 
 if __name__ == '__main__':

@@ -67,14 +67,14 @@ class TestMealprep(unittest.TestCase):
 
     def test_get_nv(self):
         # Setup
-        start_value = 5.0
+        start_value     = 5.0
         gram_multiplier = 10
-        expected_value = start_value * gram_multiplier
+        expected_value  = start_value * gram_multiplier
 
         for k in self.mealprep1.mealprep_nv.__dict__.keys():
             self.mealprep1.mealprep_nv.__dict__[k] = start_value
 
         # Test
-        nv = self.mealprep1.get_nv(for_grams=gram_multiplier)
-        for v in nv.__dict__.values():
-            self.assertEqual(v, expected_value)
+        nutritional_values = self.mealprep1.get_nv(for_grams=gram_multiplier)
+        for value in nutritional_values.__dict__.values():
+            self.assertEqual(value, expected_value)

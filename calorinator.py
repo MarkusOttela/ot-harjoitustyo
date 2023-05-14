@@ -19,7 +19,9 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 from src.common.enums import Program
 
 from src.database.default_ingredient_database import default_ingredients
-from src.database.unencrypted_database        import IngredientDatabase, MealprepDatabase, RecipeDatabase
+from src.database.unencrypted_database        import (IngredientDatabase,
+                                                      MealprepDatabase,
+                                                      RecipeDatabase)
 from src.ui.gui                               import GUI
 from src.ui.screens.get_yes                   import get_yes
 from src.ui.screens.main_menu                 import main_menu

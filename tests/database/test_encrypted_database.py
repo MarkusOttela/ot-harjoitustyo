@@ -17,7 +17,6 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 """
 
 import os
-import typing
 import unittest
 
 from unittest import mock
@@ -30,9 +29,6 @@ from src.entities.user_credentials   import UserCredentials
 
 from tests.utils import cd_unit_test, cleanup
 
-if typing.TYPE_CHECKING:
-    pass
-
 
 class TestEncryptedDatabase(unittest.TestCase):
 
@@ -40,24 +36,28 @@ class TestEncryptedDatabase(unittest.TestCase):
         self.unit_test_dir = cd_unit_test()
         self.test_password = 'password'
         self.test_salt     = 8*b'salt'
+
         with mock.patch('multiprocessing.cpu_count', return_value=1):
             _, self.test_key = derive_database_key(self.test_password, self.test_salt)
-        self.uc = UserCredentials('test', self.test_salt, self.test_key)
+
+        self.user_credentials = UserCredentials('test', self.test_salt, self.test_key)
 
     def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_storing_database_creates_the_database(self):
-        db = EncryptedDatabase(self.uc)
-        db.store_db(b'test_data')
+        database = EncryptedDatabase(self.user_credentials)
+        database.store_db(b'test_data')
 
         self.assertTrue(os.path.isdir(f'{Directories.USER_DATA.value}/test/'))
-        self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/{DatabaseFileName.USER_DATABASE.value}.db'))
+        self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}'
+                                       f'/test'
+                                       f'/{DatabaseFileName.USER_DATABASE.value}.db'))
 
     def test_loading_data_works(self):
         test_data = b'test_data'
-        db = EncryptedDatabase(self.uc)
-        db.store_db(test_data)
+        database = EncryptedDatabase(self.user_credentials)
+        database.store_db(test_data)
 
-        purp_data = db.load_db()
+        purp_data = database.load_db()
         self.assertEqual(purp_data, test_data)

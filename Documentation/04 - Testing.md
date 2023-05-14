@@ -5,6 +5,16 @@ Testing
 
 Excluding the UI module, the program has a 100% coverage for its unit tests.
 
+![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Attachments/test_coverage.png)
+
+The `excluded` lines in the modules `src.common.formulae` and `src.database.encrypted_database` are due to the use 
+of the `mypy` type linter. More specifically, the seemingly best practice of not importing modules for the simple sake 
+of offline type checking by the linter. One big reason is this significantly increases the risk of running into circular 
+imports. 
+
+
+![](https://raw.githubusercontent.com/MarkusOttela/ot-harjoitustyo/master/Documentation/Attachments/skipped_lines.png)
+
 ## Integration tests
 
 The integration tests for databases are done as part of serialization and deserialization of the objects,

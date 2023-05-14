@@ -19,10 +19,9 @@ import datetime
 import os
 import unittest
 
-from unittest import mock
-
-from src.common.enums import Directories, Format
+from src.common.enums      import Directories
 from src.common.exceptions import ignored
+
 from src.common.utils      import (ensure_dir, write_bytes, get_list_of_user_account_names,
                                    separate_header, get_today_str)
 
@@ -57,8 +56,8 @@ class TestWriteBytes(unittest.TestCase):
 
         self.assertTrue(os.path.isfile('test_file'))
 
-        with open('test_file', 'rb') as f:
-            data = f.read()
+        with open('test_file', 'rb') as f_ptr:
+            data = f_ptr.read()
 
         self.assertEqual(data, bytestring)
 
@@ -98,7 +97,8 @@ class TestGetListOfUserAccountNames(unittest.TestCase):
 class TestSeparateHeader(unittest.TestCase):
 
     def test_separate_header(self) :
-        self.assertEqual(separate_header(b"teststring", header_length=len(b"test")), (b"test", b"string"))
+        tup = separate_header(b"teststring", header_length=len(b"test"))
+        self.assertEqual(tup, (b"test", b"string"))
 
 
 class TestGetTodayStr(unittest.TestCase):

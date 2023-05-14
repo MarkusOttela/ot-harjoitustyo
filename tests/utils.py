@@ -18,14 +18,11 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import shutil
-import typing
 
 from src.common.enums import Gender, PhysicalActivityLevel, DietType
-from src.entities.user import User
-from src.entities.user_credentials import UserCredentials
 
-if typing.TYPE_CHECKING:
-    pass
+from src.entities.user             import User
+from src.entities.user_credentials import UserCredentials
 
 
 def cd_unit_test() -> str:

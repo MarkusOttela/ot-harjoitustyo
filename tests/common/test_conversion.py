@@ -28,8 +28,8 @@ class TestConversion(unittest.TestCase):
     def test_str_to_float(self) :
 
         # Test valid conversion
-        for b in [True, False]:
-            self.assertEqual(str_to_float('test', '1.05', negative_allowed=b), 1.05)
+        for bool_ in [True, False]:
+            self.assertEqual(str_to_float('test', '1.05', negative_allowed=bool_), 1.05)
 
         self.assertEqual(str_to_float('test', '-1.05', negative_allowed=True), -1.05)
         self.assertEqual(str_to_float('test', '-1',    negative_allowed=True), -1.0)
@@ -41,16 +41,16 @@ class TestConversion(unittest.TestCase):
             str_to_float('test', '-1.05', negative_allowed=False)
 
         # Invalid values
-        for b in [True, False]:
-            for v in ['string', '1.1.1', '']:
+        for bool_ in [True, False]:
+            for value in ['string', '1.1.1', '']:
                 with self.assertRaises(ConversionError):
-                    str_to_float('test', v, negative_allowed=b)
+                    str_to_float('test', value, negative_allowed=bool_)
 
     def test_str_to_int(self) :
 
         # Test valid conversion
-        for b in [True, False]:
-            self.assertEqual(str_to_int('test', '1', negative_allowed=b), 1)
+        for bool_ in [True, False]:
+            self.assertEqual(str_to_int('test', '1', negative_allowed=bool_), 1)
 
         self.assertEqual(str_to_int('test', '-1', negative_allowed=True), -1)
 
@@ -61,10 +61,10 @@ class TestConversion(unittest.TestCase):
             str_to_int('test', '-1', negative_allowed=False)
 
         # Invalid values
-        for b in [True, False]:
-            for v in ['string', '1.0', '']:
+        for bool_ in [True, False]:
+            for value in ['string', '1.0', '']:
                 with self.assertRaises(ConversionError):
-                    str_to_int('test', v, negative_allowed=b)
+                    str_to_int('test', value, negative_allowed=bool_)
 
 
 class TestCovertInputFields(unittest.TestCase):

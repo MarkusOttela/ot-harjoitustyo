@@ -35,14 +35,22 @@ class TestUser(unittest.TestCase):
 
         self.unit_test_dir = cd_unit_test()
 
-        self.user_credentials1 = UserCredentials('test_user', salt=32 * b'a', database_key=32 * b'a')
-        self.user_credentials2 = UserCredentials('test_user', salt=32 * b'a', database_key=32 * b'a')
-        self.user_credentials3 = UserCredentials('diff_user', salt=32 * b'a', database_key=32 * b'a')
+        self.user_credentials1 = UserCredentials('test_user',
+                                                 salt=32 * b'a',
+                                                 database_key=32 * b'a')
+
+        self.user_credentials2 = UserCredentials('test_user',
+                                                 salt=32 * b'a',
+                                                 database_key=32 * b'a')
+
+        self.user_credentials3 = UserCredentials('diff_user',
+                                                 salt=32 * b'a',
+                                                 database_key=32 * b'a')
 
         self.user = User(self.user_credentials1,
                          dob='01/01/1990',
                          gender=Gender.MALE,
-                         init_weight=80.0,
+                         init_weight=79.0,
                          height=180,
                          pal=PhysicalActivityLevel.MODERATELY_ACTIVE,
                          diet_type=DietType.DIET)
@@ -50,7 +58,7 @@ class TestUser(unittest.TestCase):
         self.same_user = User(self.user_credentials2,
                               dob='01/01/1990',
                               gender=Gender.MALE,
-                              init_weight=80.0,
+                              init_weight=79.0,
                               height=180,
                               pal=PhysicalActivityLevel.MODERATELY_ACTIVE,
                               diet_type=DietType.DIET)
@@ -58,7 +66,7 @@ class TestUser(unittest.TestCase):
         self.diff_user = User(self.user_credentials3,
                               dob='01/01/1990',
                               gender=Gender.MALE,
-                              init_weight=80.0,
+                              init_weight=75.0,
                               height=180,
                               pal=PhysicalActivityLevel.MODERATELY_ACTIVE,
                               diet_type=DietType.DIET)
@@ -91,9 +99,10 @@ class TestUser(unittest.TestCase):
     def test_serialize(self):
         self.user.set_morning_weight(self.morning_weight)
 
-        expected_string = (b'{"name": "test_user", "birthday": "01/01/1990", "gender": "Male", "height_cm'
-                           b'": 180, "init_weight_kg": 80.0, "pal": "Moderately Active", "diet_type": "Di'
-                           b'et", "weight_log": "{\\"14/05/2023\\": 79.9}", "meal_log": "{}"}')
+        expected_string = (b'{"name": "test_user", "birthday": "01/01/1990", "gender": "Male", '
+                           b'"height_cm": 180, "init_weight_kg": 80.0, "pal": "Moderately Active", '
+                           b'"diet_type": "Diet", "weight_log": "{\\"14/05/2023\\": 79.9}", '
+                           b'"meal_log": "{}"}')
 
         self.assertEqual(self.user.serialize(), expected_string)
 

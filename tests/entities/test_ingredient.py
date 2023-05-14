@@ -27,6 +27,7 @@ class TestIngredient(unittest.TestCase):
     def setUp(self) :
         self.ingredient1 = Ingredient('test_ingredient1', NutritionalValues())
         self.ingredient2 = Ingredient('test_ingredient2', NutritionalValues())
+        self.ingredient1.nv_per_g.vitamin_b7_ug = '0.1'
 
     def test_equality(self):
         self.assertEqual(self.ingredient1, self.ingredient1)
@@ -36,6 +37,7 @@ class TestIngredient(unittest.TestCase):
     def test_str(self):
         self.assertEqual(str(self.ingredient1), 'test_ingredient1')
 
+    # pylint: disable=duplicate-code
     def test_repr(self):
         expected = f"""\
 <Ingredient-object {id(self.ingredient1)}>
@@ -64,7 +66,7 @@ Nutrients: <NutritionalValues-object {id(self.ingredient1.nv_per_g)}>
       vitamin_b3_mg   : 0.0
       vitamin_b5_mg   : 0.0
       vitamin_b6_mg   : 0.0
-      vitamin_b7_ug   : 0.0
+      vitamin_b7_ug   : 0.1
       vitamin_b9_ug   : 0.0
       vitamin_b12_ug  : 0.0
       vitamin_c_mg    : 0.0
@@ -83,23 +85,23 @@ Nutrients: <NutritionalValues-object {id(self.ingredient1.nv_per_g)}>
     def test_from_dict_missing_nv_key_raises_key_error(self):
 
         # Create test dict
-        in_d = {}
+        ingredient_d = {}
         for key, tup in nv_metadata.items():
             value = 1 if tup[1] == float else 'Test'
-            in_d[key] = value
+            ingredient_d[key] = value
 
         for key, tup in in_metadata.items():
             value = 1.0
-            in_d[key] = value
+            ingredient_d[key] = value
 
-        in_d['nv_per_g'] = NutritionalValues()
+        ingredient_d['nv_per_g'] = NutritionalValues()
 
         # Remove one key
-        del in_d['kcal']
+        del ingredient_d['kcal']
 
         # Test
         with self.assertRaises(KeyError):
-            Ingredient.from_dict(in_d)
+            Ingredient.from_dict(ingredient_d)
 
     def test_from_dict_for_ingredients_with_grams_per_unit(self):
 
@@ -111,27 +113,27 @@ Nutrients: <NutritionalValues-object {id(self.ingredient1.nv_per_g)}>
         test_gram_amount = 1
         expected_value   = units_in_gram * test_gram_amount
 
-        in_d = {}
+        ingredient_d = {}
         for key, tup in nv_metadata.items():
             value = total_units if tup[1] == float else 'Test'
-            in_d[key] = value
+            ingredient_d[key] = value
 
         for key, tup in in_metadata.items():
             value = 1.0
-            in_d[key] = value
+            ingredient_d[key] = value
 
-        in_d['grams_per_unit']  = 100.0
-        in_d['fixed_portion_g'] = 0.0
-        in_d['nv_per_g'] = NutritionalValues()
+        ingredient_d['grams_per_unit']  = 100.0
+        ingredient_d['fixed_portion_g'] = 0.0
+        ingredient_d['nv_per_g'] = NutritionalValues()
 
         # Test
-        ingredient = Ingredient.from_dict(in_d)
+        ingredient = Ingredient.from_dict(ingredient_d)
 
         self.assertIsInstance(ingredient, Ingredient)
 
-        nv = ingredient.get_nv(for_grams=test_gram_amount)
-        for v in nv.__dict__.values():
-            self.assertEqual(v, expected_value)
+        nutritional_values = ingredient.get_nv(for_grams=test_gram_amount)
+        for value in nutritional_values.__dict__.values():
+            self.assertEqual(value, expected_value)
 
     def test_from_dict_for_ingredients_with_fixed_portion_size(self):
 
@@ -139,30 +141,30 @@ Nutrients: <NutritionalValues-object {id(self.ingredient1.nv_per_g)}>
         grams_per_capsule = 2
         total_units_per_c = 0.1
         total_no_capsules = 5
-        test_gram_amount = grams_per_capsule * total_no_capsules
-        expected_value = total_no_capsules * total_units_per_c
+        test_gram_amount  = grams_per_capsule * total_no_capsules
+        expected_value    = total_no_capsules * total_units_per_c
 
-        in_d = {}
+        ingredient_d = {}
         for key, tup in nv_metadata.items():
             value = total_units_per_c if tup[1] == float else 'Test'
-            in_d[key] = value
+            ingredient_d[key] = value
 
         for key, tup in in_metadata.items():
             value = 1.0
-            in_d[key] = value
+            ingredient_d[key] = value
 
-        in_d['fixed_portion_g'] = grams_per_capsule
-        in_d['grams_per_unit']  = 100.0  # Must be overridden by fixed_portion_g
-        in_d['nv_per_g']        = NutritionalValues()
+        ingredient_d['fixed_portion_g'] = grams_per_capsule
+        ingredient_d['grams_per_unit']  = 100.0  # Must be overridden by fixed_portion_g
+        ingredient_d['nv_per_g']        = NutritionalValues()
 
         # Test
-        ingredient = Ingredient.from_dict(in_d)
+        ingredient = Ingredient.from_dict(ingredient_d)
 
         self.assertIsInstance(ingredient, Ingredient)
 
-        nv = ingredient.get_nv(for_grams=test_gram_amount)
-        for v in nv.__dict__.values():
-            self.assertEqual(v, expected_value)
+        new_nv = ingredient.get_nv(for_grams=test_gram_amount)
+        for value in new_nv.__dict__.values():
+            self.assertEqual(value, expected_value)
 
     def test_get_nv(self) :
         # Setup
@@ -170,10 +172,10 @@ Nutrients: <NutritionalValues-object {id(self.ingredient1.nv_per_g)}>
         gram_multiplier = 10
         expected_value  = start_value * gram_multiplier
 
-        for k in self.ingredient1.nv_per_g.__dict__.keys():
-            self.ingredient1.nv_per_g.__dict__[k] = start_value
+        for key in self.ingredient1.nv_per_g.__dict__.keys():
+            self.ingredient1.nv_per_g.__dict__[key] = start_value
 
         # Test
-        nv = self.ingredient1.get_nv(for_grams=gram_multiplier)
-        for v in nv.__dict__.values():
-            self.assertEqual(v, expected_value)
+        nutritional_values = self.ingredient1.get_nv(for_grams=gram_multiplier)
+        for value in nutritional_values.__dict__.values():
+            self.assertEqual(value, expected_value)

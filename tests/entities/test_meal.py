@@ -83,10 +83,13 @@ class TestMeal(unittest.TestCase):
         self.assertEqual(self.meal.total_weight, 350.0)
 
     def test_serialize(self):
-        expected_output = ("{'name': 'test', 'eat_tstamp': '01/02/23-15:30:45', 'main_grams': 250.0, "
-                           '\'accompaniment_grams\': "{\'Water\': 100.0}", \'meal_nv\': "{\'kcal\': 0.0, '
-                           "'carbohydrates_g': 0.0, 'sugar_g': 0.0, 'protein_g': 0.0, 'fat_g': 0.0, "
-                           "'satisfied_fat_g': 0.0, 'fiber_g': 0.0, 'salt_g': 0.0, 'omega3_dha_mg': 0.0, "
+        expected_output = ("{'name': 'test', 'eat_tstamp': '01/02/23-15:30:45', "
+                           "'main_grams': 250.0, "
+                           '\'accompaniment_grams\': "{\'Water\': 100.0}", '
+                           '\'meal_nv\': "{\'kcal\': 0.0, ' "'carbohydrates_g': 0.0, "
+                           "'sugar_g': 0.0, 'protein_g': 0.0, 'fat_g': 0.0, "
+                           "'satisfied_fat_g': 0.0, 'fiber_g': 0.0, 'salt_g': 0.0, "
+                           "'omega3_dha_mg': 0.0, "
                            "'omega3_epa_mg': 0.0, 'vitamin_a_ug': 0.0, 'vitamin_d_ug': 0.0, "
                            "'vitamin_e_mg': 0.0, "
                            "'vitamin_k_ug': 0.0, 'vitamin_b1_mg': 0.0, "

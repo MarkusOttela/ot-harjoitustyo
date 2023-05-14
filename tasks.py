@@ -58,7 +58,7 @@ def mypy(ctx):
 
 @task
 def lint(ctx):
-    ctx.run("poetry run python3 -m pylint src --rcfile=.pylintrc", pty=True)
+    ctx.run("poetry run python3 -m pylint tests --rcfile=.pylintrc", pty=True)
 
 
 @task

@@ -36,51 +36,54 @@ class TestUserCredentials(unittest.TestCase):
     def setUp(self) :
         self.unit_test_dir = cd_unit_test()
         self.test_password = 'password'
-        self.test_salt     = 8*b'salt'
+        self.test_salt     = 8*b'Salt'
         with mock.patch('multiprocessing.cpu_count', return_value=1):
             _, self.test_key = derive_database_key(self.test_password, self.test_salt)
-        self.uc = UserCredentials('test', self.test_salt, self.test_key)
+        self.user_credentials = UserCredentials('test', self.test_salt, self.test_key)
 
     def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_repr(self):
-        self.assertEqual(repr(self.uc), f"""\
-<UserCredentials-object {id(self.uc)}>
+        expected_digest = ('8546602cc0544b1c731d76d776b44b12a1c85afd199e53d153645d493c1b4de3'
+                           'c474a954634756085a58cd351a21d215187bf885a7212e143805637359344c4f')
+        self.assertEqual(repr(self.user_credentials), f"""\
+<UserCredentials-object {id(self.user_credentials)}>
   User Name:   test
   Salt:        73616c7473616c7473616c7473616c7473616c7473616c7473616c7473616c74
-  DB key hash: 8546602cc0544b1c731d76d776b44b12a1c85afd199e53d153645d493c1b4de3c474a954634756085a58cd351a21d215187bf885a7212e143805637359344c4f""")
+  DB key hash: {expected_digest}""")
 
     def test_get_username_returns_username(self):
-        self.assertEqual(self.uc.get_username(), 'test')
+        self.assertEqual(self.user_credentials.get_username(), 'test')
 
     def test_get_key_hash_returns_hash_of_key(self):
-        self.assertEqual(self.uc.get_key_hash(), hashlib.blake2b(self.test_key).digest())
+        self.assertEqual(self.user_credentials.get_key_hash(),
+                         hashlib.blake2b(self.test_key).digest())
 
     def test_store_credentials_creates_file(self):
-        self.uc.store_credentials()
+        self.user_credentials.store_credentials()
         self.assertTrue(os.path.isdir(f'{Directories.USER_DATA.value}/test'))
         self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/credentials.db'))
 
     def test_loading_credentials_with_incorrect_password_raises_incorrect_password(self):
-        self.uc.store_credentials()
+        self.user_credentials.store_credentials()
         self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/credentials.db'))
         with mock.patch('multiprocessing.cpu_count', return_value=1):
             with self.assertRaises(IncorrectPassword):
                 UserCredentials.from_password('test', 'incorrect')
 
     def test_loading_credentials_with_password(self):
-        self.uc.store_credentials()
+        self.user_credentials.store_credentials()
         self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/credentials.db'))
         with mock.patch('multiprocessing.cpu_count', return_value=1):
-            uc = UserCredentials.from_password('test', self.test_password)
-        self.assertEqual(self.uc.get_key_hash(), uc.get_key_hash())
+            user_credentials = UserCredentials.from_password('test', self.test_password)
+        self.assertEqual(self.user_credentials.get_key_hash(), user_credentials.get_key_hash())
 
     def test_encrypting_and_decrypting_is_bijective(self):
-        pt1 = b'plaintext'
-        ct  = self.uc.encrypt(pt1)
-        pt2 = self.uc.decrypt(ct)
-        self.assertEqual(pt1, pt2)
+        plaintext1 = b'plaintext'
+        ciphertext  = self.user_credentials.encrypt(plaintext1)
+        plaintext2 = self.user_credentials.decrypt(ciphertext)
+        self.assertEqual(plaintext1, plaintext2)
 
 
 if __name__ == '__main__':

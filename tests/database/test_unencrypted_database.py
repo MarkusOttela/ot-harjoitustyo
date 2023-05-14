@@ -55,7 +55,8 @@ class TestUnencryptedDatabase(unittest.TestCase):
         cleanup(self.unit_test_dir)
 
     def test_inserting_object_to_database_works(self) :
-        res = self.database.cursor.execute('SELECT test_string1, test_string2 FROM Recipes').fetchall()[0]
+        res = self.database.cursor.execute(
+            'SELECT test_string1, test_string2 FROM Recipes').fetchall()[0]
         self.assertEqual(res, ('test_data1', 'test_data2'))
 
     def test_get_list_of_entries(self) :
@@ -158,13 +159,15 @@ class TestRecipeDatabase(unittest.TestCase):
         self.assertEqual(self.recipe_database.get_list_of_recipe_names(), [])
         self.recipe_database.insert_recipe(self.mock_recipe1)
         self.recipe_database.insert_recipe(self.mock_recipe3)
-        self.assertEqual(self.recipe_database.get_list_of_recipe_names(), ['test_recipe_1', 'test_recipe_3'])
+        self.assertEqual(self.recipe_database.get_list_of_recipe_names(),
+                         ['test_recipe_1', 'test_recipe_3'])
 
     def test_get_list_of_recipes(self):
         self.assertEqual(self.recipe_database.get_list_of_recipes(), [])
         self.recipe_database.insert_recipe(self.mock_recipe1)
         self.recipe_database.insert_recipe(self.mock_recipe3)
-        self.assertEqual(self.recipe_database.get_list_of_recipes(), [self.mock_recipe1, self.mock_recipe3])
+        self.assertEqual(self.recipe_database.get_list_of_recipes(),
+                         [self.mock_recipe1, self.mock_recipe3])
 
     def test_get_list_of_single_recipes(self):
         self.assertEqual(self.recipe_database.get_list_of_single_recipes(), [])
@@ -175,7 +178,8 @@ class TestRecipeDatabase(unittest.TestCase):
         self.recipe_database.insert_recipe(self.mock_recipe1)
         self.recipe_database.insert_recipe(self.mock_recipe3)
 
-        self.assertEqual(self.recipe_database.get_list_of_single_recipes(), [self.mock_recipe1, self.mock_recipe3])
+        self.assertEqual(self.recipe_database.get_list_of_single_recipes(),
+                         [self.mock_recipe1, self.mock_recipe3])
 
     def test_get_list_of_melprep_recipes(self):
         self.assertEqual(self.recipe_database.get_list_of_mealprep_recipes(), [])
@@ -184,14 +188,14 @@ class TestRecipeDatabase(unittest.TestCase):
         self.assertEqual(self.recipe_database.get_list_of_mealprep_recipes(), [])
 
         self.recipe_database.insert_recipe(self.mock_mp_recipe)
-        self.assertEqual(self.recipe_database.get_list_of_mealprep_recipes(), [self.mock_mp_recipe])
+        self.assertEqual(self.recipe_database.get_list_of_mealprep_recipes(),
+                         [self.mock_mp_recipe])
 
     def test_get_recipe(self):
         self.recipe_database.insert_recipe(self.mock_recipe1)
-        r1 = self.recipe_database.get_recipe('test_recipe_1')
-        r2 = self.recipe_database.get_recipe('test_recipe_1', 'tester')
-        self.assertEqual(r1.name,   r2.name)
-        self.assertEqual(r1.author, r2.author)
+        recipe1 = self.recipe_database.get_recipe('test_recipe_1')
+        recipe2 = self.recipe_database.get_recipe('test_recipe_1', 'tester')
+        self.assertEqual(recipe1, recipe2)
 
         with self.assertRaises(RecipeNotFound):
             self.recipe_database.get_recipe('test_recipe_1', author='does_not_exist')
@@ -249,9 +253,9 @@ class TestRecipeDatabase(unittest.TestCase):
 
 
 class TestMealprepDatabase(unittest.TestCase):
-    
-    def setUp(self) :
-        self.unit_test_dir   = cd_unit_test()
+
+    def setUp(self):
+        self.unit_test_dir     = cd_unit_test()
         self.mealprep_database = MealprepDatabase()
 
         self.mock_mealprep1   = Mealprep('test_mealprep_1',
@@ -277,7 +281,8 @@ class TestMealprepDatabase(unittest.TestCase):
         self.assertEqual(self.mealprep_database.get_list_of_mealprep_names(), [])
         self.mealprep_database.insert_mealprep(self.mock_mealprep1)
         self.mealprep_database.insert_mealprep(self.mock_mealprep3)
-        self.assertEqual(self.mealprep_database.get_list_of_mealprep_names(), ['test_mealprep_1', 'test_mealprep_3'])
+        self.assertEqual(self.mealprep_database.get_list_of_mealprep_names(),
+                         ['test_mealprep_1', 'test_mealprep_3'])
 
     def test_get_list_of_mealpreps(self):
         self.assertEqual(self.mealprep_database.get_list_of_mealpreps(), [])

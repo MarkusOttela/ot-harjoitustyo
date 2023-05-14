@@ -18,8 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import unittest
 
-from src.entities.ingredient import Ingredient
-from src.entities.nutritional_values import NutritionalValues
+from src.entities.ingredient         import Ingredient, in_metadata
+from src.entities.nutritional_values import NutritionalValues, nv_metadata
 
 
 class TestIngredient(unittest.TestCase):
@@ -31,6 +31,7 @@ class TestIngredient(unittest.TestCase):
     def test_equality(self):
         self.assertEqual(self.ingredient1, self.ingredient1)
         self.assertNotEqual(self.ingredient1, self.ingredient2)
+        self.assertNotEqual(self.ingredient1, NutritionalValues())
 
     def test_str(self):
         self.assertEqual(str(self.ingredient1), 'test_ingredient1')
@@ -78,3 +79,101 @@ Nutrients: <NutritionalValues-object {id(self.ingredient1.nv_per_g)}>
       creatine_g      : 0.0"""
 
         self.assertEqual(repr(self.ingredient1), expected)
+
+    def test_from_dict_missing_nv_key_raises_key_error(self):
+
+        # Create test dict
+        in_d = {}
+        for key, tup in nv_metadata.items():
+            value = 1 if tup[1] == float else 'Test'
+            in_d[key] = value
+
+        for key, tup in in_metadata.items():
+            value = 1.0
+            in_d[key] = value
+
+        in_d['nv_per_g'] = NutritionalValues()
+
+        # Remove one key
+        del in_d['kcal']
+
+        # Test
+        with self.assertRaises(KeyError):
+            Ingredient.from_dict(in_d)
+
+    def test_from_dict_for_ingredients_with_grams_per_unit(self):
+
+        # Create test dict
+        units_in_gram = 5
+        label_grams   = 100
+        total_units   = units_in_gram * label_grams
+
+        test_gram_amount = 1
+        expected_value   = units_in_gram * test_gram_amount
+
+        in_d = {}
+        for key, tup in nv_metadata.items():
+            value = total_units if tup[1] == float else 'Test'
+            in_d[key] = value
+
+        for key, tup in in_metadata.items():
+            value = 1.0
+            in_d[key] = value
+
+        in_d['grams_per_unit']  = 100.0
+        in_d['fixed_portion_g'] = 0.0
+        in_d['nv_per_g'] = NutritionalValues()
+
+        # Test
+        ingredient = Ingredient.from_dict(in_d)
+
+        self.assertIsInstance(ingredient, Ingredient)
+
+        nv = ingredient.get_nv(for_grams=test_gram_amount)
+        for v in nv.__dict__.values():
+            self.assertEqual(v, expected_value)
+
+    def test_from_dict_for_ingredients_with_fixed_portion_size(self):
+
+        # Create test dict (with example of five 2g capsules that contain each 0.1g of everything)
+        grams_per_capsule = 2
+        total_units_per_c = 0.1
+        total_no_capsules = 5
+        test_gram_amount = grams_per_capsule * total_no_capsules
+        expected_value = total_no_capsules * total_units_per_c
+
+        in_d = {}
+        for key, tup in nv_metadata.items():
+            value = total_units_per_c if tup[1] == float else 'Test'
+            in_d[key] = value
+
+        for key, tup in in_metadata.items():
+            value = 1.0
+            in_d[key] = value
+
+        in_d['fixed_portion_g'] = grams_per_capsule
+        in_d['grams_per_unit']  = 100.0  # Must be overridden by fixed_portion_g
+        in_d['nv_per_g']        = NutritionalValues()
+
+        # Test
+        ingredient = Ingredient.from_dict(in_d)
+
+        self.assertIsInstance(ingredient, Ingredient)
+
+        nv = ingredient.get_nv(for_grams=test_gram_amount)
+        for v in nv.__dict__.values():
+            self.assertEqual(v, expected_value)
+
+    def test_get_nv(self) -> None:
+        # Setup
+        start_value     = 5.0
+        gram_multiplier = 10
+        expected_value  = start_value * gram_multiplier
+
+        for k in self.ingredient1.nv_per_g.__dict__.keys():
+            self.ingredient1.nv_per_g.__dict__[k] = start_value
+
+        # Test
+        nv = self.ingredient1.get_nv(for_grams=gram_multiplier)
+        for v in nv.__dict__.values():
+            self.assertEqual(v, expected_value)

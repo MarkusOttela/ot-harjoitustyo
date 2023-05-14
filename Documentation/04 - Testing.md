@@ -18,7 +18,7 @@ imports.
 ## Integration tests
 
 The integration tests for databases are done as part of serialization and deserialization of the objects,
-and loading them from the databases
+and loading them from the databases.
 
 ## System testing
 
@@ -39,8 +39,10 @@ The code quality is maintained with several linters:
 
 * Static type checking 
   * ~~Must pass with `strict flag`.~~ 
-    * UPDATE: Abandoned `--strict` due to disparity in backwards compatibility
-      Python3.8 does not support type parameters for generic types, e.g. `list_of_numbers: list[int] = []`
+    * Abandoned `--strict` due to disparity in backwards compatibility:
+      Strict-mode requires type parameters for generic types (that Python3.8 does not support), e.g. 
+      * `list_of_numbers: list[int] = []`, or
+      * `def foo(bar: dict[int, str]) -> tuple[int, float]:`
   * `Any` is allowed for polymorphic types only,
 
 ### pylint
@@ -48,7 +50,7 @@ The code quality is maintained with several linters:
 * Code quality inspection
 
 * 0 warnings from tests module
-* All disabled inspections are expalined in the source code
+* All disabled inspections are explained in the source code
 * 0 warnings from src module outside UI, where only warnings about cyclomatic complexity, namely
   * `too-many-statements`
   * `too-many-branches`

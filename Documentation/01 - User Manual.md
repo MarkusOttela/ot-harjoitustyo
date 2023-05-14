@@ -1,8 +1,6 @@
-
-
 # User Manual
 
-Welcome. To get started with Calorinator, it's highly recommended to go over the manual in order 
+Welcome. To get started with Calorinator, it's highly recommended to go over the manual in order.
 
 # Table of Contents
 1. [Default Ingredient prompt](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/0_default_ingredient_prompt.md)

@@ -7,7 +7,7 @@ Welcome. To get started with Calorinator, it's highly recommended to go over the
 2. [Creating a new user](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/1_create_new_user.md)
 3. [Ingredient management](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/2_ingredient_management.md)
 4. [Creating a single ingredient recipe](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/3_single_ingredient_recipe.md)
-5. [Createing a multi-ingredient recipe](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/4_multi_ingredient_recipe.md)
+5. [Creating a multi-ingredient recipe](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/4_multi_ingredient_recipe.md)
 6. [Creating a mealprep recipe](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/5_mealprep_recipe.md)
 7. [Creating (=Cooking) a mealprep](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/6_cooking_mealprep.md)
 8. [Logging a meal](https://github.com/MarkusOttela/ot-harjoitustyo/blob/master/Documentation/Manual/7_logging_a_meal.md)

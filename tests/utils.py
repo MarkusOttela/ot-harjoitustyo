@@ -43,7 +43,7 @@ def cd_unit_test() -> str:
     return name
 
 
-def cleanup(name) -> None:
+def cleanup(name) :
     """Remove unit test related directory."""
     os.chdir('..')
     shutil.rmtree(f'{name}/')

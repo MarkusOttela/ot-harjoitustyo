@@ -32,7 +32,7 @@ https://github.com/maqp/tfc/blob/master/tests/common/test_crypto.py
 
 class TestArgon2Wrapper(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         """Pre-test actions."""
         self.salt     = 6 * b'salt'
         self.password = 'password'
@@ -146,7 +146,7 @@ class TestXChaCha20Poly1305(unittest.TestCase):
 
     nonce_ct_tag_libsodium = libsodium_nonce + libsodium_ct_tag
 
-    def setUp(self) -> None:
+    def setUp(self) :
         """Pre-test actions."""
         self.assertEqual(self.ietf_plaintext, self.libsodium_plaintext)
         self.assertEqual(self.ietf_ad,        self.libsodium_ad)
@@ -160,16 +160,16 @@ class TestXChaCha20Poly1305(unittest.TestCase):
         self.key       = self.ietf_key
 
     @mock.patch('os.getrandom', side_effect=[ietf_nonce, libsodium_nonce])
-    def test_encrypt_and_sign_with_the_official_test_vectors(self, mock_csprng: MagicMock) -> None:
+    def test_encrypt_and_sign_with_the_official_test_vectors(self, mock_csprng: MagicMock) :
         self.assertEqual(encrypt_and_sign(self.plaintext, self.key, self.ad), self.nonce_ct_tag_ietf)
         self.assertEqual(encrypt_and_sign(self.plaintext, self.key, self.ad), self.nonce_ct_tag_libsodium)
         mock_csprng.assert_called_with(CryptoLiterals.XCHACHA20_NONCE_LENGTH.value, flags=0)
 
-    def test_auth_and_decrypt_with_the_official_test_vectors(self) -> None:
+    def test_auth_and_decrypt_with_the_official_test_vectors(self) :
         self.assertEqual(auth_and_decrypt(self.nonce_ct_tag_ietf,      self.key, associated_data=self.ad), self.plaintext)
         self.assertEqual(auth_and_decrypt(self.nonce_ct_tag_libsodium, self.key, associated_data=self.ad), self.plaintext)
 
-    def test_invalid_size_key_raises_security_exception(self) -> None:
+    def test_invalid_size_key_raises_security_exception(self) :
         invalid_keys = [key_length * b'a' for key_length in [1, CryptoLiterals.SYMMETRIC_KEY_LENGTH.value-1,
                                                                 CryptoLiterals.SYMMETRIC_KEY_LENGTH.value+1, 1000]]
         for invalid_key in invalid_keys:
@@ -179,11 +179,11 @@ class TestXChaCha20Poly1305(unittest.TestCase):
                 auth_and_decrypt(self.nonce_ct_tag_ietf, invalid_key)
 
     @mock.patch('os.getrandom', return_value=(CryptoLiterals.XCHACHA20_NONCE_LENGTH.value-1)*b'a')
-    def test_invalid_nonce_when_encrypting_raises_security_exception(self, _: MagicMock) -> None:
+    def test_invalid_nonce_when_encrypting_raises_security_exception(self, _: MagicMock) :
         with self.assertRaises(SecurityException):
             encrypt_and_sign(self.plaintext, self.key)
 
-    def test_invalid_tag_in_ciphertext_raises_security_exception(self) -> None:
+    def test_invalid_tag_in_ciphertext_raises_security_exception(self) :
         with self.assertRaises(SecurityException):
             auth_and_decrypt(self.nonce_ct_tag_ietf, key=bytes(CryptoLiterals.SYMMETRIC_KEY_LENGTH.value))
 

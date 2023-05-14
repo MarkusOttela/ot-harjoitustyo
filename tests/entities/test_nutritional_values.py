@@ -23,7 +23,7 @@ from src.entities.nutritional_values import NutritionalValues
 
 class TestNutritionalValues(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.nv1 = NutritionalValues()
         self.nv2 = NutritionalValues()
         self.nv3 = NutritionalValues()

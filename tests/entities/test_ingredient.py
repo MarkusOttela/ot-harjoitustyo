@@ -24,7 +24,7 @@ from src.entities.nutritional_values import NutritionalValues, nv_metadata
 
 class TestIngredient(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.ingredient1 = Ingredient('test_ingredient1', NutritionalValues())
         self.ingredient2 = Ingredient('test_ingredient2', NutritionalValues())
 
@@ -164,7 +164,7 @@ Nutrients: <NutritionalValues-object {id(self.ingredient1.nv_per_g)}>
         for v in nv.__dict__.values():
             self.assertEqual(v, expected_value)
 
-    def test_get_nv(self) -> None:
+    def test_get_nv(self) :
         # Setup
         start_value     = 5.0
         gram_multiplier = 10

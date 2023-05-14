@@ -29,7 +29,7 @@ from tests.utils import cd_unit_test, cleanup, create_mock_user
 
 class TestCalculateBMR(unittest.TestCase):
 
-    def test_calculate_bmr_for_male(self, ) -> None:
+    def test_calculate_bmr_for_male(self, ) :
         """
         From https://www.omnicalculator.com/health/bmr
 
@@ -38,7 +38,7 @@ class TestCalculateBMR(unittest.TestCase):
         bmr = calculate_bmr(Gender.MALE, weight_kg=68.04, height_cm=162.56, age=60)
         self.assertEqual(round(bmr, 1), 1401.4)
 
-    def test_calculate_bmr_for_female(self, ) -> None:
+    def test_calculate_bmr_for_female(self, ) :
         """
         From https://www.omnicalculator.com/health/bmr
 
@@ -50,11 +50,11 @@ class TestCalculateBMR(unittest.TestCase):
 
 class TestCalculateNVGoal(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir = cd_unit_test()
         self.user = create_mock_user()
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_calculate_nv(self):

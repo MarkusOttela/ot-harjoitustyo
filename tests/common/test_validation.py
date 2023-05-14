@@ -25,7 +25,7 @@ from src.common.validation import (validate_bool, validate_float, validate_int, 
 
 class TestValidation(unittest.TestCase):
 
-    def test_validate_type(self) -> None:
+    def test_validate_type(self) :
 
         # Valid types
         for value, type_ in [('string', str),
@@ -42,7 +42,7 @@ class TestValidation(unittest.TestCase):
             with self.assertRaises(ValidationError):
                 validate_type('test', value, type_)
 
-    def test_validate_str(self) -> None:
+    def test_validate_str(self) :
         # Valid values
         for bool_ in [True, False]:
             self.assertIsNone(validate_str('test', 'valid', empty_allowed=bool_))
@@ -56,7 +56,7 @@ class TestValidation(unittest.TestCase):
         with self.assertRaises(ValidationError):
             validate_str('test', '', empty_allowed=False)
 
-    def test_validate_int(self) -> None:
+    def test_validate_int(self) :
         # Valid values
         self.assertIsNone(validate_int('test',  5, negative_allowed=False))
         self.assertIsNone(validate_int('test', -5, negative_allowed=True))
@@ -70,7 +70,7 @@ class TestValidation(unittest.TestCase):
         with self.assertRaises(ValidationError):
             validate_int('test', -1, negative_allowed=False)
 
-    def test_validate_float(self) -> None:
+    def test_validate_float(self) :
         # Valid values
         self.assertIsNone(validate_float('test',  5.0, negative_allowed=False))
         self.assertIsNone(validate_float('test', -5.0, negative_allowed=True))
@@ -84,7 +84,7 @@ class TestValidation(unittest.TestCase):
         with self.assertRaises(ValidationError):
             validate_float('test', -1.0, negative_allowed=False)
 
-    def test_validate_bool(self) -> None:
+    def test_validate_bool(self) :
         # Valid values
         self.assertIsNone(validate_bool('test', False))
         self.assertIsNone(validate_bool('test', True))

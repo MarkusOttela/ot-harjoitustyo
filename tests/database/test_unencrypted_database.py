@@ -35,7 +35,7 @@ from tests.utils import cd_unit_test, cleanup
 
 class TestUnencryptedDatabase(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir = cd_unit_test()
 
         class Test:
@@ -51,20 +51,20 @@ class TestUnencryptedDatabase(unittest.TestCase):
         self.database = UnencryptedDatabase(DatabaseTableName.RECIPES, db_metadata=metadata)
         self.database.insert(test_obj)
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
-    def test_inserting_object_to_database_works(self) -> None:
+    def test_inserting_object_to_database_works(self) :
         res = self.database.cursor.execute('SELECT test_string1, test_string2 FROM Recipes').fetchall()[0]
         self.assertEqual(res, ('test_data1', 'test_data2'))
 
-    def test_get_list_of_entries(self) -> None:
+    def test_get_list_of_entries(self) :
         self.assertEqual(self.database.get_list_of_entries(), [('test_data1', 'test_data2')])
 
 
 class TestIngredientDatabase(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir = cd_unit_test()
         self.database = IngredientDatabase()
 
@@ -72,10 +72,10 @@ class TestIngredientDatabase(unittest.TestCase):
         self.mock_ingredient1_2 = Ingredient('test_ingredient_1', NutritionalValues(kcal=1))
         self.mock_ingredient3   = Ingredient('test_ingredient_3', NutritionalValues())
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
-    def test_get_list_of_ingredients_returns_list_of_ingredients(self) -> None:
+    def test_get_list_of_ingredients_returns_list_of_ingredients(self) :
         self.assertIsInstance(self.database.get_list_of_ingredients(), list)
         self.assertEqual(len(self.database.get_list_of_ingredients()), 0)
 
@@ -91,7 +91,7 @@ class TestIngredientDatabase(unittest.TestCase):
         with self.assertRaises(IngredientNotFound):
             self.database.get_ingredient('does_not_exist')
 
-    def test_remove_ingredient(self) -> None:
+    def test_remove_ingredient(self) :
         self.database.insert(self.mock_ingredient1)
 
         # Test invalid parameter raises CriticalError
@@ -131,7 +131,7 @@ class TestIngredientDatabase(unittest.TestCase):
         self.assertTrue(self.database.has_ingredient(self.mock_ingredient1))
         self.assertFalse(self.database.has_ingredient(self.mock_ingredient3))
 
-    def test_has_ingredients(self) -> None:
+    def test_has_ingredients(self) :
         self.assertFalse(self.database.has_ingredients())
         self.database.insert(self.mock_ingredient1)
         self.assertTrue(self.database.has_ingredients())
@@ -139,7 +139,7 @@ class TestIngredientDatabase(unittest.TestCase):
 
 class TestRecipeDatabase(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir   = cd_unit_test()
         self.recipe_database = RecipeDatabase()
 
@@ -151,7 +151,7 @@ class TestRecipeDatabase(unittest.TestCase):
         self.mock_recipe3   = Recipe('test_recipe_3', 'tester', [water, salt], [],     False)
         self.mock_mp_recipe = Recipe('test_recipe_mp', 'tester', [water],       [salt], True)
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_get_list_of_recipe_names(self):
@@ -218,7 +218,7 @@ class TestRecipeDatabase(unittest.TestCase):
         self.assertTrue(self.recipe_database.has_recipe(self.mock_recipe1))
         self.assertFalse(self.recipe_database.has_recipe(self.mock_recipe3))
 
-    def test_remove_recipe(self) -> None:
+    def test_remove_recipe(self) :
         self.recipe_database.insert_recipe(self.mock_recipe1)
 
         # Test invalid parameter raises CriticalError
@@ -250,7 +250,7 @@ class TestRecipeDatabase(unittest.TestCase):
 
 class TestMealprepDatabase(unittest.TestCase):
     
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir   = cd_unit_test()
         self.mealprep_database = MealprepDatabase()
 
@@ -270,7 +270,7 @@ class TestMealprepDatabase(unittest.TestCase):
                                          ingredient_grams={'Water': 50, 'Salt': 20},
                                          mealprep_nv=NutritionalValues())
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_get_list_of_mealprep_names(self):

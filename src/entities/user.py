@@ -19,6 +19,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 import json
 
 from datetime import datetime
+from typing import Any
 
 from src.common.enums import Conversion, DBKeys, DietType, Format, Gender, PhysicalActivityLevel
 from src.common.utils import get_today_str
@@ -58,11 +59,20 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
         self.diet_type = diet_type
         self.bmr       = 0.0
 
-        self.daily_macro_goals : dict = {}
-        self.weight_log        : dict = {}
-        self.meal_log          : dict = {}
+        self.weight_log : dict = {}
+        self.meal_log   : dict = {}
 
         self.database = EncryptedDatabase(self.credentials)
+
+    def __eq__(self, other: Any) -> bool:
+        """Return True if two User objects are the same."""
+        if not isinstance(other, User):
+            return False
+        return self.name == other.name  # Names are unique
+
+    def __ne__(self, other: Any) -> bool:
+        """Return True if two User objects are the same."""
+        return not self.__eq__(other)
 
     def __repr__(self) -> str:
         """Format User attributes."""
@@ -73,11 +83,8 @@ class User:  # pylint: disable=too-many-instance-attributes, too-many-public-met
                   f"  Height:       {self.height_cm}\n"
                   f"  Init Weight:  {self.init_weight_kg}\n"
                   f"  Curr. Weight: {self.get_todays_weight()}\n"
-                  f"  PAL:          {self.pal.value}\n"
-                  f"  Daily goals:\n")
-        for key, value in self.daily_macro_goals.items():
-            string += f'    {key:8}: {value:.1f}'
-            string += 'kcal\n' if key == 'Energy' else 'g\n'
+                  f"  PAL:          {self.pal.value}\n")
+
         return string
 
     # Databases

@@ -24,7 +24,7 @@ from src.entities.nutritional_values import NutritionalValues
 
 class TestMeal(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
 
         self.meal = Meal('test',
                          '01/02/23-15:30:45',
@@ -32,6 +32,27 @@ class TestMeal(unittest.TestCase):
                          NutritionalValues(),
                          {'Water': 100.0}
                          )
+
+        self.same_meal = Meal('test',
+                              '01/02/23-15:30:45',
+                              250.0,
+                              NutritionalValues(),
+                              {'Water': 100.0}
+                              )
+
+        self.other_meal1 = Meal('test',
+                                '01/02/23-15:30:46',
+                                250.0,
+                                NutritionalValues(),
+                                {'Water': 100.0}
+                                )
+
+        self.other_meal2 = Meal('test2',
+                                '01/02/23-15:30:45',
+                                250.0,
+                                NutritionalValues(),
+                                {'Water': 100.0}
+                                )
 
     def test_repr(self):
         expected_output = f"""\
@@ -45,6 +66,12 @@ class TestMeal(unittest.TestCase):
     Water: 100.0g"""
 
         self.assertEqual(repr(self.meal), expected_output)
+
+    def test_equality(self):
+        self.assertEqual(self.meal, self.same_meal)
+        self.assertNotEqual(self.meal, self.other_meal1)
+        self.assertNotEqual(self.meal, self.other_meal2)
+        self.assertNotEqual(self.meal, NutritionalValues())
 
     def test_at_date(self):
         self.assertEqual(self.meal.eat_date, '01/02/23')

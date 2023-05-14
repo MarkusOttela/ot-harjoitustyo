@@ -24,7 +24,7 @@ from src.entities.nutritional_values import NutritionalValues
 
 class TestMealprep(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.mealprep1 = Mealprep('test',
                                   3500.0,
                                   '01/05/2023',

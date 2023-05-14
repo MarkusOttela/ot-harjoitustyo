@@ -18,6 +18,8 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import ast
 
+from typing import Any
+
 from src.entities.nutritional_values import NutritionalValues
 
 
@@ -54,6 +56,16 @@ class Meal:
             lines.append(f'    {ac_name}: {ac_grams}g')
 
         return '\n'.join(lines)
+
+    def __eq__(self, other: Any) -> bool:
+        """Return True if two Meal objects are the same."""
+        if not isinstance(other, Meal):
+            return False
+        return self.name == other.name and self.eat_tstamp == other.eat_tstamp
+
+    def __ne__(self, other) -> bool:
+        """Return True if two Meal objects are not the same."""
+        return not self.__eq__(other)
 
     @property
     def eat_date(self) -> str:

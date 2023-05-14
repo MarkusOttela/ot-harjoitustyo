@@ -23,7 +23,7 @@ from src.entities.recipe import Recipe
 
 class TestRecipe(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
 
         self.recipe1 = Recipe('test_recipe1',
                               'tester',

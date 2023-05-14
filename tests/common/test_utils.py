@@ -31,12 +31,12 @@ from tests.utils import cd_unit_test, cleanup
 
 class TestEnsureDir(unittest.TestCase):
 
-    def tearDown(self) -> None:
+    def tearDown(self):
         """Post-test actions."""
         with ignored(OSError):
             os.rmdir('test_dir/')
 
-    def test_ensure_dir(self) -> None:
+    def test_ensure_dir(self):
         self.assertIsNone(ensure_dir('test_dir/'))
         self.assertIsNone(ensure_dir('test_dir/'))
         self.assertTrue(os.path.isdir('test_dir/'))
@@ -44,10 +44,10 @@ class TestEnsureDir(unittest.TestCase):
 
 class TestWriteBytes(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir = cd_unit_test()
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_function_writes_bytes_to_file(self):
@@ -65,10 +65,10 @@ class TestWriteBytes(unittest.TestCase):
 
 class TestGetListOfUserAccountNames(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir = cd_unit_test()
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_empty_directory(self):
@@ -97,7 +97,7 @@ class TestGetListOfUserAccountNames(unittest.TestCase):
 
 class TestSeparateHeader(unittest.TestCase):
 
-    def test_separate_header(self) -> None:
+    def test_separate_header(self) :
         self.assertEqual(separate_header(b"teststring", header_length=len(b"test")), (b"test", b"string"))
 
 

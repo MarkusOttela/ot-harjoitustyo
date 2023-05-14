@@ -24,11 +24,11 @@ from src.common.exceptions import ignored
 class TestIgnored(unittest.TestCase):
 
     @staticmethod
-    def func() -> None:
+    def func() :
         """Mock function that raises exception."""
         raise KeyboardInterrupt
 
-    def test_ignored_contextmanager(self) -> None:
+    def test_ignored_contextmanager(self) :
         raised = False
         try:
             with ignored(KeyboardInterrupt):

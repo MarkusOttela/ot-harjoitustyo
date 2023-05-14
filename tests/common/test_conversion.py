@@ -25,7 +25,7 @@ from src.ui.callback_classes import StringInput
 
 class TestConversion(unittest.TestCase):
 
-    def test_str_to_float(self) -> None:
+    def test_str_to_float(self) :
 
         # Test valid conversion
         for b in [True, False]:
@@ -46,7 +46,7 @@ class TestConversion(unittest.TestCase):
                 with self.assertRaises(ConversionError):
                     str_to_float('test', v, negative_allowed=b)
 
-    def test_str_to_int(self) -> None:
+    def test_str_to_int(self) :
 
         # Test valid conversion
         for b in [True, False]:
@@ -69,7 +69,7 @@ class TestConversion(unittest.TestCase):
 
 class TestCovertInputFields(unittest.TestCase):
 
-    def test_successful_conversions(self) -> None:
+    def test_successful_conversions(self) :
         metadata = {
             'integer': ('integer', int   ),
             'float':   ('float',   float ),
@@ -91,7 +91,7 @@ class TestCovertInputFields(unittest.TestCase):
         self.assertIsInstance(value_dict['float'], float)
         self.assertIsInstance(value_dict['string'], str)
 
-    def test_unsuccessful_conversions(self) -> None:
+    def test_unsuccessful_conversions(self) :
         metadata = {
             'integer': ('integer', int   ),
             'float':   ('float',   float ),
@@ -111,7 +111,7 @@ class TestCovertInputFields(unittest.TestCase):
         self.assertIsNone(failed_conversions['integer'])
         self.assertIsNone(failed_conversions['float'])
 
-    def test_unknown_type_raise_value_error(self) -> None:
+    def test_unknown_type_raise_value_error(self) :
         metadata = {
             'integer' : ('integer',   int   ),
             'float'   :   ('float',   float ),

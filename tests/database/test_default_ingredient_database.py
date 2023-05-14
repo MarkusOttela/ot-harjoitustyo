@@ -26,11 +26,11 @@ from tests.utils import cd_unit_test, create_mock_user, cleanup
 
 class TestDefaultIngredientDatabase(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir = cd_unit_test()
         self.user          = create_mock_user()
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_default_ingredients_can_be_imported(self):

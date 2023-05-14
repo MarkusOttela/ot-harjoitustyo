@@ -36,7 +36,7 @@ if typing.TYPE_CHECKING:
 
 class TestEncryptedDatabase(unittest.TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self) :
         self.unit_test_dir = cd_unit_test()
         self.test_password = 'password'
         self.test_salt     = 8*b'salt'
@@ -44,7 +44,7 @@ class TestEncryptedDatabase(unittest.TestCase):
             _, self.test_key = derive_database_key(self.test_password, self.test_salt)
         self.uc = UserCredentials('test', self.test_salt, self.test_key)
 
-    def tearDown(self) -> None:
+    def tearDown(self) :
         cleanup(self.unit_test_dir)
 
     def test_storing_database_creates_the_database(self):

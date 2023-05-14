@@ -73,10 +73,6 @@ class Meal:
             total_weight += sum(self.accompaniment_grams.values())
         return total_weight
 
-    def get_nv(self) -> NutritionalValues:
-        """Get the nutritional values of the meal."""
-        return self.meal_nv
-
     def serialize(self) -> str:
         """Return the serialized version of the object."""
         return str({'name':                self.name,

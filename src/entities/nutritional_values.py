@@ -18,7 +18,7 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import ast
 
-from typing import Union
+from typing import Union, Any
 
 from src.common.enums import CalContent, TefMultipliers
 
@@ -194,6 +194,19 @@ class NutritionalValues:  # pylint: disable=too-many-instance-attributes
                            (10, 'Micronutrients')]:
             lines.insert(index, f'  {txt} (per 1g of ingredient)')
         return '\n'.join(lines)
+
+    def __eq__(self, other: Any) -> bool:
+        """Return True if two NutritionalValues objects are the same."""
+        if not isinstance(other, NutritionalValues):
+            return False
+        for key, value in self.__dict__.items():
+            if other.__dict__[key] != value:
+                return False
+        return True
+
+    def __ne__(self, other: Any) -> bool:
+        """Return True if two NutritionalValues objects are not the same."""
+        return not self.__eq__(other)
 
     def __add__(self, other: 'NutritionalValues') -> 'NutritionalValues':
         """Add two NutritionalValues objects together."""

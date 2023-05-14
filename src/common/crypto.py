@@ -35,7 +35,7 @@ from src.common.utils      import separate_header
 class CryptoLiterals(Enum):
     """Cryptographic variables.
 
-    TODO: Replace memory cost with 512*1024
+    TODO: Replace memory cost with 512*1024 after course
     """
     # Password account_management / key derivation
     ARGON2_TIME_COST     = 20

@@ -53,9 +53,9 @@ def add_ingredient_menu(gui           : 'GUI',
     excluded = ['kcal', 'carbohydrates_g', 'sugar_g', 'protein_g', 'fat_g',
                 'satisfied_fat_g', 'fiber_g', 'salt_g']
 
-    # Disable linter check as we are reusing keys and assigning values, not fetching them
-    # pylint disable=consider-iterating-dictionary
     for k in string_inputs.keys():
+        # Disable linter check as we are reusing keys and assigning values, not fetching them
+        # pylint disable=consider-iterating-dictionary
         if k in nv_metadata.keys() and k not in excluded:
             string_inputs[k].value = '0.0'
     string_inputs['grams_per_unit'].value  = '100.0'

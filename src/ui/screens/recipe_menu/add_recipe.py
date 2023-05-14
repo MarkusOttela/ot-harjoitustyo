@@ -101,10 +101,10 @@ def add_recipe(gui           : 'GUI',
             if done_bt.pressed:
 
                 if name.value == '':
-                    raise ValueError(f'Please a name for the recipe')
+                    raise ValueError('Please a name for the recipe')
 
                 if not selected_ingredients.values:
-                    raise ValueError(f'Please add at last one ingredient')
+                    raise ValueError('Please add at last one ingredient')
 
                 new_recipe = Recipe(name.value, author.value,
                                     selected_ingredients.values,

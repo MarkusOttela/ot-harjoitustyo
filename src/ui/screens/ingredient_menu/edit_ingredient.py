@@ -56,9 +56,9 @@ def edit_ingredient(gui             : 'GUI',
         gram_multiplier = orig_ingredient.fixed_portion_g
 
     # Prefill fields with earlier values
-    # Disable linter check as we are reusing keys and assigning values, not fetching them
-    # pylint disable=consider-iterating-dictionary
     for k in string_inputs.keys():
+        # Disable linter check as we are reusing keys and assigning values, not fetching them
+        # pylint disable=consider-iterating-dictionary
         if k in in_metadata.keys():
             string_inputs[k].value = getattr(orig_ingredient, k)
         else:

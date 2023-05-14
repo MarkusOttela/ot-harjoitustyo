@@ -160,6 +160,19 @@ class TestNutritionalValues(unittest.TestCase):
         self.nv1.apply_tef_multipliers()
         self.assertTrue(self.nv1.kcal < orig_value)
 
+    def test_serialize(self):
+        expected_string = ("{'kcal': 0.0, 'carbohydrates_g': 0.0, 'sugar_g': 0.0, 'protein_g': 0.0, "
+                           "'fat_g': 0.0, 'satisfied_fat_g': 0.0, 'fiber_g': 0.0, 'salt_g': 0.0, "
+                           "'omega3_dha_mg': 0.0, 'omega3_epa_mg': 0.0, 'vitamin_a_ug': 0.0, "
+                           "'vitamin_d_ug': 0.0, 'vitamin_e_mg': 0.0, 'vitamin_k_ug': 0.0, "
+                           "'vitamin_b1_mg': 0.0, 'vitamin_b2_mg': 0.0, 'vitamin_b3_mg': 0.0, "
+                           "'vitamin_b5_mg': 0.0, 'vitamin_b6_mg': 0.0, 'vitamin_b7_ug': 0.0, "
+                           "'vitamin_b9_ug': 0.0, 'vitamin_b12_ug': 0.0, 'vitamin_c_mg': 0.0, "
+                           "'calcium_mg': 0.0, 'chromium_ug': 0.0, 'iodine_ug': 0.0, 'potassium_mg': "
+                           "0.0, 'iron_mg': 0.0, 'magnesium_mg': 0.0, 'zinc_mg': 0.0, 'caffeine_mg': "
+                           "0.0, 'creatine_g': 0.0}")
+        self.assertEqual(self.nv1.serialize(), expected_string)
+
     def test_from_serialized(self):
         new_nv = NutritionalValues.from_serialized(self.nv1.serialize())
         self.assertEqual(new_nv, self.nv1)

@@ -105,7 +105,7 @@ def get_meal_lines(user      : 'User',
                       for f1, f2, f3, f4, f5, f6, f7, f8 in zip(col1, col2, col3, c4s,
                                                                 c5s, c6s, c7s, c8s)])
 
-    return lines, total_consumed_kcal, total_consumed_carbs_g
+    return lines, total_consumed_carbs_g
 
 
 def get_daily_macro_lines(user                 : 'User',
@@ -225,7 +225,7 @@ def get_calorie_balance(user: 'User') -> list:
     col11 = [consumed_total_g_aligned, bmr_total_g_aligned]
 
     # Column widths
-    c0w, c1w, c2w, c3w, c4w, c5w, c6w, c7w, c8w, c9w \
+    _, c1w, c2w, c3w, c4w, c5w, c6w, c7w, c8w, c9w \
         = [max(len(v) for v in col) for col in [col0, col1, col2, col3, col4,
                                                 col5, col6, col7, col8, col9]]
 
@@ -253,7 +253,7 @@ def show_daily_overview(gui       : 'GUI',
                         recipe_db : 'RecipeDatabase'
                         ) -> None:
     """Show the daily calorie balance overview."""
-    meal_lines, total_kcal, total_carbohydrates_g = get_meal_lines(user, recipe_db)
+    meal_lines, total_carbohydrates_g = get_meal_lines(user, recipe_db)
 
     macro_lines   = get_daily_macro_lines(user, total_carbohydrates_g)
     cal_bal_lines = get_calorie_balance(user)

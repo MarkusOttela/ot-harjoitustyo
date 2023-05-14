@@ -68,14 +68,14 @@ def add_mealprep_recipe(gui           : 'GUI',
             # Find indexes of previously selected ingredients
             selected_ingredient_indexes = []
             for i, tuple_ in enumerate(available_ingredients):
-                ing_name, ingredient = tuple_
+                _, ingredient = tuple_
                 if ingredient in selected_ingredients.sel_list:
                     selected_ingredient_indexes.append(i)
 
             # Find indexes of previously selected accompaniments
             selected_accompaniment_indexes = []
             for i, tuple_ in enumerate(available_ingredients):
-                ing_name, ingredient = tuple_
+                _, ingredient = tuple_
                 if ingredient in selected_accompaniments.sel_list:
                     selected_accompaniment_indexes.append(i)
 

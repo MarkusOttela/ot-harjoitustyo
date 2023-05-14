@@ -28,7 +28,7 @@ def add_ingredient_gram_inputs(menu               : GUIMenu,
                                failed_conversions : dict,
                                ) -> None:
     """Add text inputs on screen."""
-    for i, k in enumerate(list(metadata.keys())):
+    for _, k in enumerate(list(metadata.keys())):
         warning_color = Color.RED.value
         normal_color  = ColorScheme.FONT_COLOR.value
 

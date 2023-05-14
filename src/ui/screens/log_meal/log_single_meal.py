@@ -75,6 +75,10 @@ def log_single_meal(gui           : 'GUI',
         if done_bt.pressed:
             success, weight_dict = convert_input_fields(string_inputs, metadata)
 
+            if not success:
+                failed_conversions = weight_dict
+                continue
+
             meal_nv    = NutritionalValues()
             meal_grams = 0.0
 

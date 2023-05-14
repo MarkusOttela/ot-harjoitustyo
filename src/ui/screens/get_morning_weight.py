@@ -63,6 +63,6 @@ def get_morning_weight(gui: 'GUI', user: 'User') -> None:
             user.set_morning_weight(weight_f)
             return
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

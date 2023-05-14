@@ -52,8 +52,8 @@ def get_pal_and_diet_type(gui: 'GUI') -> tuple:
                     break
 
             default_ds = None
-            for i, dt in enumerate(diet_type_options):
-                if dt[1] == diet_type_ds.value:
+            for i, diet_type in enumerate(diet_type_options):
+                if diet_type[1] == diet_type_ds.value:
                     default_ds = i
                     break
 
@@ -92,6 +92,6 @@ def get_pal_and_diet_type(gui: 'GUI') -> tuple:
 
                 return pal_ds.value, diet_type_ds.value
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

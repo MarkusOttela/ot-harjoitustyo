@@ -87,9 +87,9 @@ def enter_existing_credentials(gui: 'GUI') -> UserCredentials:
 
                 try:
                     return UserCredentials.from_password(user_name_ds.value, password.value)
-                except IncorrectPassword as f:
-                    raise ValueError(f"Error: {f}")
+                except IncorrectPassword as exception:
+                    raise ValueError(f"Error: {exception}")
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

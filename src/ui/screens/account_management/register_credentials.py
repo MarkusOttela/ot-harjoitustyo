@@ -92,6 +92,6 @@ def register_credentials(gui: 'GUI') -> tuple:
 
                 return user_name.value, password_1.value
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

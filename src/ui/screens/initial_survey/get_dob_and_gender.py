@@ -82,6 +82,6 @@ def get_dob_and_gender(gui: 'GUI') -> tuple:
 
                 return dob.value, is_male.value
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

@@ -154,6 +154,6 @@ def add_mealprep_recipe(gui           : 'GUI',
                     show_message(gui, title, 'Recipe has been replaced')
                     raise ReturnToMainMenu("Recipe replaced.")
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

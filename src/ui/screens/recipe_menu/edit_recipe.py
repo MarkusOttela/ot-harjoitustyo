@@ -176,6 +176,6 @@ def edit_recipe(gui           : 'GUI',
                     show_message(gui, title, 'Recipe has been replaced.')
                     return
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

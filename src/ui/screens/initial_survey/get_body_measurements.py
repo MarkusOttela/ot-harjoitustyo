@@ -108,6 +108,6 @@ def get_body_measurements(gui: 'GUI') -> tuple:
 
                 return weight_f, height_f
 
-        except ValueError as e:
-            error_message = e.args[0]
+        except ValueError as exception:
+            error_message = exception.args[0]
             continue

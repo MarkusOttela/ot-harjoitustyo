@@ -38,8 +38,8 @@ if typing.TYPE_CHECKING:
 
 
 # Graph colors
-grey       = '#1E1E1E'
-light_grey = '#B4B4B4'
+GREY       = '#1E1E1E'
+LIGHT_GREY = '#B4B4B4'
 
 
 def draw_graph(measurement_log: dict) -> pygame.Surface:
@@ -48,23 +48,23 @@ def draw_graph(measurement_log: dict) -> pygame.Surface:
 
     dt_log = {}
     for date_string, value in measurement_log.items():
-        dt        = datetime.strptime(date_string, Format.DATETIME_DATE.value)
-        dt_log[dt] = value
+        dtime         = datetime.strptime(date_string, Format.DATETIME_DATE.value)
+        dt_log[dtime] = value
 
     start_date = list(dt_log.keys())[0]
 
     days         = []
     measurements = []
 
-    for dt, measurement in dt_log.items():
-        days.append((dt - start_date).days)
+    for dtime, measurement in dt_log.items():
+        days.append((dtime - start_date).days)
         measurements.append(measurement)
 
     if len(days) == 1:  # Mock previous day on day 1 to get a line visible
         days         = [-1]              + days
         measurements = [measurements[0]] + measurements
 
-    plt.plot(days, measurements, linestyle='', color=light_grey, marker='+', label='')
+    plt.plot(days, measurements, linestyle='', color=LIGHT_GREY, marker='+', label='')
     plt.plot(days, measurements, linestyle='-', linewidth=1)
 
     x_min = -1
@@ -75,7 +75,7 @@ def draw_graph(measurement_log: dict) -> pygame.Surface:
     if y_min == y_max:
         y_min -= 1
 
-    plt.suptitle('Weight', fontsize=14, fontweight='bold', color=light_grey)
+    plt.suptitle('Weight', fontsize=14, fontweight='bold', color=LIGHT_GREY)
 
     create_axes(days[-1], x_min, x_max, y_min, y_max)
 
@@ -113,8 +113,8 @@ def create_axes(days  : int,
     plt.yticks(y_ticks)
 
     # Create axes' labels
-    plt.xlabel('Days',         color=light_grey)
-    plt.ylabel('Weight (kg)', color=light_grey)
+    plt.xlabel('Days', color=LIGHT_GREY)
+    plt.ylabel('Weight (kg)', color=LIGHT_GREY)
 
 
 def render_figure(figure: 'Figure') -> pygame.Surface:
@@ -136,7 +136,7 @@ def init_figure(dpi: int = 100) -> 'Figure':
     plt.clf()
     matplotlib.use("Agg")
     figure_size = list(map(lambda x: x / dpi, Program.RESOLUTION.value))
-    figure      = pylab.figure(figsize=figure_size, dpi=dpi, facecolor=grey)
+    figure      = pylab.figure(figsize=figure_size, dpi=dpi, facecolor=GREY)
 
     set_colors()
     return figure
@@ -145,18 +145,18 @@ def init_figure(dpi: int = 100) -> 'Figure':
 def set_colors() -> None:
     """Set global colors for the graph."""
     # Axes' colors
-    ax = plt.axes()
-    ax.set_facecolor(grey)
-    ax.spines['bottom'].set_color(light_grey)
-    ax.spines['top'].set_color(light_grey)
-    ax.spines['left'].set_color(light_grey)
-    ax.spines['right'].set_color(light_grey)
-    ax.tick_params(axis='x', colors=light_grey)
-    ax.tick_params(axis='y', colors=light_grey)
+    axes = plt.axes()
+    axes.set_facecolor(GREY)
+    axes.spines['bottom'].set_color(LIGHT_GREY)
+    axes.spines['top'].set_color(LIGHT_GREY)
+    axes.spines['left'].set_color(LIGHT_GREY)
+    axes.spines['right'].set_color(LIGHT_GREY)
+    axes.tick_params(axis='x', colors=LIGHT_GREY)
+    axes.tick_params(axis='y', colors=LIGHT_GREY)
 
     # Label colors
-    plt.rcParams.update({'text.color'      : light_grey,
-                         'axes.labelcolor' : light_grey})
+    plt.rcParams.update({'text.color'      : LIGHT_GREY,
+                         'axes.labelcolor' : LIGHT_GREY})
 
 
 def show_weight_progress(gui: 'GUI', weight_log: dict) -> None:

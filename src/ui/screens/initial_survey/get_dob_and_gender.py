@@ -73,12 +73,12 @@ def get_dob_and_gender(gui: 'GUI') -> tuple:
             if done_bt.pressed:
 
                 if dob.value == '':
-                    raise ValueError(f'Please enter your birthday')
+                    raise ValueError('Please enter your birthday')
 
                 try:
                     datetime.strptime(dob.value, Format.DATETIME_DATE.value)
                 except ValueError:
-                    raise ValueError("Error: Invalid birthday format")
+                    raise ValueError('Error: Invalid birthday format')
 
                 return dob.value, is_male.value
 

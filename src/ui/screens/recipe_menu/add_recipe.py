@@ -65,21 +65,21 @@ def add_recipe(gui           : 'GUI',
             return_bt = Button(menu, closes_menu=True)
             done_bt   = Button(menu, closes_menu=True)
 
-            menu.menu.add.text_input(f'Name: ',
+            menu.menu.add.text_input('Name: ',
                                      onchange=name.set_value,
                                      default=name.value,
                                      valid_chars=strings,
                                      maxchar=19,
                                      font_color=ColorScheme.FONT_COLOR.value)
 
-            menu.menu.add.text_input(f'Author: ',
+            menu.menu.add.text_input('Author: ',
                                      onchange=author.set_value,
                                      default=author.value,
                                      valid_chars=strings,
                                      maxchar=19,
                                      font_color=ColorScheme.FONT_COLOR.value)
 
-            menu.menu.add.dropselect_multiple(f'Select ingredients: ',
+            menu.menu.add.dropselect_multiple('Select ingredients: ',
                                               onchange=selected_ingredients.set_value,
                                               onreturn=selected_ingredients.set_value,  # type: ignore
                                               items=available_ingredients,  # type: ignore

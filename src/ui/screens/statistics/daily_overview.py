@@ -197,7 +197,7 @@ def get_calorie_balance(user: 'User') -> list:
     consumed_kcal_al, bmd_kcal_al, kcal_change_al \
         = align_float([consumed_kcal, bmr_kcal, kcal_change])
 
-    bmr_warning = f'! Below BMR' if consumed_kcal < bmr_kcal else ''
+    bmr_warning = '! Below BMR' if consumed_kcal < bmr_kcal else ''
 
     consumed_carbs_g_aligned, bmr_carbs_g_aligned = align_float([consumed_carbs_g, bmr_carbs_g])
     consumed_fat_g_aligned,   bmr_fat_g_aligned   = align_float([consumed_fats_g,  bmr_fat_g  ])

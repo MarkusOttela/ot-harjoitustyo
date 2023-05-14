@@ -75,7 +75,7 @@ def draw_graph(measurement_log: dict) -> pygame.Surface:
     if y_min == y_max:
         y_min -= 1
 
-    plt.suptitle(f'Weight', fontsize=14, fontweight='bold', color=light_grey)
+    plt.suptitle('Weight', fontsize=14, fontweight='bold', color=light_grey)
 
     create_axes(days[-1], x_min, x_max, y_min, y_max)
 
@@ -114,7 +114,7 @@ def create_axes(days  : int,
 
     # Create axes' labels
     plt.xlabel('Days',         color=light_grey)
-    plt.ylabel(f'Weight (kg)', color=light_grey)
+    plt.ylabel('Weight (kg)', color=light_grey)
 
 
 def render_figure(figure: 'Figure') -> pygame.Surface:

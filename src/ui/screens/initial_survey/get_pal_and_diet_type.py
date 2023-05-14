@@ -57,7 +57,7 @@ def get_pal_and_diet_type(gui: 'GUI') -> tuple:
                     default_ds = i
                     break
 
-            menu.menu.add.dropselect(f'Non-exercise PAL: ',
+            menu.menu.add.dropselect('Non-exercise PAL: ',
                                      onchange=pal_ds.set_value,
                                      items=pal_options,  # type: ignore
                                      selection_box_height=len(pal_options),
@@ -66,7 +66,7 @@ def get_pal_and_diet_type(gui: 'GUI') -> tuple:
                                      default=default_pal,
                                      **gui.drop_selection_theme)
 
-            menu.menu.add.dropselect(f'Diet Type: ',
+            menu.menu.add.dropselect('Diet Type: ',
                                      onchange=diet_type_ds.set_value,
                                      items=diet_type_options,  # type: ignore
                                      selection_box_height=len(diet_type_options),

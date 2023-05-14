@@ -102,7 +102,7 @@ def get_meal_lines(user      : 'User',
 
         lines.extend([f'{f1:<{c1w}}  {f2:<{c2w}}  {f3:<{c3w}}  {f4:>{c4w}}  '
                       f'{f5:>{c5w}}  {f6:>{c6w}}  {f7:>{c7w}}  {f8:>{c8w}}'
-                      for f1, f2, f3, f4, f5, f6, f7, f8 in zip(col1, col2, col3, c4s, 
+                      for f1, f2, f3, f4, f5, f6, f7, f8 in zip(col1, col2, col3, c4s,
                                                                 c5s, c6s, c7s, c8s)])
 
     return lines, total_consumed_kcal, total_consumed_carbs_g

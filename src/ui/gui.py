@@ -74,53 +74,41 @@ class GUI:
     @property
     def drop_multi_selection_theme(self) -> dict:
         """Drop-selection theme for multiple choice boxes.."""
-        return dict(selection_box_bgcolor=Color.MGREY.value,
-
-                    selection_option_border_color=Color.BLACK.value,
-                    selection_option_font_color=Color.LGREY.value,
-
-                    selection_option_selected_font_color=Color.WHITE.value,
-                    selection_option_selected_bgcolor=Color.CELESTE.value,
-                    selection_option_selected_box_color=Color.WHITE.value,
-
-                    selection_option_active_font_color=Color.LGREY.value,
-
-                    selection_box_arrow_color=Color.GREY.value,
-                    selection_box_border_color=Color.BLACK.value,
-
-                    scrollbar_slider_color=Color.GREY.value,
-                    scrollbar_slider_hover_color=Color.BLACK.value,
-                    scrollbar_color=Color.LGREY.value,
-                    scrollbar_shadow_color=Color.BLACK.value,
-                    )
+        return {'selection_box_bgcolor':                 Color.MGREY.value,
+                'selection_option_border_color':         Color.BLACK.value,
+                'selection_option_font_color':           Color.LGREY.value,
+                'selection_option_selected_font_color':  Color.WHITE.value,
+                'selection_option_selected_bgcolor':     Color.CELESTE.value,
+                'selection_option_selected_box_color':   Color.WHITE.value,
+                'selection_option_active_font_color'   : Color.LGREY.value,
+                'selection_box_arrow_color':             Color.GREY.value,
+                'selection_box_border_color':            Color.BLACK.value,
+                'scrollbar_slider_color':                Color.GREY.value,
+                'scrollbar_slider_hover_color':          Color.BLACK.value,
+                'scrollbar_color':                       Color.LGREY.value,
+                'scrollbar_shadow_color':                Color.BLACK.value}
 
     @property
     def drop_selection_theme(self) -> dict:
         """Drop-selection theme."""
-        return dict(selection_box_bgcolor=Color.MGREY.value,
-
-                    selection_option_border_color=Color.BLACK.value,
-                    selection_option_font_color=Color.LGREY.value,
-
-                    selection_option_selected_font_color=Color.WHITE.value,
-                    selection_option_selected_bgcolor=Color.CELESTE.value,
-
-                    selection_box_arrow_color=Color.GREY.value,
-                    selection_box_border_color=Color.BLACK.value,
-
-                    scrollbar_slider_color=Color.GREY.value,
-                    scrollbar_slider_hover_color=Color.BLACK.value,
-                    scrollbar_color=Color.LGREY.value,
-                    scrollbar_shadow_color=Color.BLACK.value,
-                    )
+        return {'selection_box_bgcolor':                Color.MGREY.value,
+                'selection_option_border_color':        Color.BLACK.value,
+                'selection_option_font_color':          Color.LGREY.value,
+                'selection_option_selected_font_color': Color.WHITE.value,
+                'selection_option_selected_bgcolor':    Color.CELESTE.value,
+                'selection_box_arrow_color':            Color.GREY.value,
+                'selection_box_border_color':           Color.BLACK.value,
+                'scrollbar_slider_color':               Color.GREY.value,
+                'scrollbar_slider_hover_color':         Color.BLACK.value,
+                'scrollbar_color':                      Color.LGREY.value,
+                'scrollbar_shadow_color':               Color.BLACK.value}
 
     @property
     def toggle_switch_theme(self) -> dict:
         """Toggle switch theme."""
-        return dict(font_color=Color.LGREY.value,
-                    border_color=Color.LGREY.value,
-                    switch_border_color=Color.LGREY.value,
-                    state_text_font_color=(Color.WHITE.value, Color.WHITE.value),
-                    slider_color=Color.GREY.value,
-                    state_color=(Color.CELESTE.value, Color.CELESTE.value)
-                    )
+        return {'font_color':            Color.LGREY.value,
+                'border_color':          Color.LGREY.value,
+                'switch_border_color':   Color.LGREY.value,
+                'state_text_font_color': (Color.WHITE.value, Color.WHITE.value),
+                'slider_color':          Color.GREY.value,
+                'state_color':           (Color.CELESTE.value, Color.CELESTE.value)}

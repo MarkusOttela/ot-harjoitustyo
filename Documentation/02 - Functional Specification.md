@@ -71,6 +71,9 @@ The program supports the user in maintaining their diet by
   * The user can export their ingredient database (users can create content)
   * The user can user ingredients created by other local users
 
+**DONE: Recipe Database**
+    * The user can create single and mealprep recipes by specifying names and main ingredients, as well as 
+      accompaniment ingredients for mealprep recipes
 
 **DONE: Meal Creation**
 
@@ -89,6 +92,8 @@ The program supports the user in maintaining their diet by
    * The user can create meals where the user lists the grams of mealprep and each accompaniment
      * The program will calculate average nutritional values for the mealprep
 
+4. ~~The user can also express the number of pieces of equal weight ingredients with #<integer> instead of floats that represent grams.~~
+    NOTE: This will be implemented later: the per-unit grams in the ingredient database are not very useful until then. 
 
 **Done: Automatic services**
   * The system prompts the user to enter their daily morning weight

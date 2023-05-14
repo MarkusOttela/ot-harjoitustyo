@@ -3,13 +3,22 @@ Testing
 
 ## Unit tests
 
+Excluding the UI module, the program has a 100% coverage for its unit tests.
 
 ## Integration tests
 
+The integration tests for databases are done as part of serialization and deserialization of the objects,
+and loading them from the databases
 
 ## System testing
+
+The UI system testing is done by hand.
+
 ### Installation and configuration
-### Functionality
+
+The system was tested to work on 
+  * Fresh installation of Ubuntu 22.04LTS
+  * TODO: Cubbli 22.04 
 
 
 ## Linters
@@ -47,3 +56,5 @@ Following PEP8 inspections have been disabled:
 
 
 ## Known issues
+
+* Specifying the `Fixed portion(g)` for new ingredients might cause issues with correct nutrient density.

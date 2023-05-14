@@ -57,7 +57,7 @@ def get_morning_weight(gui: 'GUI', user: 'User') -> None:
 
             if bmi > 40:
                 raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously high!)")
-            elif bmi < 16:
+            if bmi < 16:
                 raise ValueError(f"Invalid weight (BMI of value {bmi:.1f} is dangerously low!)")
 
             user.set_morning_weight(weight_f)

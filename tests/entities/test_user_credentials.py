@@ -18,21 +18,17 @@ along with Calorinator. If not, see <https://www.gnu.org/licenses/>.
 
 import hashlib
 import os
-import typing
 import unittest
 
 from unittest import mock
 
-from src.common.crypto import derive_database_key
-from src.common.enums  import Directories
+from src.common.crypto     import derive_database_key
+from src.common.enums      import Directories
 from src.common.exceptions import IncorrectPassword
 
 from src.entities.user_credentials import UserCredentials
 
 from tests.utils import cd_unit_test, cleanup
-
-if typing.TYPE_CHECKING:
-    pass
 
 
 class TestUserCredentials(unittest.TestCase):

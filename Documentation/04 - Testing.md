@@ -50,12 +50,12 @@ The code quality is maintained with several linters:
 * 0 warnings from tests module
 * All disabled inspections are expalined in the source code
 * 0 warnings from src module outside UI, where only warnings about cyclomatic complexity, namely
-  * too-many-statements
-  * too-many-branches
-  * too-many-nested-blocks
-  * too-many-statements
-  * too-many-locals
-  * duplicate-code
+  * `too-many-statements`
+  * `too-many-branches`
+  * `too-many-nested-blocks`
+  * `too-many-statements`
+  * `too-many-locals`
+  * `duplicate-code`
 
 are present. Fixing these problems will require major refactoring of the UI-side code in the future. 
 

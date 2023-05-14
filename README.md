@@ -43,7 +43,7 @@ Calorinator supports the user in maintaining their diet by
 
 * [Week 5 Release](https://github.com/MarkusOttela/ot-harjoitustyo/releases/tag/viikko5)
 * [Week 6 Release](https://github.com/MarkusOttela/ot-harjoitustyo/releases/tag/viikko6)
-
+* **[Loppupalautus](https://github.com/MarkusOttela/ot-harjoitustyo/releases/tag/loppupalautus)**
 
 ## Platform Support
 
@@ -66,22 +66,14 @@ Calorinator supports the user in maintaining their diet by
 
 ---
 
-## Installation
-
-##### 1. Install dependencies
+### Installation
 
 ```
-$ sudo apt update
-$ sudo apt install -y curl git
+$ sudo apt update && sudo apt install curl git -y
 $ curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.local python3 -
 $ echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> $HOME/.bashrc && bash
 $ echo "export PYTHON_KEYRING_BACKEND=keyring.backends.fail.Keyring" >> $HOME/.bashrc && bash
-```
-
-##### 2. Install Calorinator
-```
-$ git clone https://github.com/MarkusOttela/ot-harjoitustyo.git $HOME/calorinator
-$ cd $HOME/calorinator/
+$ cd [...]/ot-harjoitustyo-loppupalautus/
 $ poetry install
 ```
 
@@ -90,13 +82,6 @@ $ poetry install
 
 ```
 $ poetry run invoke start
-```
-
-Or if you prefer an alias
-
-```
-$ echo 'alias calorinator="poetry run python3 $HOME/calorinator/calorinator.py"' >> $HOME/.bashrc && bash
-$ calorinator 
 ```
 
 ## Development
@@ -115,7 +100,6 @@ $ poetry run invoke test
 
 ```
 $ poetry run invoke coverage-report
-$ xdg-open $HOME/calorinator/htmlcov/index.html
 ```
 
 

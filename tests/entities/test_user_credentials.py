@@ -25,6 +25,7 @@ from unittest import mock
 
 from src.common.crypto import derive_database_key
 from src.common.enums  import Directories
+from src.common.exceptions import IncorrectPassword
 
 from src.entities.user_credentials import UserCredentials
 
@@ -64,6 +65,13 @@ class TestUserCredentials(unittest.TestCase):
         self.uc.store_credentials()
         self.assertTrue(os.path.isdir(f'{Directories.USER_DATA.value}/test'))
         self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/credentials.db'))
+
+    def test_loading_credentials_with_incorrect_password_raises_incorrect_password(self):
+        self.uc.store_credentials()
+        self.assertTrue(os.path.isfile(f'{Directories.USER_DATA.value}/test/credentials.db'))
+        with mock.patch('multiprocessing.cpu_count', return_value=1):
+            with self.assertRaises(IncorrectPassword):
+                UserCredentials.from_password('test', 'incorrect')
 
     def test_loading_credentials_with_password(self):
         self.uc.store_credentials()

@@ -41,7 +41,7 @@ def add_ingredient_menu(gui           : 'GUI',
     """Render the `Add Ingredient` menu."""
     title = 'Add Ingredient'
 
-    joined_metadata = dict()
+    joined_metadata = {}
     joined_metadata.update(in_metadata)
     joined_metadata.update(nv_metadata)
 

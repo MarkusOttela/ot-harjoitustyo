@@ -90,7 +90,7 @@ class TestUser(unittest.TestCase):
   Birthday:     01/01/1990
   Gender:       Male
   Height:       180
-  Init Weight:  80.0
+  Init Weight:  79.0
   Curr. Weight: 79.9
   PAL:          Moderately Active
 """
@@ -100,7 +100,7 @@ class TestUser(unittest.TestCase):
         self.user.set_morning_weight(self.morning_weight)
 
         expected_string = (b'{"name": "test_user", "birthday": "01/01/1990", "gender": "Male", '
-                           b'"height_cm": 180, "init_weight_kg": 80.0, "pal": "Moderately Active", '
+                           b'"height_cm": 180, "init_weight_kg": 79.0, "pal": "Moderately Active", '
                            b'"diet_type": "Diet", "weight_log": "{\\"14/05/2023\\": 79.9}", '
                            b'"meal_log": "{}"}')
 

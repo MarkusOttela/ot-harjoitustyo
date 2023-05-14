@@ -45,12 +45,12 @@ class TestUserCredentials(unittest.TestCase):
         cleanup(self.unit_test_dir)
 
     def test_repr(self):
-        expected_digest = ('8546602cc0544b1c731d76d776b44b12a1c85afd199e53d153645d493c1b4de3'
-                           'c474a954634756085a58cd351a21d215187bf885a7212e143805637359344c4f')
+        expected_digest = ('d41f0a313abeeed965710d58e7ab111873624ff9f54e5567754e3b2fb2f90623'
+                           '346b9abd8c8ca667e7562e4708130891f457afe9174a6524e89d5f02119e8291')
         self.assertEqual(repr(self.user_credentials), f"""\
 <UserCredentials-object {id(self.user_credentials)}>
   User Name:   test
-  Salt:        73616c7473616c7473616c7473616c7473616c7473616c7473616c7473616c74
+  Salt:        53616c7453616c7453616c7453616c7453616c7453616c7453616c7453616c74
   DB key hash: {expected_digest}""")
 
     def test_get_username_returns_username(self):

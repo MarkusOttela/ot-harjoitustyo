@@ -92,3 +92,29 @@ Changelog
 * Friday
 * Saturday
 * Sunday
+
+## Calendar Week 19
+* Monday
+* Tuesday
+* Wednesday
+  * Logout functionality
+  * Cleaning and refactoring
+  * Start large refactoring where program switched to the reusable NutritionalValues object
+* Thursday
+  * Finish NutritionalValues object
+* Friday
+  * Add support for logging single recipes and meals
+  * Add weight graph based on matplotlib and numpy
+  * Work on documentation
+* Saturday
+  * Refactor modules to more sane directory tree, merge most enums to single module
+  * Cleanup codebase
+  * Add missing validation for input boxes 
+  * Add user manual with screenshots
+  * Start focused work unit tests
+* Sunday
+  * Finish rest of unit tests
+  * Fix most pylint warnings
+  * Update documentation
+  * Check the project is consistent
+  * Final release

@@ -1,7 +1,7 @@
 Hour Tracker
 ---
 
-## Total: 111.8h + (6 to go)
+## Total: 113.8h
 
 ## Calendar Week 12 (23.5h in total)
 * Monday 6h
@@ -70,7 +70,7 @@ Hour Tracker
 * Saturday
 * Sunday
 
-## Calendar Week 18 (60h) + 6 to go
+## Calendar Week 18 (62h)
 * Monday 
 * Tuesday
 * Wednesday 10.5.
@@ -82,4 +82,4 @@ Hour Tracker
 * Saturday
   * 13h
 * Sunday
-  * 6h (+ 6 to go)
+  * 8h

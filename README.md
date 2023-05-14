@@ -20,11 +20,11 @@ Calorinator supports the user in maintaining their diet by
 
 * Locally hosted, all persistent sensitive data encrypted
 * State-of-the-art cryptographic primitives, all based on the [ChaCha](https://cr.yp.to/chacha/chacha-20080128.pdf) stream cipher
-  * BLAKE2b cryptographic hash function
-    * Argon2id password hashing function
+  * [BLAKE2b](https://www.blake2.net/) cryptographic hash function
+    * [Argon2id](https://github.com/p-h-c/phc-winner-argon2) password hashing function
   * ChaCha20 stream cipher
-    * XChaCha20-Poly1305 AEAD (IETF variant)
-    * Linux kernel primary DRNG
+    * [XChaCha20-Poly1305 AEAD](https://libsodium.gitbook.io/doc/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction) (IETF variant)
+    * [Linux kernel primary DRNG](https://elixir.bootlin.com/linux/latest/source/drivers/char/random.c)
 
 
 ## Progress

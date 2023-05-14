@@ -148,7 +148,7 @@ def edit_recipe(gui           : 'GUI',
 
             if done_bt.pressed:
                 if name.value == '':
-                    raise ValueError(f'Please a name for the recipe')
+                    raise ValueError('Please a name for the recipe')
 
                 new_recipe = Recipe(name.value, author.value,
                                     selected_ingredients.values,

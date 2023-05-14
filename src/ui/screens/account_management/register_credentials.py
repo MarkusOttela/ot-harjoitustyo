@@ -50,20 +50,20 @@ def register_credentials(gui: 'GUI') -> tuple:
 
             menu.menu.add.label(f'{message}\n')
 
-            menu.menu.add.text_input(f'Your name: ',
+            menu.menu.add.text_input('Your name: ',
                                      onchange=user_name.set_value,
                                      default=user_name.value,
                                      maxchar=20,
                                      valid_chars=strings,
                                      font_color=ColorScheme.FONT_COLOR.value)
 
-            menu.menu.add.text_input(f'Password: ',
+            menu.menu.add.text_input('Password: ',
                                      onchange=password_1.set_value,
                                      password=True,
                                      password_char=' ',
                                      font_color=ColorScheme.FONT_COLOR.value)
 
-            menu.menu.add.text_input(f'Password (again): ',
+            menu.menu.add.text_input('Password (again): ',
                                      onchange=password_2.set_value,
                                      password=True,
                                      password_char=' ',
